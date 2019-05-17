@@ -22,6 +22,7 @@ const framework = async () => {
   subApp.use(bodyParser.json({ limit: '50mb' }))
   expressApp.use('/', subApp);
   return new Promise((resolve, reject) => {
+    frameworkConfig.db.couchdb.url = process.env.COUCHDB_URL
     frameworkAPI
       .bootstrap(frameworkConfig, subApp).then(() => {
         resolve()
