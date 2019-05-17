@@ -1,0 +1,42 @@
+{
+  "name": "desktop-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/main.js",
+  "scripts": {
+    "build": "rm -rf dist && tsc",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron ./dist",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder -mwl",
+    "postinstall": "cd node_modules/OpenRAP && npm run build"
+  },
+  "build": {
+    "appId": "local.sunbird.desktop",
+    "asar": false,
+    "win": {
+      "target": "nsis"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowElevation": false
+    }
+  },
+  "dependencies": {
+    "@project-sunbird/ext-framework-server": "0.1.21",
+    "OpenRAP": "git://github.com/project-sunbird/OpenRAP.git#release-2.0",
+    "body-parser": "^1.19.0",
+    "express": "^4.17.0",
+    "lodash": "^4.17.11",
+    "openrap-sunbirded-plugin": "0.0.6"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.123",
+    "electron": "^4.1.4",
+    "electron-builder": "^20.39.0",
+    "typescript": "^2.8.4"
+  },
+  "keywords": [],
+  "author": "sunbird",
+  "license": "MIT"
+}
