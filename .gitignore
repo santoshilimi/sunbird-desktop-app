@@ -4,3 +4,6 @@ src/log
 src/dist
 src/coverage
 src/.nyc_output
+src/temp
+src/public/portal
+src/public/sunbird-plugins

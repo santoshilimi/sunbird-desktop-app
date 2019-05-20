@@ -9,6 +9,7 @@
     "start": "electron ./dist/main.js",
     "pack": "electron-builder --dir",
     "dist": "electron-builder -mwl",
+    "public": "gulp",
     "postinstall": "cd node_modules/OpenRAP && npm run build"
   },
   "build": {
@@ -32,8 +33,11 @@
   },
   "devDependencies": {
     "@types/lodash": "^4.14.123",
+    "download-git-repo": "^1.1.0",
     "electron": "^4.1.4",
     "electron-builder": "^20.39.0",
+    "fs-extra": "^8.0.1",
+    "gulp": "^4.0.2",
     "typescript": "^2.8.4"
   },
   "keywords": [],
