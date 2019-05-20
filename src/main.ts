@@ -1,4 +1,4 @@
-import { bootstrap } from 'OpenRAP/dist';
+import { containerAPI } from 'OpenRAP/dist/api/index';
 import { app, BrowserWindow } from 'electron';
 import * as _ from 'lodash';
 import { frameworkAPI } from '@project-sunbird/ext-framework-server/api';
@@ -52,7 +52,7 @@ const startApp = async () => {
 
 const bootstrapDependencies = async () => {
   //bootstrap container
-  await bootstrap();
+  await containerAPI.bootstrap();
   await framework();
   await startApp();
 
