@@ -7,3 +7,4 @@ src/.nyc_output
 src/temp
 src/public/portal
 src/public/sunbird-plugins
+src/openrap-sunbirded-plugin
