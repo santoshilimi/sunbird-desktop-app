@@ -7,6 +7,7 @@
     "build": "rm -rf dist && tsc",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "electron ./dist/main.js",
+    "dev": "npm run build && npm run start",
     "pack": "electron-builder --dir",
     "dist": "electron-builder -mwl",
     "public": "gulp",

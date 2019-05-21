@@ -1,12 +1,13 @@
 import { containerAPI } from 'OpenRAP/dist/api/index';
 import { app, BrowserWindow } from 'electron';
 import * as _ from 'lodash';
+import * as path from "path";
 import { frameworkAPI } from '@project-sunbird/ext-framework-server/api';
 import { HTTPService } from '@project-sunbird/ext-framework-server/services/http-service'
 import { logger } from '@project-sunbird/ext-framework-server/logger'
 import { frameworkConfig } from './framework.config';
 import express from 'express';
-import * as bodyParser from 'body-parser'
+import * as bodyParser from 'body-parser';
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -63,7 +64,6 @@ const bootstrapDependencies = async () => {
 const checkAdminExists = () => {
   return new Promise((resolve, reject) => {
     HTTPService.head('http://admin:password@127.0.0.1:5984').subscribe(data => {
-      console.log('data', data)
       resolve(data);
     }, err => {
       reject(err);
@@ -93,26 +93,35 @@ const prepareDB = () => {
 
 function createWindow() {
 
+  //splash screen
+
+  let splash = new BrowserWindow({ width: 500, height: 500, transparent: true, frame: false, alwaysOnTop: true });
+  splash.loadFile(path.join(__dirname, "..", "loading", "index.html"));
+
   // create admin for the database
 
   bootstrapDependencies().then(() => {
-    win.loadURL(`http://localhost:${process.env.APPLICATION_PORT}`);
+    setTimeout(() => {
+      splash.destroy();
+      win.loadURL(`http://localhost:${process.env.APPLICATION_PORT}`);
+      win.show();
+      win.maximize();
+      // Open the DevTools.
+      //win.webContents.openDevTools();
+      win.focus();
+    }, 5000)
   }).catch(err => {
     logger.error('unable to start the app ', err);
   })
 
   // Create the browser window.
   win = new BrowserWindow({
+    titleBarStyle: 'hidden',
+    show: false,
     webPreferences: {
       nodeIntegration: false
     }
   });
-  win.maximize();
-
-  // Open the DevTools.
-  //win.webContents.openDevTools();
-
-  win.focus();
 
   // Emitted when the window is closed.
   win.on('closed', () => {
