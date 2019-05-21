@@ -2,6 +2,7 @@ import { containerAPI } from 'OpenRAP/dist/api/index';
 import { app, BrowserWindow } from 'electron';
 import * as _ from 'lodash';
 import { frameworkAPI } from '@project-sunbird/ext-framework-server/api';
+import { HTTPService } from '@project-sunbird/ext-framework-server/services/http-service'
 import { logger } from '@project-sunbird/ext-framework-server/logger'
 import { frameworkConfig } from './framework.config';
 import express from 'express';
@@ -52,9 +53,41 @@ const startApp = async () => {
 
 const bootstrapDependencies = async () => {
   //bootstrap container
+  await prepareDB()
   await containerAPI.bootstrap();
   await framework();
   await startApp();
+
+}
+
+const checkAdminExists = () => {
+  return new Promise((resolve, reject) => {
+    HTTPService.head('http://admin:password@127.0.0.1:5984').subscribe(data => {
+      console.log('data', data)
+      resolve(data);
+    }, err => {
+      reject(err);
+    })
+  })
+}
+
+const prepareDB = () => {
+  //TODO: need to update the DB PORT
+  let data = '"password"'
+  return new Promise((resolve, reject) => {
+    checkAdminExists()
+      .then(data => {
+        resolve(data);
+      }).catch(error => {
+        HTTPService.put('http://localhost:5984/_node/couchdb@localhost/_config/admins/admin',
+          data).subscribe(data => {
+            resolve(data);
+          }, err => {
+            logger.error(`while creating admin credentials ${err.message}`)
+            reject(err);
+          })
+      })
+  })
 
 }
 
