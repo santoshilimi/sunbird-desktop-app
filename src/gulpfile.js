@@ -38,6 +38,10 @@ gulp.task("copy:portal", (cb) => {
     })
 })
 
+gulp.task("clean", (cb) => {
+    fs.emptyDir("./temp", cb)
+})
+
 gulp.task("default", gulp.series("download:portal",
     "client:install",
     "offline-client:dist",
