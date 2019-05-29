@@ -46,4 +46,5 @@ gulp.task("default", gulp.series("download:portal",
     "client:install",
     "offline-client:dist",
     "copy:portal",
-    "copy:plugins"));
+    "copy:plugins",
+    "clean"));
