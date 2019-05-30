@@ -55,10 +55,10 @@ const startApp = async () => {
 const bootstrapDependencies = async () => {
   //bootstrap container
   await prepareDB()
-  await containerAPI.bootstrap();
+  containerAPI.initializeEnv()
   await framework();
+  await containerAPI.bootstrap();
   await startApp();
-
 }
 
 const checkAdminExists = () => {
