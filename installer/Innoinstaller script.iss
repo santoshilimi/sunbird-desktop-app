@@ -6,9 +6,10 @@
 #define MyAppPublisher "Diksha"
 #define MyAppURL "https://diksha.gov.in"
 [Messages]
-DiskSpaceWarning= Setup requires Minimum 10GB of space. Do you wish to continue?
-DiskSpaceMBLabel= Minimum 10GB of space is required. 
-
+DiskSpaceWarning= You have less than 10GB of hard disk space on your machine. You may not be able to upload enough content. %nAre you sure you would like to continue with the installation?
+DiskSpaceMBLabel= You will need a minimum of 10GB of space on your machine to install the app. 
+StatusRunProgram = Finishing installation... Please wait for 5 minutes for the installation to complete.
+StatusUninstalling= Uninstalling... Please wait for 5 minutes for the uninstallation to complete.
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application.
 ; Do not use the same AppId value in installers for other applications.
@@ -21,7 +22,7 @@ AppPublisher={#MyAppPublisher}
 AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
-DefaultDirName={pf}\{#MyAppName}
+DefaultDirName=C:\{#MyAppName}
 DefaultGroupName={#MyAppName}
 DisableProgramGroupPage=yes
 OutputBaseFilename=SunbirdInstaller
@@ -117,8 +118,8 @@ begin
     { to user's decision abort the installation }
     if MemoryStatus.ullTotalPhys < 1825361100 then
     begin
-      if MsgBox('You have less than 2GB of physical memory available. ' +
-        'Are you sure you want to continue with the installation ?', 
+      if MsgBox('You have less than 2GB of RAM on your machine. Some features may not work properly, or your app may crash.'  
+         + 'Are you sure you would like to continue with the installation?', 
         mbConfirmation, MB_YESNO) = IDNO
       then
         Result := False;
@@ -135,10 +136,12 @@ Source: "C:\Users\OPT-LT-046\Desktop\Diksha\apache-couchdb-2.3.1.msi"; DestDir: 
 Source: "C:\Users\OPT-LT-046\Desktop\Diksha\Diksha-1.0.0.msi"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\OPT-LT-046\Desktop\Diksha\install.bat"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\Users\OPT-LT-046\Desktop\Diksha\uninstall.bat"; DestDir: "{app}"; Flags: ignoreversion
+
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Run]
 Filename: "{app}\install.bat"; Parameters: "install"; Flags: runhidden
+
 
 [UninstallRun]
 Filename: "{app}\uninstall.bat"; Flags: runhidden
