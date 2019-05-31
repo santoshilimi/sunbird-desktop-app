@@ -2,46 +2,55 @@
   "name": "desktop-app",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/main.js",
+  "main": "main.js",
   "scripts": {
     "build": "rm -rf dist && tsc",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "electron ./dist/main.js",
+    "start": "electron main.js",
     "dev": "npm run build && npm run start",
     "pack": "electron-builder --dir",
     "dist": "electron-builder -mwl",
+    "release-win": "npm run build-icons && electron-builder --win --x64",
     "public": "gulp",
-    "postinstall": "cd node_modules/OpenRAP && npm run build"
+    "postinstall": "cd node_modules/OpenRAP && npm run build",
+    "build-icons": "electron-icon-maker --input=logo.png --output= ./build"
   },
   "build": {
     "appId": "local.sunbird.desktop",
     "asar": false,
     "win": {
-      "target": "nsis"
+      "target": "msi",
+      "icon": "build/icons/win/icon.ico"
     },
-    "nsis": {
-      "oneClick": false,
-      "allowElevation": false
+    "msi": {
+      "oneClick": false
     }
   },
+  "homepage": "https://www.sunbird.org",
+  "author": {
+    "name": "sunbird",
+    "email": "support@sunbird.org"
+  },
   "dependencies": {
-    "@project-sunbird/ext-framework-server": "0.1.22",
+    "@project-sunbird/ext-framework-server": "0.1.23",
     "OpenRAP": "git://github.com/project-sunbird/OpenRAP.git#release-2.0",
     "body-parser": "^1.19.0",
     "express": "^4.17.0",
     "lodash": "^4.17.11",
-    "openrap-sunbirded-plugin": "0.0.10"
+    "openrap-sunbirded-plugin": "0.0.13"
   },
   "devDependencies": {
+    "cpy-cli": "^2.0.0",
     "@types/lodash": "^4.14.123",
     "download-git-repo": "^1.1.0",
-    "electron": "^4.1.4",
+    "electron": "4.0.3",
     "electron-builder": "^20.39.0",
+    "electron-builder-squirrel-windows": "^20.42.0",
+    "electron-icon-maker": "0.0.4",
     "fs-extra": "^8.0.1",
     "gulp": "^4.0.2",
     "typescript": "^2.8.4"
   },
   "keywords": [],
-  "author": "sunbird",
   "license": "MIT"
 }

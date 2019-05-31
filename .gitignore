@@ -8,3 +8,7 @@ src/temp
 src/public/portal
 src/public/sunbird-plugins
 src/openrap-sunbirded-plugin
+framework.config.d.ts
+framework.config.js
+main.d.ts
+main.js

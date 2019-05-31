@@ -21,7 +21,7 @@ expressApp.use(bodyParser.json());
 const framework = async () => {
 
   const subApp = express()
-  subApp.use(bodyParser.json({ limit: '50mb' }))
+  subApp.use(bodyParser.json({ limit: '100mb' }))
   expressApp.use('/', subApp);
   return new Promise((resolve, reject) => {
     frameworkConfig.db.couchdb.url = process.env.COUCHDB_URL
@@ -95,8 +95,8 @@ function createWindow() {
 
   //splash screen
 
-  let splash = new BrowserWindow({ width: 500, height: 500, transparent: true, frame: false, alwaysOnTop: true });
-  splash.loadFile(path.join(__dirname, "..", "loading", "index.html"));
+  let splash = new BrowserWindow({ width: 300, height: 300, transparent: true, frame: false, alwaysOnTop: true });
+  splash.loadFile(path.join(__dirname, "loading", "index.html"));
 
   // create admin for the database
 
@@ -109,7 +109,7 @@ function createWindow() {
       // Open the DevTools.
       //win.webContents.openDevTools();
       win.focus();
-    }, 5000)
+    }, 10000)
   }).catch(err => {
     logger.error('unable to start the app ', err);
   })
@@ -118,6 +118,8 @@ function createWindow() {
   win = new BrowserWindow({
     titleBarStyle: 'hidden',
     show: false,
+    minWidth: 700,
+    minHeight: 500,
     webPreferences: {
       nodeIntegration: false
     }
@@ -153,6 +155,3 @@ app.on('activate', () => {
     createWindow();
   }
 })
-
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and require them here.
