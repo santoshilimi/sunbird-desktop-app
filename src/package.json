@@ -25,7 +25,7 @@
     }
   },
   "dependencies": {
-    "@project-sunbird/ext-framework-server": "0.1.21",
+    "@project-sunbird/ext-framework-server": "0.1.22",
     "OpenRAP": "git://github.com/project-sunbird/OpenRAP.git#release-2.0",
     "body-parser": "^1.19.0",
     "express": "^4.17.0",
