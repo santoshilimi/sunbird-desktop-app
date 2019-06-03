@@ -1,7 +1,8 @@
 import { containerAPI } from 'OpenRAP/dist/api/index';
 import { app, BrowserWindow } from 'electron';
 import * as _ from 'lodash';
-import * as path from "path";
+import * as path from 'path';
+import * as fs from 'fs';
 import { frameworkAPI } from '@project-sunbird/ext-framework-server/api';
 import { HTTPService } from '@project-sunbird/ext-framework-server/services/http-service'
 import { logger } from '@project-sunbird/ext-framework-server/logger'
@@ -16,6 +17,14 @@ let win: any;
 const expressApp = express();
 expressApp.use(bodyParser.json());
 
+
+// set the env
+const initializeEnv = () => {
+  let envs = JSON.parse(fs.readFileSync(path.join(__dirname, 'env.json'), { encoding: 'utf-8' }));
+  _.forEach(envs, (value, key) => {
+    process.env[key] = value;
+  });
+}
 
 // Initialize ext framework
 const framework = async () => {
@@ -54,8 +63,8 @@ const startApp = async () => {
 
 const bootstrapDependencies = async () => {
   //bootstrap container
+  initializeEnv()
   await prepareDB()
-  containerAPI.initializeEnv()
   await framework();
   await containerAPI.bootstrap();
   await startApp();
