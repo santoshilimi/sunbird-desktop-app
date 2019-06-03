@@ -7,7 +7,9 @@ src/.nyc_output
 src/temp
 src/public/portal
 src/public/sunbird-plugins
-src/openrap-sunbirded-plugin
+src/openrap-sunbirded-plugin/content
+src/openrap-sunbirded-plugin/ecars
+src/openrap-sunbirded-plugin/telemetry_archived
 framework.config.d.ts
 framework.config.js
 main.d.ts
