@@ -24,6 +24,7 @@ const initializeEnv = () => {
   _.forEach(envs, (value, key) => {
     process.env[key] = value;
   });
+  win.setProgressBar(0.2);
 }
 
 // Initialize ext framework
@@ -36,8 +37,10 @@ const framework = async () => {
     frameworkConfig.db.couchdb.url = process.env.COUCHDB_URL
     frameworkAPI
       .bootstrap(frameworkConfig, subApp).then(() => {
+        win.setProgressBar(0.5);
         resolve()
       }).catch((error: any) => {
+        win.setProgressBar(0.5);
         resolve()
       })
   });
@@ -53,10 +56,12 @@ const startApp = async () => {
         reject(error)
       }
       else {
+        win.setProgressBar(0.8);
         logger.info("listening on " + process.env.APPLICATION_PORT);
         resolve()
       }
     })
+
   })
 }
 
@@ -81,15 +86,18 @@ const checkAdminExists = () => {
 }
 
 const prepareDB = () => {
+
   //TODO: need to update the DB PORT
   let data = '"password"'
   return new Promise((resolve, reject) => {
     checkAdminExists()
       .then(data => {
+        win.setProgressBar(0.3);
         resolve(data);
       }).catch(error => {
         HTTPService.put('http://localhost:5984/_node/couchdb@localhost/_config/admins/admin',
           data).subscribe(data => {
+            win.setProgressBar(0.3);
             resolve(data);
           }, err => {
             logger.error(`while creating admin credentials ${err.message}`)
@@ -102,15 +110,28 @@ const prepareDB = () => {
 
 function createWindow() {
 
-  //splash screen
+  // Create the browser window.
+  win = new BrowserWindow({
+    titleBarStyle: 'hidden',
+    show: false,
+    minWidth: 700,
+    minHeight: 500,
+    webPreferences: {
+      nodeIntegration: false
+    }
+  });
 
+  //splash screen
+  win.setProgressBar(0.1)
   let splash = new BrowserWindow({ width: 300, height: 300, transparent: true, frame: false, alwaysOnTop: true });
   splash.loadFile(path.join(__dirname, "loading", "index.html"));
 
   // create admin for the database
 
   bootstrapDependencies().then(() => {
+    win.setProgressBar(0.9);
     setTimeout(() => {
+      win.setProgressBar(-1);
       splash.destroy();
       win.loadURL(`http://localhost:${process.env.APPLICATION_PORT}`);
       win.show();
@@ -123,16 +144,7 @@ function createWindow() {
     logger.error('unable to start the app ', err);
   })
 
-  // Create the browser window.
-  win = new BrowserWindow({
-    titleBarStyle: 'hidden',
-    show: false,
-    minWidth: 700,
-    minHeight: 500,
-    webPreferences: {
-      nodeIntegration: false
-    }
-  });
+
 
   // Emitted when the window is closed.
   win.on('closed', () => {
