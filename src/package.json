@@ -37,17 +37,18 @@
     "body-parser": "^1.19.0",
     "express": "^4.17.0",
     "lodash": "^4.17.11",
-    "openrap-sunbirded-plugin": "0.0.16"
+    "openrap-sunbirded-plugin": "0.0.17"
   },
   "devDependencies": {
-    "cpy-cli": "^2.0.0",
     "@types/lodash": "^4.14.123",
+    "cpy-cli": "^2.0.0",
     "download-git-repo": "^1.1.0",
     "electron": "4.0.3",
     "electron-builder": "^20.39.0",
     "electron-builder-squirrel-windows": "^20.42.0",
     "electron-icon-maker": "0.0.4",
     "fs-extra": "^8.0.1",
+    "grunt": "^1.0.4",
     "gulp": "^4.0.2",
     "typescript": "^2.8.4"
   },
