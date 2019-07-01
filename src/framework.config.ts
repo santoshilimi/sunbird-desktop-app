@@ -20,7 +20,10 @@ export const frameworkConfig = {
             ]
         },
         "couchdb": {
-            "url": process.env.COUCHDB_URL
+            "url": 'http://localhost:5984'
+        },
+        "pouchdb": {
+            "path": "./",
         }
     },
     plugins: [

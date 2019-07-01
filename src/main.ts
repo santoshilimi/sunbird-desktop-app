@@ -24,7 +24,10 @@ const initializeEnv = () => {
   _.forEach(envs, (value, key) => {
     process.env[key] = value;
   });
-  win.setProgressBar(0.2);
+  process.env.DATABASE_PATH = path.join(__dirname, 'database');
+  if (!fs.existsSync(process.env.DATABASE_PATH)) {
+    fs.mkdirSync(process.env.DATABASE_PATH);
+  }
 }
 
 // Initialize ext framework
@@ -34,13 +37,11 @@ const framework = async () => {
   subApp.use(bodyParser.json({ limit: '100mb' }))
   expressApp.use('/', subApp);
   return new Promise((resolve, reject) => {
-    frameworkConfig.db.couchdb.url = process.env.COUCHDB_URL
+    frameworkConfig.db.pouchdb.path = process.env.DATABASE_PATH;
     frameworkAPI
       .bootstrap(frameworkConfig, subApp).then(() => {
-        win.setProgressBar(0.5);
         resolve()
       }).catch((error: any) => {
-        win.setProgressBar(0.5);
         resolve()
       })
   });
@@ -56,7 +57,6 @@ const startApp = async () => {
         reject(error)
       }
       else {
-        win.setProgressBar(0.8);
         logger.info("listening on " + process.env.APPLICATION_PORT);
         resolve()
       }
@@ -67,50 +67,20 @@ const startApp = async () => {
 
 
 const bootstrapDependencies = async () => {
-  //bootstrap container
   initializeEnv()
-  await prepareDB()
   await framework();
   await containerAPI.bootstrap();
   await startApp();
 }
 
-const checkAdminExists = () => {
-  return new Promise((resolve, reject) => {
-    HTTPService.head('http://admin:password@127.0.0.1:5984').subscribe(data => {
-      resolve(data);
-    }, err => {
-      reject(err);
-    })
-  })
-}
-
-const prepareDB = () => {
-
-  //TODO: need to update the DB PORT
-  let data = '"password"'
-  return new Promise((resolve, reject) => {
-    checkAdminExists()
-      .then(data => {
-        win.setProgressBar(0.3);
-        resolve(data);
-      }).catch(error => {
-        HTTPService.put('http://localhost:5984/_node/couchdb@localhost/_config/admins/admin',
-          data).subscribe(data => {
-            win.setProgressBar(0.3);
-            resolve(data);
-          }, err => {
-            logger.error(`while creating admin credentials ${err.message}`)
-            reject(err);
-          })
-      })
-  })
-
-}
-
 function createWindow() {
 
-  // Create the browser window.
+
+  //splash screen
+  let splash = new BrowserWindow({ width: 300, height: 300, transparent: true, frame: false, alwaysOnTop: true });
+  splash.loadFile(path.join(__dirname, "loading", "index.html"));
+
+  // Create the main window.
   win = new BrowserWindow({
     titleBarStyle: 'hidden',
     show: false,
@@ -121,17 +91,10 @@ function createWindow() {
     }
   });
 
-  //splash screen
-  win.setProgressBar(0.1)
-  let splash = new BrowserWindow({ width: 300, height: 300, transparent: true, frame: false, alwaysOnTop: true });
-  splash.loadFile(path.join(__dirname, "loading", "index.html"));
-
   // create admin for the database
 
   bootstrapDependencies().then(() => {
-    win.setProgressBar(0.9);
     setTimeout(() => {
-      win.setProgressBar(-1);
       splash.destroy();
       win.loadURL(`http://localhost:${process.env.APPLICATION_PORT}`);
       win.show();

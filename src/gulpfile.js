@@ -5,7 +5,7 @@ const fs = require('fs-extra')
 
 
 gulp.task("download:portal", (cb) => {
-    download("Sunbird-Ed/SunbirdEd-portal#release-2.1.0", "temp/portal", function (err) {
+    download("Sunbird-Ed/SunbirdEd-portal#release-2.2.0", "temp/portal", function (err) {
         cb(err)
     })
 })
