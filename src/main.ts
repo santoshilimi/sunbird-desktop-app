@@ -4,10 +4,10 @@ import * as _ from 'lodash';
 import * as path from 'path';
 import * as fs from 'fs';
 import { frameworkAPI } from '@project-sunbird/ext-framework-server/api';
-import { HTTPService } from '@project-sunbird/ext-framework-server/services/http-service'
 import { logger } from '@project-sunbird/ext-framework-server/logger'
 import { frameworkConfig } from './framework.config';
 import express from 'express';
+import portscanner from 'portscanner';
 import * as bodyParser from 'body-parser';
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -28,6 +28,14 @@ const initializeEnv = () => {
   if (!fs.existsSync(process.env.DATABASE_PATH)) {
     fs.mkdirSync(process.env.DATABASE_PATH);
   }
+}
+
+
+// get available port from range(9000-9100) and sets it to run th app
+
+const setAvailablePort = async () => {
+  let port = await portscanner.findAPortNotInUse(9000, 9100)
+  process.env.APPLICATION_PORT = port;
 }
 
 // Initialize ext framework
@@ -68,6 +76,7 @@ const startApp = async () => {
 
 const bootstrapDependencies = async () => {
   initializeEnv()
+  await setAvailablePort()
   await framework();
   await containerAPI.bootstrap();
   await startApp();
@@ -100,7 +109,7 @@ function createWindow() {
       win.show();
       win.maximize();
       // Open the DevTools.
-      //win.webContents.openDevTools();
+      // win.webContents.openDevTools();
       win.focus();
     }, 10000)
   }).catch(err => {

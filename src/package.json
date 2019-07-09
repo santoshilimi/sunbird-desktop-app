@@ -37,7 +37,8 @@
     "body-parser": "^1.19.0",
     "express": "^4.17.0",
     "lodash": "^4.17.11",
-    "openrap-sunbirded-plugin": "0.0.22",
+    "openrap-sunbirded-plugin": "0.0.23",
+    "portscanner": "^2.2.0",
     "pouchdb": "^7.1.1",
     "pouchdb-find": "^7.1.1"
   },
