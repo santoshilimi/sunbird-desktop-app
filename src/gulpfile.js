@@ -38,6 +38,10 @@ gulp.task("copy:portal", (cb) => {
     })
 })
 
+gulp.task("copy:resource:bundles", (cb) => {
+    fs.copy('./temp/portal/src/app/resourcebundles/json', './openrap-sunbirded-plugin/data/resourceBundles', cb)
+})
+
 gulp.task("clean", (cb) => {
     fs.emptyDir("./temp", cb)
 })
@@ -47,4 +51,5 @@ gulp.task("default", gulp.series("download:portal",
     "offline-client:dist",
     "copy:portal",
     "copy:plugins",
+    "copy:resource:bundles",
     "clean"));

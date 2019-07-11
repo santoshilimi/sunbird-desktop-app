@@ -8,9 +8,10 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "electron main.js",
     "dev": "npm run build && npm run start",
-    "pack": "electron-builder --dir",
-    "dist": "electron-builder -mwl",
-    "release-win": "npm run build-icons && electron-builder --win --x64",
+    "dist-win64": "npm run build-icons && electron-builder -w --x64",
+    "dist-win32": "npm run build-icons && electron-builder -w --ia32",
+    "dist-mac": "npm run build-icons && electron-builder -m --x64",
+    "dist-linux": "npm run build-icons && electron-builder -l --x64",
     "public": "gulp",
     "postinstall": "cd node_modules/OpenRAP && npm run build && electron-builder install-app-deps",
     "build-icons": "electron-icon-maker --input=logo.png --output=./build"
@@ -19,11 +20,19 @@
     "appId": "local.sunbird.desktop",
     "asar": false,
     "win": {
-      "target": "msi",
       "icon": "build/icons/win/icon.ico"
     },
-    "msi": {
-      "oneClick": false
+    "nsis": {
+      "installerIcon": "build/icons/win/icon.ico",
+      "uninstallerIcon": "build/icons/win/icon.ico"
+    },
+    "mac": {
+      "icon": "build/icons/mac/icon.icns",
+      "target": "dmg"
+    },
+    "linux": {
+      "icon": "build/icons/png",
+      "target": "deb"
     }
   },
   "homepage": "https://www.sunbird.org",
@@ -32,15 +41,15 @@
     "email": "support@sunbird.org"
   },
   "dependencies": {
-    "@project-sunbird/ext-framework-server": "0.1.25",
+    "@project-sunbird/ext-framework-server": "0.1.26",
     "OpenRAP": "git://github.com/project-sunbird/OpenRAP.git#release-2.1",
     "body-parser": "^1.19.0",
     "express": "^4.17.0",
     "lodash": "^4.17.11",
-    "openrap-sunbirded-plugin": "0.0.23",
+    "openrap-sunbirded-plugin": "0.0.24",
     "portscanner": "^2.2.0",
-    "pouchdb": "^7.1.1",
-    "pouchdb-find": "^7.1.1"
+    "uuid": "^3.3.2",
+    "fs-extra": "^8.1.0"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.123",
@@ -50,7 +59,6 @@
     "electron-builder": "^20.39.0",
     "electron-builder-squirrel-windows": "^20.42.0",
     "electron-icon-maker": "0.0.4",
-    "fs-extra": "^8.0.1",
     "grunt": "^1.0.4",
     "gulp": "^4.0.2",
     "typescript": "^2.8.4"
