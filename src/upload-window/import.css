@@ -1,0 +1,114 @@
+body {
+    padding: 0px;
+    margin: 0px;
+    font-family: 'Noto Sans','Noto Sans Devanagari','Noto Sans Tamil','Noto Sans Bengali','Noto Sans Malayalam','Noto Sans Gurmukhi','Noto Sans Gujarati','Noto Sans Telugu','Noto Sans Kannada','Noto Sans Oriya','Noto Nastaliq Urdu',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen-Sans,Ubuntu,Cantarell,'Helvetica Neue',sans-serif;
+}
+.sb-offline-download-manager-container {
+    max-width: 480px;
+    width: 100%;
+    max-height: calc(100vh - 240px);
+    position: fixed;
+    bottom: 32px;
+    right: 32px;
+    box-shadow: 0 10px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    background: #f3f7fa;
+}
+
+.sb-offline-download-manager-container .sb-download-manager-header {
+    background: #00c786;
+    padding: 16px;
+    display: flex;
+    color: white;
+    font-size: 14px;
+}
+
+.sb-offline-download-manager-container .sb-download-manager-header .header-text {
+    font-weight: 700;
+    margin-right: auto;
+}
+
+.sb-offline-download-manager-container .sb-download-manager-header .close-button {
+    background: transparent;
+    border: none;
+    color: white;
+    cursor: pointer;
+}
+
+.sb-offline-download-manager {
+    padding: 16px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    margin: 16px 16px 0 16px;
+    background: white;
+    border-radius: 4px;
+    border:1px solid #ccc;
+}
+
+.sb-offline-download-manager:last-child {
+    margin-bottom: 16px;
+}
+
+.download-name {
+    font-size: 14px;
+    max-width: 320px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    margin-bottom: 4px;
+    color: black;
+}
+
+.download-number-content {
+    display: flex;
+    margin-bottom: 8px;
+    align-items: center;
+}
+
+.download-number-content .number-downloaded {
+    font-size: 12px;
+    color: #999;
+}
+
+.download-number-content .download-status {
+    border-radius: 2px;
+    font-size: 12px;
+    margin-left: 16px;
+    padding: 2px 8px;
+}
+
+.download-number-content .download-status.failed {
+    background: #fbccd1;
+    color: #ff4558;
+}
+
+.download-number-content .download-status.success {
+    background: #e1ffdf;
+    color: #008840;
+}
+
+.download-number-content .download-status.progress {
+    background: #fffadf;
+    color: #888600;
+}
+
+.download-progressbar-container {
+    display: flex;
+    align-items: center;
+}
+
+.download-progressbar-container .download-progress {
+    height: 8px;
+    border-radius: 8px;
+    background: rgb(200, 353, 223);
+    width: calc(100% - 24px);
+}
+
+.download-progressbar-container .download-progress .download-progress-bar {
+    height: 8px;
+    background: #00c786;
+    border-radius: 8px;
+}
+
+.download-progressbar-container .download-percent {
+    font-size: 10px;
+    margin-left: auto;
+}

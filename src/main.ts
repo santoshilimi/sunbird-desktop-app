@@ -19,6 +19,8 @@ const envs = JSON.parse(
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let win: any;
+let child: any;
+let openFileContents = [];
 
 const expressApp = express();
 expressApp.use(bodyParser.json());
@@ -138,7 +140,18 @@ function createWindow() {
         win.maximize();
         // Open the DevTools.
         // win.webContents.openDevTools();
+        child = new BrowserWindow({
+          parent: win,
+          modal: true,
+          show: false,
+          width: 500,
+          height: 300
+        });
+        child.loadFile(path.join(__dirname, "upload-window", "index.html"));
         win.focus();
+        if (openFileContents.length > 0) {
+          openFileWindow(openFileContents);
+        }
       }, 10000);
     })
     .catch(err => {
@@ -159,6 +172,7 @@ if (!gotTheLock) {
   app.quit();
 } else {
   app.on("second-instance", (event, commandLine, workingDirectory) => {
+    logger.info(`trying to open second-instance of the app`);
     // if user open's second instance, we should focus our window.
     if (win) {
       if (win.isMinimized()) win.restore();
@@ -194,18 +208,34 @@ app.on("activate", () => {
 // to handle ecar file open in MAC OS
 app.on("open-file", (e, path) => {
   e.preventDefault();
+  logger.info(`trying to open content with path ${path}`);
   if (_.endsWith(_.toLower(path), ".ecar")) {
     //open child window if not opened
 
     //send the message to import the file
-    ipcMain.emit("import-file", [
-      {
-        filePath: path,
-        id: uuid()
-      }
-    ]);
+    openFileContents.push({
+      filePath: path,
+      id: uuid()
+    });
+    // when the app already open and we are trying to open content
+    if (child) {
+      openFileWindow(openFileContents);
+    }
   }
 });
+
+const openFileWindow = contents => {
+  logger.info(`Child window visibility : ${child.isVisible()}`);
+  if (!child.isVisible()) {
+    child.setAlwaysOnTop(true);
+    child.show();
+    setTimeout(() => {
+      child.webContents.send("import", contents, process.env.APPLICATION_PORT);
+    }, 500);
+  } else {
+    child.webContents.send("import", contents, process.env.APPLICATION_PORT);
+  }
+};
 
 // to handle ecar file open in windows
 const checkForOpenFileInWindows = () => {
@@ -224,9 +254,16 @@ const checkForOpenFileInWindows = () => {
         filePath: file,
         id: uuid()
       }));
-      ipcMain.emit("import-file", ecarFileWithId);
+      openFileContents.concat(ecarFileWithId);
     }
-    logger.info(`Got request to open the th ecars : ${ecarFiles}`);
+    logger.info(`Got request to open the  ecars : ${ecarFiles}`);
   }
 };
 checkForOpenFileInWindows();
+
+ipcMain.on("import:completed", () => {
+  openFileContents = [];
+  child.reload();
+  child.hide();
+  win.reload();
+});

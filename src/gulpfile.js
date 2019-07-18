@@ -79,13 +79,6 @@ gulp.task(
   )
 );
 
-gulp.task("npm-install", cb => {
-  exec("npm install", { maxBuffer: Infinity }, function(err, stdout, stderr) {
-    console.log(stdout);
-    console.log(stderr);
-    cb(err);
-  });
-});
 // TODO: take data from command prompt for now read from env
 // gulp.task("read-build-data", cb => {
 
@@ -179,11 +172,5 @@ gulp.task("update-static-data", cb => {
 
 gulp.task(
   "dist",
-  gulp.series(
-    "npm-install",
-    "default",
-    "download:static-data",
-    "update-static-data",
-    "clean"
-  )
+  gulp.series("default", "download:static-data", "update-static-data", "clean")
 );
