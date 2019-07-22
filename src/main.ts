@@ -1,5 +1,5 @@
 import { containerAPI } from "OpenRAP/dist/api/index";
-import { app, BrowserWindow, ipcMain } from "electron";
+import { app, BrowserWindow, ipcMain, dialog } from "electron";
 import * as _ from "lodash";
 import * as path from "path";
 import * as fs from "fs";
@@ -11,6 +11,7 @@ import express from "express";
 import portscanner from "portscanner";
 import * as bodyParser from "body-parser";
 import * as os from "os";
+const { URL } = require("url");
 const uuid = require("uuid/v4");
 const envs = JSON.parse(
   fs.readFileSync(path.join(__dirname, "env.json"), { encoding: "utf-8" })
@@ -21,6 +22,7 @@ const envs = JSON.parse(
 let win: any;
 let child: any;
 let openFileContents = [];
+let appBaseUrl;
 
 const expressApp = express();
 expressApp.use(bodyParser.json());
@@ -135,13 +137,15 @@ function createWindow() {
     .then(() => {
       setTimeout(() => {
         splash.destroy();
-        win.loadURL(`http://localhost:${process.env.APPLICATION_PORT}`);
+        appBaseUrl = `http://localhost:${process.env.APPLICATION_PORT}`;
+        win.loadURL(appBaseUrl);
         win.show();
         win.maximize();
         // Open the DevTools.
         // win.webContents.openDevTools();
         child = new BrowserWindow({
           parent: win,
+          frame: false,
           modal: true,
           show: false,
           width: 500,
@@ -149,6 +153,7 @@ function createWindow() {
         });
         child.loadFile(path.join(__dirname, "upload-window", "index.html"));
         win.focus();
+        checkForOpenFileInWindows();
         if (openFileContents.length > 0) {
           openFileWindow(openFileContents);
         }
@@ -173,7 +178,12 @@ if (!gotTheLock) {
 } else {
   app.on("second-instance", (event, commandLine, workingDirectory) => {
     logger.info(`trying to open second-instance of the app`);
-    // if user open's second instance, we should focus our window.
+    // if the OS is windows file open call will come here when app is already open
+    checkForOpenFileInWindows();
+    if (openFileContents.length > 0) {
+      openFileWindow(openFileContents);
+    }
+    // if user open's second instance, we should focus our window
     if (win) {
       if (win.isMinimized()) win.restore();
       win.focus();
@@ -230,10 +240,10 @@ const openFileWindow = contents => {
     child.setAlwaysOnTop(true);
     child.show();
     setTimeout(() => {
-      child.webContents.send("import", contents, process.env.APPLICATION_PORT);
+      child.webContents.send("content:import", contents, appBaseUrl);
     }, 500);
   } else {
-    child.webContents.send("import", contents, process.env.APPLICATION_PORT);
+    child.webContents.send("content:import", contents, appBaseUrl);
   }
 };
 
@@ -247,23 +257,56 @@ const checkForOpenFileInWindows = () => {
     });
     ecarFiles = _.compact(ecarFiles);
     if (!_.isEmpty(ecarFiles)) {
-      // open chile window if not opened
-
       // send ipc message to child window
       const ecarFileWithId = _.map(ecarFiles, file => ({
         filePath: file,
         id: uuid()
       }));
-      openFileContents.concat(ecarFileWithId);
+      openFileContents = [...openFileContents, ...ecarFileWithId];
     }
     logger.info(`Got request to open the  ecars : ${ecarFiles}`);
   }
 };
-checkForOpenFileInWindows();
 
-ipcMain.on("import:completed", () => {
+ipcMain.on("content:import:completed", (event, data) => {
   openFileContents = [];
   child.reload();
   child.hide();
+  let url = constructRedirectUrl(data.completed[0].content);
+
+  if (data.totalFileCount === 1 && data.completed.length === 1) {
+    const currentURL = new URL(win.webContents.getURL());
+    const urlPath = currentURL.pathname;
+    if (urlPath.startsWith("/play")) {
+      const options = {
+        type: "question",
+        buttons: ["Play", "Cancel"],
+        defaultId: 1,
+        title: "Question",
+        message:
+          "You are already playing a content. Do you want to play this content ?"
+      };
+      dialog.showMessageBox(null, options, response => {
+        if (response === 0) {
+          win.loadURL(url);
+        }
+      });
+    } else {
+      win.loadURL(url);
+    }
+    return false;
+  }
   win.reload();
 });
+
+const constructRedirectUrl = content => {
+  if (content.mimeType === "application/vnd.ekstep.content-collection") {
+    return `${appBaseUrl}/play/collection/${content.identifier}/?contentType=${
+      content.contentType
+    }`;
+  } else {
+    return `${appBaseUrl}/play/content/${content.identifier}/?contentType=${
+      content.contentType
+    }`;
+  }
+};
