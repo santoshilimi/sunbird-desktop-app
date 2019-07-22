@@ -170,7 +170,25 @@ gulp.task("update-static-data", cb => {
   cb();
 });
 
+gulp.task("app:dist", cb => {
+  exec("npm run  build", { maxBuffer: Infinity }, function(
+    err,
+    stdout,
+    stderr
+  ) {
+    console.log(stdout);
+    console.log(stderr);
+    cb(err);
+  });
+});
+
 gulp.task(
   "dist",
-  gulp.series("default", "download:static-data", "update-static-data", "clean")
+  gulp.series(
+    "app:dist",
+    "default",
+    "download:static-data",
+    "update-static-data",
+    "clean"
+  )
 );

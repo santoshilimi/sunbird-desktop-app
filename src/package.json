@@ -8,6 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "electron main.js",
     "dev": "npm run build && npm run start",
+    "dist": "gulp  dist",
     "dist-win64": "npm run build-icons && electron-builder -w --x64",
     "dist-win32": "npm run build-icons && electron-builder -w --ia32",
     "dist-mac": "npm run build-icons && electron-builder -m --x64",
