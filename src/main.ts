@@ -5,6 +5,7 @@ import * as path from "path";
 import * as fs from "fs";
 import * as fse from "fs-extra";
 import { frameworkAPI } from "@project-sunbird/ext-framework-server/api";
+import { EventManager } from "@project-sunbird/ext-framework-server/managers/EventManager";
 import { logger } from "@project-sunbird/ext-framework-server/logger";
 import { frameworkConfig } from "./framework.config";
 import express from "express";
@@ -99,6 +100,16 @@ const startApp = async () => {
   });
 };
 
+// this will check whether all the plugins are initialized using event from each plugin which should emit '<pluginId>:initialized' event
+
+const checkPluginsInitialized = () => {
+  //TODO: for now we are checking one plugin need to change once plugin count increases
+  return new Promise(resolve => {
+    EventManager.subscribe("openrap-sunbirded-plugin:initialized", () => {
+      resolve();
+    });
+  });
+};
 // start loading all the dependencies
 const bootstrapDependencies = async () => {
   initializeEnv();
@@ -107,6 +118,7 @@ const bootstrapDependencies = async () => {
   await framework();
   await containerAPI.bootstrap();
   await startApp();
+  await checkPluginsInitialized();
 };
 
 function createWindow() {
@@ -135,29 +147,27 @@ function createWindow() {
 
   bootstrapDependencies()
     .then(() => {
-      setTimeout(() => {
-        splash.destroy();
-        appBaseUrl = `http://localhost:${process.env.APPLICATION_PORT}`;
-        win.loadURL(appBaseUrl);
-        win.show();
-        win.maximize();
-        // Open the DevTools.
-        // win.webContents.openDevTools();
-        child = new BrowserWindow({
-          parent: win,
-          frame: false,
-          modal: true,
-          show: false,
-          width: 500,
-          height: 200
-        });
-        child.loadFile(path.join(__dirname, "upload-window", "index.html"));
-        win.focus();
-        checkForOpenFileInWindows();
-        if (openFileContents.length > 0) {
-          openFileWindow(openFileContents);
-        }
-      }, 10000);
+      splash.destroy();
+      appBaseUrl = `http://localhost:${process.env.APPLICATION_PORT}`;
+      win.loadURL(appBaseUrl);
+      win.show();
+      win.maximize();
+      // Open the DevTools.
+      // win.webContents.openDevTools();
+      child = new BrowserWindow({
+        parent: win,
+        frame: false,
+        modal: true,
+        show: false,
+        width: 500,
+        height: 200
+      });
+      child.loadFile(path.join(__dirname, "upload-window", "index.html"));
+      win.focus();
+      checkForOpenFileInWindows();
+      if (openFileContents.length > 0) {
+        openFileWindow(openFileContents);
+      }
     })
     .catch(err => {
       logger.error("unable to start the app ", err);
