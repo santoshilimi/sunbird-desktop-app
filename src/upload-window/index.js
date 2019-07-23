@@ -161,7 +161,7 @@ function upload(data, url) {
   // After all files are processed
   asyncQueue.drain = () => {
     console.log("All items have been processed");
-    progressDiv.items = [];
+    // progressDiv.items = [];
     if (_.isEmpty(failed)) {
       ipcRenderer.send("content:import:completed", {
         totalFileCount: totalFileCount,

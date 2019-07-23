@@ -149,7 +149,7 @@ function createWindow() {
           modal: true,
           show: false,
           width: 500,
-          height: 300
+          height: 200
         });
         child.loadFile(path.join(__dirname, "upload-window", "index.html"));
         win.focus();
@@ -177,10 +177,12 @@ if (!gotTheLock) {
   app.quit();
 } else {
   app.on("second-instance", (event, commandLine, workingDirectory) => {
-    logger.info(`trying to open second-instance of the app`);
+    logger.info(
+      `trying to open second-instance of the app ${JSON.stringify(commandLine)}`
+    );
     // if the OS is windows file open call will come here when app is already open
-    checkForOpenFileInWindows();
-    if (openFileContents.length > 0) {
+    checkForOpenFileInWindows(commandLine);
+    if (openFileContents.length > 0 && child) {
       openFileWindow(openFileContents);
     }
     // if user open's second instance, we should focus our window
@@ -241,30 +243,27 @@ const openFileWindow = contents => {
     child.show();
     setTimeout(() => {
       child.webContents.send("content:import", contents, appBaseUrl);
-    }, 500);
+    }, 1000);
   } else {
     child.webContents.send("content:import", contents, appBaseUrl);
   }
 };
 
 // to handle ecar file open in windows
-const checkForOpenFileInWindows = () => {
-  if (os.platform() === "win32" && !_.isEmpty(process.argv)) {
-    let ecarFiles = _.map(process.argv, file => {
+const checkForOpenFileInWindows = (files?: string[]) => {
+  let contents = files || process.argv;
+  if (os.platform() === "win32" && !_.isEmpty(contents)) {
+    _.forEach(contents, file => {
       if (_.endsWith(_.toLower(file), ".ecar")) {
-        return file;
+        openFileContents.push({
+          filePath: file,
+          id: uuid()
+        });
       }
     });
-    ecarFiles = _.compact(ecarFiles);
-    if (!_.isEmpty(ecarFiles)) {
-      // send ipc message to child window
-      const ecarFileWithId = _.map(ecarFiles, file => ({
-        filePath: file,
-        id: uuid()
-      }));
-      openFileContents = [...openFileContents, ...ecarFileWithId];
-    }
-    logger.info(`Got request to open the  ecars : ${ecarFiles}`);
+    logger.info(
+      `Got request to open the  ecars : ${JSON.stringify(openFileContents)}`
+    );
   }
 };
 
@@ -272,12 +271,13 @@ ipcMain.on("content:import:completed", (event, data) => {
   openFileContents = [];
   child.reload();
   child.hide();
-  let url = constructRedirectUrl(data.completed[0].content);
-
+  const currentURL = new URL(win.webContents.getURL());
+  const urlPath = currentURL.pathname;
+  const isContentPlayPage =
+    _.startsWith(urlPath, "/play") || _.startsWith(urlPath, "/browse/play");
   if (data.totalFileCount === 1 && data.completed.length === 1) {
-    const currentURL = new URL(win.webContents.getURL());
-    const urlPath = currentURL.pathname;
-    if (urlPath.startsWith("/play")) {
+    let url = constructRedirectUrl(data.completed[0].content);
+    if (isContentPlayPage) {
       const options = {
         type: "question",
         buttons: ["Play", "Cancel"],
@@ -296,7 +296,9 @@ ipcMain.on("content:import:completed", (event, data) => {
     }
     return false;
   }
-  win.reload();
+  if (!isContentPlayPage) {
+    win.reload();
+  }
 });
 
 const constructRedirectUrl = content => {
