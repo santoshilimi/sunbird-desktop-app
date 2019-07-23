@@ -119,6 +119,10 @@ const bootstrapDependencies = async () => {
   await containerAPI.bootstrap();
   await startApp();
   await checkPluginsInitialized();
+
+  //to handle the unexpected navigation to unknown route
+
+  expressApp.all("*", (req, res) => res.redirect("/"));
 };
 
 function createWindow() {
