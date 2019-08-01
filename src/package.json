@@ -13,6 +13,7 @@
     "dist-win32": "npm run build-icons && electron-builder -w --ia32",
     "dist-mac": "npm run build-icons && electron-builder -m --x64",
     "dist-linux": "npm run build-icons && electron-builder -l --x64",
+    "dist-win": "npm run build-icons && electron-builder -w --ia32 --x64",
     "public": "gulp",
     "postinstall": "cd node_modules/OpenRAP && npm run build && electron-builder install-app-deps",
     "build-icons": "electron-icon-maker --input=logo.png --output=./build"
