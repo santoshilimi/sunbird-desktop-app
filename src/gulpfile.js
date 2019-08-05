@@ -6,7 +6,7 @@ const NodeGit = require("nodegit");
 const path = require("path");
 
 gulp.task("download:portal", cb => {
-  download("Sunbird-Ed/SunbirdEd-portal#release-2.2.0", "temp/portal", cb);
+  download("Sunbird-Ed/SunbirdEd-portal#release-2.3.0", "temp/portal", cb);
 });
 
 gulp.task("client:install", cb => {
