@@ -1,5 +1,5 @@
 import { containerAPI } from "OpenRAP/dist/api/index";
-import { app, BrowserWindow, ipcMain, dialog, nativeImage } from "electron";
+import { app, BrowserWindow, ipcMain, dialog } from "electron";
 import * as _ from "lodash";
 import * as path from "path";
 import * as fs from "fs";
@@ -17,7 +17,7 @@ const uuid = require("uuid/v4");
 const envs = JSON.parse(
   fs.readFileSync(path.join(__dirname, "env.json"), { encoding: "utf-8" })
 );
-const windowIcon = nativeImage.createFromPath(path.join(__dirname, "logo.png"));
+const windowIcon = path.join(__dirname, "build", "icons", "png", "512x512.png");
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.

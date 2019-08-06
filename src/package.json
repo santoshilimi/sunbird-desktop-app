@@ -38,7 +38,7 @@
     },
     "linux": {
       "icon": "build/icons/png",
-      "target": "deb",
+      "target": ["deb", "rpm"],
       "category": "Education",
       "synopsis": "A desktop learning application with curriculum-linked content for teachers and students",
       "description": "DIKSHA Desktop Application offers teachers and students unlimited access to curriculum-linked content. The content may be copied to and from the application using a pen drive and accessed offline."
