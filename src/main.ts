@@ -17,6 +17,7 @@ const uuid = require("uuid/v4");
 const envs = JSON.parse(
   fs.readFileSync(path.join(__dirname, "env.json"), { encoding: "utf-8" })
 );
+const windowIcon = path.join(__dirname, "build", "icons", "png", "512x512.png");
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -132,7 +133,8 @@ function createWindow() {
     height: 300,
     transparent: true,
     frame: false,
-    alwaysOnTop: true
+    alwaysOnTop: true,
+    icon: windowIcon
   });
   splash.loadFile(path.join(__dirname, "loading", "index.html"));
 
@@ -144,7 +146,8 @@ function createWindow() {
     minHeight: 500,
     webPreferences: {
       nodeIntegration: false
-    }
+    },
+    icon: windowIcon
   });
 
   // create admin for the database
@@ -164,7 +167,8 @@ function createWindow() {
         modal: true,
         show: false,
         width: 500,
-        height: 200
+        height: 200,
+        icon: windowIcon
       });
       child.loadFile(path.join(__dirname, "upload-window", "index.html"));
       win.focus();
@@ -266,7 +270,7 @@ const openFileWindow = contents => {
 // to handle ecar file open in windows
 const checkForOpenFileInWindows = (files?: string[]) => {
   let contents = files || process.argv;
-  if (os.platform() === "win32" && !_.isEmpty(contents)) {
+  if ((os.platform() === "win32" || os.platform() === "linux") && !_.isEmpty(contents)) {
     _.forEach(contents, file => {
       if (_.endsWith(_.toLower(file), ".ecar")) {
         openFileContents.push({
