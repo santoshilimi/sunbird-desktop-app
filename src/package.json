@@ -1,80 +1,93 @@
 {
-  "name": "desktop-app",
-  "version": "1.0.0",
-  "description": "",
-  "main": "main.js",
-  "scripts": {
-    "build": "tsc",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "electron main.js",
-    "dev": "npm run build && npm run start",
-    "dist": "gulp  dist",
-    "dist-win64": "npm run build-icons && electron-builder -w --x64",
-    "dist-win32": "npm run build-icons && electron-builder -w --ia32",
-    "dist-mac": "npm run build-icons && electron-builder -m --x64",
-    "dist-linux": "npm run build-icons && electron-builder -l --x64",
-    "dist-win": "npm run build-icons && electron-builder -w --ia32 --x64",
-    "public": "gulp",
-    "postinstall": "cd node_modules/OpenRAP && npm run build && electron-builder install-app-deps",
-    "build-icons": "electron-icon-maker --input=logo.png --output=./build"
-  },
-  "build": {
-    "appId": "local.sunbird.desktop",
-    "fileAssociations": {
-      "ext": "ecar",
-      "name": "ECAR"
+    "name": "desktop-app",
+    "version": "1.0.0",
+    "description": "",
+    "main": "main.js",
+    "scripts": {
+        "build": "tsc",
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "electron main.js",
+        "dev": "npm run build && npm run start",
+        "dist": "gulp  dist",
+        "dist-win64": "npm run build-icons && electron-builder -w --x64",
+        "dist-win32": "npm run build-icons && electron-builder -w --ia32",
+        "dist-mac": "npm run build-icons && electron-builder -m --x64",
+        "dist-linux": "npm run build-icons && electron-builder -l --x64",
+        "publish-win64": "npm run build-icons && electron-builder -w --x64 -p always",
+        "publish-win32": "npm run build-icons && electron-builder -w --ia32 -p always",
+        "publish-mac": "npm run build-icons && electron-builder -m --x64 -p always",
+        "publish-linux": "npm run build-icons && electron-builder -l --x64 -p always",
+        "public": "gulp",
+        "postinstall": "cd node_modules/OpenRAP && npm run build && electron-builder install-app-deps",
+        "build-icons": "electron-icon-maker --input=logo.png --output=./build"
     },
-    "asar": false,
-    "win": {
-      "icon": "build/icons/win/icon.ico"
+    "build": {
+        "appId": "local.sunbird.desktop",
+        "fileAssociations": {
+            "ext": "ecar",
+            "name": "ECAR"
+        },
+        "asar": false,
+        "win": {
+            "icon": "build/icons/win/icon.ico"
+        },
+        "nsis": {
+            "installerIcon": "build/icons/win/icon.ico",
+            "uninstallerIcon": "build/icons/win/icon.ico"
+        },
+        "mac": {
+            "icon": "build/icons/mac/icon.icns",
+            "target": "dmg"
+        },
+        "linux": {
+            "icon": "build/icons/png",
+            "target": [
+                "deb",
+                "rpm"
+            ],
+            "category": "Education",
+            "synopsis": "A desktop learning application with curriculum-linked content for teachers and students",
+            "description": "The Desktop Application offers teachers and students unlimited access to curriculum-linked content. The content can either be downloaded from the internet or imported using a pen drive."
+        },
+        "directories": {
+            "output": "./dist/${version}/${os}/${arch}"
+        },
+        "publish": {
+            "provider": "generic",
+            "url": ""
+        }
     },
-    "nsis": {
-      "installerIcon": "build/icons/win/icon.ico",
-      "uninstallerIcon": "build/icons/win/icon.ico"
+    "homepage": "https://www.sunbird.org",
+    "author": {
+        "name": "sunbird",
+        "email": "support@sunbird.org"
     },
-    "mac": {
-      "icon": "build/icons/mac/icon.icns",
-      "target": "dmg"
+    "dependencies": {
+        "@project-sunbird/ext-framework-server": "0.1.26",
+        "OpenRAP": "git://github.com/project-sunbird/OpenRAP.git#release-2.1",
+        "async": "^2.6.3",
+        "body-parser": "^1.19.0",
+        "express": "^4.17.0",
+        "fs-extra": "^8.1.0",
+        "lodash": "^4.17.11",
+        "openrap-sunbirded-plugin": "0.0.27",
+        "portscanner": "^2.2.0",
+        "request": "^2.88.0",
+        "uuid": "^3.3.2"
     },
-    "linux": {
-      "icon": "build/icons/png",
-      "target": ["deb", "rpm"],
-      "category": "Education",
-      "synopsis": "A desktop learning application with curriculum-linked content for teachers and students",
-      "description": "The Desktop Application offers teachers and students unlimited access to curriculum-linked content. The content can either be downloaded from the internet or imported using a pen drive."
-    }
-  },
-  "homepage": "https://www.sunbird.org",
-  "author": {
-    "name": "sunbird",
-    "email": "support@sunbird.org"
-  },
-  "dependencies": {
-    "@project-sunbird/ext-framework-server": "0.1.26",
-    "OpenRAP": "git://github.com/project-sunbird/OpenRAP.git#release-2.1",
-    "async": "^2.6.3",
-    "body-parser": "^1.19.0",
-    "express": "^4.17.0",
-    "fs-extra": "^8.1.0",
-    "lodash": "^4.17.11",
-    "openrap-sunbirded-plugin": "0.0.27",
-    "portscanner": "^2.2.0",
-    "request": "^2.88.0",
-    "uuid": "^3.3.2"
-  },
-  "devDependencies": {
-    "@types/lodash": "^4.14.123",
-    "cpy-cli": "^2.0.0",
-    "download-git-repo": "^1.1.0",
-    "electron": "4.0.3",
-    "electron-builder": "^20.39.0",
-    "electron-builder-squirrel-windows": "^20.42.0",
-    "electron-icon-maker": "0.0.4",
-    "grunt": "^1.0.4",
-    "gulp": "^4.0.2",
-    "nodegit": "^0.24.3",
-    "typescript": "^2.8.4"
-  },
-  "keywords": [],
-  "license": "MIT"
+    "devDependencies": {
+        "@types/lodash": "^4.14.123",
+        "cpy-cli": "^2.0.0",
+        "download-git-repo": "^1.1.0",
+        "electron": "4.0.3",
+        "electron-builder": "^20.39.0",
+        "electron-builder-squirrel-windows": "^20.42.0",
+        "electron-icon-maker": "0.0.4",
+        "grunt": "^1.0.4",
+        "gulp": "^4.0.2",
+        "nodegit": "^0.24.3",
+        "typescript": "^2.8.4"
+    },
+    "keywords": [],
+    "license": "MIT"
 }
