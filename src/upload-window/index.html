@@ -21,9 +21,9 @@
         </div>
         <div class="download-number-content">
           <span class="number-downloaded">{{item.totalDownloadedFileSize}}/{{item.fileSize}}</span>
-          <span class="sb-label sb-label-table sb-label-warning-0">Inprogress...</span>
+          <span class="sb-label sb-label-table sb-label-warning-0" v-if="item.percent === 100">Processing...</span>
+          <span class="sb-label sb-label-table sb-label-warning-0" v-else>Inprogress...</span>
         </div>
-
         <div class="download-progressbar-container">
           <div class="download-progress">
             <div class="download-progress-bar" v-bind:style="{ width: item.percent + '%' }"></div>

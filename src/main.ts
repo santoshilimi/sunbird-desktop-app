@@ -285,6 +285,20 @@ const checkForOpenFileInWindows = (files?: string[]) => {
   }
 };
 
+ipcMain.on("childWindow:logging", (event, data) => {
+  switch (data.logType) {
+    case 'INFO':
+      logger.info(data.message + data.details);
+      break;
+    case 'ERROR':
+      logger.error(data.message + data.details);
+      break;
+    case 'DEBUG':
+      logger.info(data.message + data.details);
+      break;
+  }
+});
+
 ipcMain.on("content:import:completed", (event, data) => {
   openFileContents = [];
   child.reload();
