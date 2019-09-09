@@ -159,13 +159,10 @@ gulp.task("update-static-data", cb => {
   );
 
   //copy help videos and pdfs
+  fs.mkdirSync(path.join("public", "portal", "assets", "videos"));
   fs.copySync(
-    path.join("temp", "staticData", "how-to-video.mp4"),
-    path.join("public", "portal", "how-to-video.mp4")
-  );
-  fs.copySync(
-    path.join("temp", "staticData", "howTo.pdf"),
-    path.join("public", "portal", "howTo.pdf")
+    path.join("temp", "staticData", "help", "videos"),
+    path.join("public", "portal", "assets", "videos")
   );
   cb();
 });
