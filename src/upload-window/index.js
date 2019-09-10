@@ -162,6 +162,7 @@ function initAsyncQueue(url) {
 
 /* Init method is called from html file on body onload*/
 function init() {
+  // Initialising vue js objects
   progressDiv = new Vue({
     el: "#progressDiv",
     data: {

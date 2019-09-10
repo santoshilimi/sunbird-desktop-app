@@ -167,8 +167,12 @@ function createWindow() {
         modal: true,
         show: false,
         width: 500,
-        height: 200,
-        icon: windowIcon
+        height: 180,
+        icon: windowIcon,
+        transparent: true,
+        resizable: false,
+        movable: true,
+        center: true
       });
       child.loadFile(path.join(__dirname, "upload-window", "index.html"));
       win.focus();
