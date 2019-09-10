@@ -169,7 +169,6 @@ function createWindow() {
         width: 500,
         height: 180,
         icon: windowIcon,
-        transparent: true,
         resizable: false,
         movable: true,
         center: true
@@ -265,7 +264,7 @@ const openFileWindow = contents => {
     child.show();
     setTimeout(() => {
       child.webContents.send("content:import", contents, appBaseUrl);
-    }, 1000);
+    }, 2000);
   } else {
     child.webContents.send("content:import", contents, appBaseUrl);
   }

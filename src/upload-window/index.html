@@ -25,7 +25,7 @@
           <span class="sb-label sb-label-table sb-label-warning-0" v-if="item.percent === 100"><i class="loader-01"></i> Processing...</span>
           <span class="sb-label sb-label-table sb-label-success-0" v-else>In progress...</span>
         </div>
-        <div class="download-progressbar-container" v-if="item.percent !== 100">
+        <div class="download-progressbar-container">
           <div class="download-progress">
             <div class="download-progress-bar" v-bind:style="{ width: item.percent + '%' }"></div>
           </div>

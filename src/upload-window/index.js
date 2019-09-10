@@ -46,7 +46,11 @@ function upload(data, url) {
     _.remove(progressDiv.items, n => {
       return response.id === n.id;
     });
-    if (err) {
+    if (err === null) {
+      logging("Import successful for content through upload window = ", JSON.stringify(response), "INFO");
+      // Pushing files to completed array for vue js
+      completed.push(response);
+    } else {
       // Pushing files to failed array for vue js
       failed.push(response);
       failedDiv.totalFailedCount = failed.length;
@@ -54,11 +58,7 @@ function upload(data, url) {
       var x = document.getElementById("close-btn");
       x.style.display = "block";
       logging(
-        "Error received for import through upload window = ", `Error = ${err}, response = ${JSON.stringify(response)}`, "ERROR" );
-    } else {
-      logging( "Import successful for content through upload window = ", JSON.stringify(response), "INFO" );
-      // Pushing files to completed array for vue js
-      completed.push(response);
+        "Error received for import through upload window = ", `Error = ${JSON.stringify(err)}, response = ${JSON.stringify(response)}`, "ERROR");
     }
   });
 }
@@ -81,7 +81,7 @@ function initAsyncQueue(url) {
       function optionalCallback(err, httpResponse, body) {
         clearInterval(calculateProgress);
         if (err) {
-          callback(true, {
+          callback(err, {
             id: task.id,
             filename: filename,
             fileSize: totalFileSize
@@ -97,14 +97,14 @@ function initAsyncQueue(url) {
                 content: body.content
               });
             } else {
-              callback(true, {
+              callback({ err: 'Got error while parsing' }, {
                 id: task.id,
                 filename: filename,
                 fileSize: totalFileSize
               });
             }
           } catch (err) {
-            callback(true, {
+            callback(err, {
               id: task.id,
               filename: filename,
               fileSize: totalFileSize
@@ -150,7 +150,7 @@ function initAsyncQueue(url) {
 
   asyncQueue.drain = () => {
     var totalCount = completed.length + failed.length;
-    logging( "All items processed in upload window =", `totalFileCount = ${totalFileCount}, completedCount = ${completed.length}, failedCount = ${failed.length}`, "INFO" );
+    logging("All items processed in upload window =", `totalFileCount = ${totalFileCount}, completedCount = ${completed.length}, failedCount = ${failed.length}`, "INFO");
     if (_.isEmpty(failed) && totalCount === totalFileCount) {
       ipcRenderer.send("content:import:completed", {
         totalFileCount: totalFileCount,
