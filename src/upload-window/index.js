@@ -13,7 +13,7 @@ var failedDiv;
 var totalImportedCount = 1;
 var totalFileCount = 0;
 var asyncQueue;
-let processedImportIds = [];
+let processedImportPaths = [];
 
 ipcRenderer.on("content:import", (event, content, url) => {
   logging(
@@ -26,12 +26,12 @@ ipcRenderer.on("content:import", (event, content, url) => {
 
   let toBeImported = []
   _.forEach(content, data => {
-    if (!_.includes(processedImportIds, data.filePath)) {
-      processedImportIds.push(data.filePath);
+    if (!_.includes(processedImportPaths, data.filePath)) {
+      processedImportPaths.push(data.filePath);
       toBeImported.push(data);
     }
   })
-  totalFileCount = processedImportIds.length;
+  totalFileCount = processedImportPaths.length;
   upload(toBeImported, url);
 });
 
