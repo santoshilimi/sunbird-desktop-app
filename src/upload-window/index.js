@@ -149,6 +149,7 @@ function initAsyncQueue(url) {
   }, 1);
 
   asyncQueue.drain = () => {
+    progressDiv.items = [];
     var totalCount = completed.length + failed.length;
     logging("All items processed in upload window =", `totalFileCount = ${totalFileCount}, completedCount = ${completed.length}, failedCount = ${failed.length}`, "INFO");
     if (_.isEmpty(failed) && totalCount === totalFileCount) {

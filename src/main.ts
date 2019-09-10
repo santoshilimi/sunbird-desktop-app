@@ -167,7 +167,7 @@ function createWindow() {
         modal: true,
         show: false,
         width: 500,
-        height: 180,
+        height: 160,
         icon: windowIcon,
         resizable: false,
         movable: true,
