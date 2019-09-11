@@ -261,10 +261,10 @@ const openFileWindow = contents => {
   logger.info(`Child window visibility : ${child.isVisible()}`);
   if (!child.isVisible()) {
     child.setAlwaysOnTop(true);
-    child.show();
-    setTimeout(() => {
+    child.once('ready-to-show', () => {
+      child.show();
       child.webContents.send("content:import", contents, appBaseUrl);
-    }, 2000);
+    });
   } else {
     child.webContents.send("content:import", contents, appBaseUrl);
   }
