@@ -264,7 +264,7 @@ const openFileWindow = contents => {
     child.show();
     setTimeout(() => {
       child.webContents.send("content:import", contents, appBaseUrl);
-    }, 2000);
+    }, 4000);
   } else {
     child.webContents.send("content:import", contents, appBaseUrl);
   }
