@@ -70,7 +70,7 @@
         "express": "^4.17.0",
         "fs-extra": "^8.1.0",
         "lodash": "^4.17.11",
-        "openrap-sunbirded-plugin": "0.0.28",
+        "openrap-sunbirded-plugin": "0.0.29",
         "portscanner": "^2.2.0",
         "request": "^2.88.0",
         "uuid": "^3.3.2"
