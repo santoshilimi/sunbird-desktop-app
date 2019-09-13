@@ -32,12 +32,12 @@ body {
 }
 .sb-offline-download-manager {
     padding: 16px;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+   /* box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); */
     margin: 16px 16px 0 16px;
     background: white;
     border-radius: 0px;
     border: 0px solid #ccc;
-    border-bottom:1px solid #ccc;
+    /* border-bottom:1px solid #ccc; */
     width: auto;
     position: relative;
 }
