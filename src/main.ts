@@ -172,8 +172,6 @@ function createWindow() {
       logger.error("unable to start the app ", err);
     });
 
-
-
   // Emitted when the window is closed.
   win.on("closed", () => {
     // Dereference the window object, usually you would store windows
