@@ -161,19 +161,7 @@ function createWindow() {
       win.maximize();
       // Open the DevTools.
       // win.webContents.openDevTools();
-      child = new BrowserWindow({
-        parent: win,
-        frame: false,
-        modal: true,
-        show: false,
-        width: 500,
-        height: 160,
-        icon: windowIcon,
-        resizable: false,
-        movable: true,
-        center: true
-      });
-      child.loadFile(path.join(__dirname, "upload-window", "index.html"));
+      createChildWindow();      
       win.focus();
       checkForOpenFileInWindows();
       if (openFileContents.length > 0) {
@@ -183,6 +171,8 @@ function createWindow() {
     .catch(err => {
       logger.error("unable to start the app ", err);
     });
+
+
 
   // Emitted when the window is closed.
   win.on("closed", () => {
@@ -257,14 +247,28 @@ app.on("open-file", (e, path) => {
   }
 });
 
+const createChildWindow = () => {
+  child = new BrowserWindow({
+    parent: win,
+    frame: false,
+    modal: true,
+    show: false,
+    width: 500,
+    height: 200,
+    icon: windowIcon,
+    resizable: false,
+    movable: true,
+    center: true
+  });
+  child.loadFile(path.join(__dirname, "upload-window", "index.html"));
+};
+
 const openFileWindow = contents => {
-  logger.info(`Child window visibility : ${child.isVisible()}`);
-  if (!child.isVisible()) {
-    child.setAlwaysOnTop(true);
-    child.show();
-    setTimeout(() => {
-      child.webContents.send("content:import", contents, appBaseUrl);
-    }, 4000);
+  logger.info(`Child window isDestroyed : ${child.isDestroyed()}`);
+  if (child.isDestroyed()) { createChildWindow(); }
+  if (!child.isDestroyed() && !child.isVisible()) {
+    child.once('ready-to-show', () => { child.show(); });
+    child.on('show', () => { child.webContents.send("content:import", contents, appBaseUrl); });
   } else {
     child.webContents.send("content:import", contents, appBaseUrl);
   }
@@ -304,8 +308,7 @@ ipcMain.on("childWindow:logging", (event, data) => {
 
 ipcMain.on("content:import:completed", (event, data) => {
   openFileContents = [];
-  child.reload();
-  child.hide();
+  child.destroy();
   const currentURL = new URL(win.webContents.getURL());
   const urlPath = currentURL.pathname;
   const isContentPlayPage =

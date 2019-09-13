@@ -44,22 +44,22 @@ body {
 .sb-offline-download-manager:last-child {
     /* margin-bottom: 16px; */
 }
-.sb-offline-download-manager .close-btn {
+.close-btn {
     position: absolute;
     display: inline-block;
-    width: 12px;
-    height: 12px;
+    width: 16px;
+    height: 16px;
     overflow: hidden;
     cursor: pointer;
     background: transparent;
     border: none;
-    top: 4px;
-    right: 4px;
+    top: 12px;
+    right: 16px;
 }
-.sb-offline-download-manager .close-btn:hover::before, .sb-offline-download-manager .close-btn:hover::after {
-    background: #ff4558;
+.close-btn:hover::before, .close-btn:hover::after {
+    background: #fff;
 }
-.sb-offline-download-manager .close-btn::before, .sb-offline-download-manager .close-btn::after {
+.close-btn::before, .close-btn::after {
     content: '';
     position: absolute;
     height: 2px;
@@ -67,12 +67,12 @@ body {
     top: 50%;
     left: 0;
     margin-top: -1px;
-    background: #ff4558;
+    background: #fff;
 }
-.sb-offline-download-manager .close-btn::before {
+ .close-btn::before {
     transform: rotate(45deg);
 }
-.sb-offline-download-manager .close-btn::after {
+.close-btn::after {
     transform: rotate(-45deg);
 }
 .download-failed-container {
@@ -290,4 +290,13 @@ hr {
     100% {
         transform: rotate(360deg);
     }
+}
+.sb-header{
+    background-color: #024f9d;
+    color: #fff;
+    font-weight: 700;
+    font-size: 16.002px;
+    padding: 8px 16px;
+    line-height: 24.002px;
+    position: relative;
 }
