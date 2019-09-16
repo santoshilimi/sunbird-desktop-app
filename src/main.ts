@@ -25,6 +25,7 @@ let win: any;
 let child: any;
 let openFileContents = [];
 let appBaseUrl;
+let isFirstTimeOpened = false;
 
 const expressApp = express();
 expressApp.use(bodyParser.json());
@@ -161,11 +162,12 @@ function createWindow() {
       win.maximize();
       // Open the DevTools.
       // win.webContents.openDevTools();
-      createChildWindow();      
       win.focus();
       checkForOpenFileInWindows();
       if (openFileContents.length > 0) {
         openFileWindow(openFileContents);
+      } else {
+        isFirstTimeOpened = true;
       }
     })
     .catch(err => {
@@ -191,7 +193,7 @@ if (!gotTheLock) {
     );
     // if the OS is windows file open call will come here when app is already open
     checkForOpenFileInWindows(commandLine);
-    if (openFileContents.length > 0 && child) {
+    if (openFileContents.length > 0 && (child || isFirstTimeOpened)) {
       openFileWindow(openFileContents);
     }
     // if user open's second instance, we should focus our window
@@ -239,7 +241,7 @@ app.on("open-file", (e, path) => {
       id: uuid()
     });
     // when the app already open and we are trying to open content
-    if (child) {
+    if (child || isFirstTimeOpened) {
       openFileWindow(openFileContents);
     }
   }
@@ -262,8 +264,7 @@ const createChildWindow = () => {
 };
 
 const openFileWindow = contents => {
-  logger.info(`Child window isDestroyed : ${child.isDestroyed()}`);
-  if (child.isDestroyed()) { createChildWindow(); }
+  if (!child || child.isDestroyed()) { createChildWindow(); }
   if (!child.isDestroyed() && !child.isVisible()) {
     child.once('ready-to-show', () => { child.show(); });
     child.on('show', () => { child.webContents.send("content:import", contents, appBaseUrl); });
