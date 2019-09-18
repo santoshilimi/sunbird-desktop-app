@@ -291,7 +291,7 @@ const checkForOpenFileInWindows = (files?: string[]) => {
   }
 };
 
-ipcMain.on("childWindow:logging", (event, data) => {
+ipcMain.on("child:logging", (event, data) => {
   switch (data.logType) {
     case 'INFO':
       logger.info(data.message + data.details);

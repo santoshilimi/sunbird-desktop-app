@@ -183,7 +183,7 @@ function init() {
 }
 
 function logging(message, details, logType) {
-  ipcRenderer.send("childWindow:logging", {
+  ipcRenderer.send("child:logging", {
     message: message,
     details: details,
     logType: logType
