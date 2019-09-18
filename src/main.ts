@@ -25,6 +25,7 @@ let win: any;
 let child: any;
 let openFileContents = [];
 let appBaseUrl;
+let isAppBootstrapped = false;
 
 const expressApp = express();
 expressApp.use(bodyParser.json());
@@ -161,17 +162,8 @@ function createWindow() {
       win.maximize();
       // Open the DevTools.
       // win.webContents.openDevTools();
-      child = new BrowserWindow({
-        parent: win,
-        frame: false,
-        modal: true,
-        show: false,
-        width: 500,
-        height: 200,
-        icon: windowIcon
-      });
-      child.loadFile(path.join(__dirname, "upload-window", "index.html"));
       win.focus();
+      isAppBootstrapped = true;
       checkForOpenFileInWindows();
       if (openFileContents.length > 0) {
         openFileWindow(openFileContents);
@@ -200,7 +192,7 @@ if (!gotTheLock) {
     );
     // if the OS is windows file open call will come here when app is already open
     checkForOpenFileInWindows(commandLine);
-    if (openFileContents.length > 0 && child) {
+    if (openFileContents.length > 0 && (child || isAppBootstrapped)) {
       openFileWindow(openFileContents);
     }
     // if user open's second instance, we should focus our window
@@ -248,20 +240,33 @@ app.on("open-file", (e, path) => {
       id: uuid()
     });
     // when the app already open and we are trying to open content
-    if (child) {
+    if (child || isAppBootstrapped) {
       openFileWindow(openFileContents);
     }
   }
 });
 
+const createChildWindow = () => {
+  child = new BrowserWindow({
+    parent: win,
+    frame: false,
+    modal: true,
+    show: false,
+    width: 500,
+    height: 200,
+    icon: windowIcon,
+    resizable: false,
+    movable: true,
+    center: true
+  });
+  child.loadFile(path.join(__dirname, "upload-window", "index.html"));
+};
+
 const openFileWindow = contents => {
-  logger.info(`Child window visibility : ${child.isVisible()}`);
-  if (!child.isVisible()) {
-    child.setAlwaysOnTop(true);
-    child.show();
-    setTimeout(() => {
-      child.webContents.send("content:import", contents, appBaseUrl);
-    }, 1000);
+  if (!child || child.isDestroyed()) { createChildWindow(); }
+  if (!child.isDestroyed() && !child.isVisible()) {
+    child.once('ready-to-show', () => { child.show(); });
+    child.on('show', () => { child.webContents.send("content:import", contents, appBaseUrl); });
   } else {
     child.webContents.send("content:import", contents, appBaseUrl);
   }
@@ -285,10 +290,23 @@ const checkForOpenFileInWindows = (files?: string[]) => {
   }
 };
 
+ipcMain.on("child:logging", (event, data) => {
+  switch (data.logType) {
+    case 'INFO':
+      logger.info(data.message + data.details);
+      break;
+    case 'ERROR':
+      logger.error(data.message + data.details);
+      break;
+    case 'DEBUG':
+      logger.info(data.message + data.details);
+      break;
+  }
+});
+
 ipcMain.on("content:import:completed", (event, data) => {
   openFileContents = [];
-  child.reload();
-  child.hide();
+  child.destroy();
   const currentURL = new URL(win.webContents.getURL());
   const urlPath = currentURL.pathname;
   const isContentPlayPage =
