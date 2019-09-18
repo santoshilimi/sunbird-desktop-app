@@ -25,7 +25,7 @@ let win: any;
 let child: any;
 let openFileContents = [];
 let appBaseUrl;
-let isFirstTimeOpened = false;
+let isChildWindowOpen = false;
 
 const expressApp = express();
 expressApp.use(bodyParser.json());
@@ -167,7 +167,7 @@ function createWindow() {
       if (openFileContents.length > 0) {
         openFileWindow(openFileContents);
       } else {
-        isFirstTimeOpened = true;
+        isChildWindowOpen = true;
       }
     })
     .catch(err => {
@@ -193,7 +193,7 @@ if (!gotTheLock) {
     );
     // if the OS is windows file open call will come here when app is already open
     checkForOpenFileInWindows(commandLine);
-    if (openFileContents.length > 0 && (child || isFirstTimeOpened)) {
+    if (openFileContents.length > 0 && (child || isChildWindowOpen)) {
       openFileWindow(openFileContents);
     }
     // if user open's second instance, we should focus our window
@@ -241,7 +241,7 @@ app.on("open-file", (e, path) => {
       id: uuid()
     });
     // when the app already open and we are trying to open content
-    if (child || isFirstTimeOpened) {
+    if (child || isChildWindowOpen) {
       openFileWindow(openFileContents);
     }
   }
