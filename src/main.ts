@@ -25,7 +25,7 @@ let win: any;
 let child: any;
 let openFileContents = [];
 let appBaseUrl;
-let isChildWindowOpen = false;
+let isAppBootstrapped = false;
 
 const expressApp = express();
 expressApp.use(bodyParser.json());
@@ -163,11 +163,10 @@ function createWindow() {
       // Open the DevTools.
       // win.webContents.openDevTools();
       win.focus();
+      isAppBootstrapped = true;
       checkForOpenFileInWindows();
       if (openFileContents.length > 0) {
         openFileWindow(openFileContents);
-      } else {
-        isChildWindowOpen = true;
       }
     })
     .catch(err => {
@@ -193,7 +192,7 @@ if (!gotTheLock) {
     );
     // if the OS is windows file open call will come here when app is already open
     checkForOpenFileInWindows(commandLine);
-    if (openFileContents.length > 0 && (child || isChildWindowOpen)) {
+    if (openFileContents.length > 0 && (child || isAppBootstrapped)) {
       openFileWindow(openFileContents);
     }
     // if user open's second instance, we should focus our window
@@ -241,7 +240,7 @@ app.on("open-file", (e, path) => {
       id: uuid()
     });
     // when the app already open and we are trying to open content
-    if (child || isChildWindowOpen) {
+    if (child || isAppBootstrapped) {
       openFileWindow(openFileContents);
     }
   }
