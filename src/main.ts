@@ -18,7 +18,6 @@ const envs = JSON.parse(
   fs.readFileSync(path.join(__dirname, "env.json"), { encoding: "utf-8" })
 );
 const windowIcon = path.join(__dirname, "build", "icons", "png", "512x512.png");
-
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let win: any;
@@ -29,7 +28,25 @@ let isAppBootstrapped = false;
 
 const expressApp = express();
 expressApp.use(bodyParser.json());
-
+///////////// import v2////////////////
+expressApp.use('/import/content', (req, res) => {
+  importContent();
+  res.send('SUCCUSS');
+});
+const importContent = () => {
+  const path = dialog.showOpenDialog({ 
+    properties: ['openFile', 'openDirectory', 'multiSelections'], 
+    filters: [{ name: 'Custom File Type', extensions: ['ecar'] }] 
+  });
+  if(path){
+    const ecarPaths = path.map(ecarPath => ({ 
+      filePath: ecarPath,
+      id: uuid()}
+    ))
+    openFileWindow(ecarPaths);
+  }
+}
+//////////////////////////////////////
 const getFilesPath = () => {
   if (_.startsWith(_.toLower(envs.APP_ID), "local")) {
     return __dirname;
