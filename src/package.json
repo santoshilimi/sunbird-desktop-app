@@ -70,6 +70,7 @@
         "express": "^4.17.0",
         "fs-extra": "^8.1.0",
         "lodash": "^4.17.11",
+        "node-stream-zip": "^1.8.2",
         "openrap-sunbirded-plugin": "0.0.30",
         "portscanner": "^2.2.0",
         "request": "^2.88.0",

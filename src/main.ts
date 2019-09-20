@@ -28,24 +28,80 @@ let isAppBootstrapped = false;
 
 const expressApp = express();
 expressApp.use(bodyParser.json());
-///////////// import v2////////////////
+///////////// import v2 loading from path////////////////
 expressApp.use('/import/content', (req, res) => {
   importContent();
   res.send('SUCCUSS');
 });
 const importContent = () => {
   const path = dialog.showOpenDialog({ 
-    properties: ['openFile', 'openDirectory', 'multiSelections'], 
+    properties: ['openFile', 'multiSelections'], 
     filters: [{ name: 'Custom File Type', extensions: ['ecar'] }] 
   });
   if(path){
-    const ecarPaths = path.map(ecarPath => ({ 
+    const ecarPaths = path.map(ecarPath => ({
       filePath: ecarPath,
-      id: uuid()}
-    ))
+      id: uuid()
+    }))
     openFileWindow(ecarPaths);
   }
 }
+const StreamZip = require('node-stream-zip');
+const source = "./source/10 ಗಣಿತ ಭಾಗ 1.ecar";
+const dest = "./dist";
+
+const loadZip = async (path) => {
+  const zip = new StreamZip({ file: path, storeEntries: true });
+  return new Promise((resolve, reject) => {
+    zip.on('ready', () => {
+      resolve(zip)
+    });
+    zip.on('error', reject);
+  })
+}
+
+const extractAllFiles = async (zipHandler, dest) => {
+  return new Promise((resolve, reject) => {
+    zipHandler.extract(null, dest, (err, count) => {
+      if(err){
+        return reject(err)
+      }
+      return  resolve()
+    });
+  })
+}
+const checkContentState = async (manifest) => {
+  // hit db to check ver
+  // compare db ver and manifest ver
+  return Promise.resolve("IMPORT");
+}
+const processEcar = async (manifest) => {
+  // read each content in dest
+  // insert each content to db
+  return Promise.resolve("ECAR_PROCESSED");
+}
+const importEcar = async ({source, dest}) => {
+  try {
+    const zipHandler = await loadZip(source);
+    const manifest = JSON.parse(zipHandler.entryDataSync('manifest.json').toString());
+    const importContentState = await checkContentState(manifest).catch(err => "IMPORT");
+    console.log('ecar needs to be:', importContentState);
+    if(importContentState === 'IMPORT'){
+      await extractAllFiles(zipHandler, dest)
+      console.log('extracted all file to folder:', dest);
+      await processEcar(dest);
+      console.log('processing ecar content', dest);
+    } else {
+      // nothing to do
+    }
+    zipHandler.close();
+  } catch (err) {
+    console.log(err);
+    console.log('error while importing ecar');
+  }
+}
+// importEcar({ source, dest });
+
 //////////////////////////////////////
 const getFilesPath = () => {
   if (_.startsWith(_.toLower(envs.APP_ID), "local")) {
