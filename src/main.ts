@@ -331,6 +331,9 @@ ipcMain.on("content:import:completed", (event, data) => {
     _.startsWith(urlPath, "/play") || _.startsWith(urlPath, "/browse/play");
   if (data.totalFileCount === 1 && data.completed.length === 1) {
     let url = constructRedirectUrl(data.completed[0].content);
+    if(!url){
+      return;
+    }
     if (isContentPlayPage) {
       const options = {
         type: "question",
@@ -356,6 +359,9 @@ ipcMain.on("content:import:completed", (event, data) => {
 });
 
 const constructRedirectUrl = content => {
+  if(!content || !content.identifier){
+    return;
+  }
   if (content.mimeType === "application/vnd.ekstep.content-collection") {
     return `${appBaseUrl}/play/collection/${content.identifier}/?contentType=${
       content.contentType
