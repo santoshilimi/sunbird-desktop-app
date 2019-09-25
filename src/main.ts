@@ -29,7 +29,7 @@ let isAppBootstrapped = false;
 const expressApp = express();
 expressApp.use(bodyParser.json());
 
-expressApp.use('/dialog/import/content', (req, res) => {
+expressApp.use('/dialog/content/import', (req, res) => {
   res.send({ message: 'SUCCUSS', responseCode: 'OK'});
   importContent();
 });
