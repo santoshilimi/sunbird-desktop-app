@@ -30,7 +30,7 @@ const expressApp = express();
 expressApp.use(bodyParser.json());
 
 expressApp.use('/dialog/import/content', (req, res) => {
-  res.send('SUCCUSS');
+  res.send({ message: 'SUCCUSS', responseCode: 'OK'});
   importContent();
 });
 
