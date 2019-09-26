@@ -16,7 +16,6 @@ const { URL } = require("url");
 const uuid = require("uuid/v4");
 let envs = {};
 const windowIcon = path.join(__dirname, "build", "icons", "png", "512x512.png");
-
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let win: any;
@@ -27,6 +26,25 @@ let isAppBootstrapped = false;
 
 const expressApp = express();
 expressApp.use(bodyParser.json());
+
+expressApp.use('/dialog/content/import', (req, res) => {
+  res.send({ message: 'SUCCUSS', responseCode: 'OK'});
+  importContent();
+});
+
+const importContent = () => {
+  const path = dialog.showOpenDialog({ 
+    properties: ['openFile', 'multiSelections'], 
+    filters: [{ name: 'Custom File Type', extensions: ['ecar'] }] 
+  });
+  if(path){
+    const ecarPaths = path.map(ecarPath => ({
+      filePath: ecarPath,
+      id: uuid()
+    }))
+    openFileWindow(ecarPaths);
+  }
+}
 
 const getFilesPath = () => {
   if (_.startsWith(_.toLower(envs["APP_ID"]), "local")) {
@@ -323,6 +341,9 @@ ipcMain.on("content:import:completed", (event, data) => {
     _.startsWith(urlPath, "/play") || _.startsWith(urlPath, "/browse/play");
   if (data.totalFileCount === 1 && data.completed.length === 1) {
     let url = constructRedirectUrl(data.completed[0].content);
+    if(!url){
+      return;
+    }
     if (isContentPlayPage) {
       const options = {
         type: "question",
@@ -348,6 +369,9 @@ ipcMain.on("content:import:completed", (event, data) => {
 });
 
 const constructRedirectUrl = content => {
+  if(!content || !content.identifier){
+    return;
+  }
   if (content.mimeType === "application/vnd.ekstep.content-collection") {
     return `${appBaseUrl}/play/collection/${content.identifier}/?contentType=${content.contentType}`;
   } else {
