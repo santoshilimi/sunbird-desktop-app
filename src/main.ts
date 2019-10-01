@@ -14,11 +14,8 @@ import * as bodyParser from "body-parser";
 import * as os from "os";
 const { URL } = require("url");
 const uuid = require("uuid/v4");
-const envs = JSON.parse(
-  fs.readFileSync(path.join(__dirname, "env.json"), { encoding: "utf-8" })
-);
+let envs = {};
 const windowIcon = path.join(__dirname, "build", "icons", "png", "512x512.png");
-
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let win: any;
@@ -30,16 +27,38 @@ let isAppBootstrapped = false;
 const expressApp = express();
 expressApp.use(bodyParser.json());
 
+expressApp.use('/dialog/content/import', (req, res) => {
+  res.send({ message: 'SUCCUSS', responseCode: 'OK'});
+  importContent();
+});
+
+const importContent = () => {
+  const path = dialog.showOpenDialog({ 
+    properties: ['openFile', 'multiSelections'], 
+    filters: [{ name: 'Custom File Type', extensions: ['ecar'] }] 
+  });
+  if(path){
+    const ecarPaths = path.map(ecarPath => ({
+      filePath: ecarPath,
+      id: uuid()
+    }))
+    openFileWindow(ecarPaths);
+  }
+}
+
 const getFilesPath = () => {
-  if (_.startsWith(_.toLower(envs.APP_ID), "local")) {
+  if (_.startsWith(_.toLower(envs["APP_ID"]), "local")) {
     return __dirname;
   } else {
-    return path.join(app.getPath("userData"), "." + envs.APP_NAME);
+    return path.join(app.getPath("userData"), "." + envs["APP_NAME"]);
   }
 };
 
 // set the env
 const initializeEnv = () => {
+  envs = JSON.parse(
+    fs.readFileSync(path.join(__dirname, "env.json"), { encoding: "utf-8" })
+  );
   _.forEach(envs, (value, key) => {
     process.env[key] = value;
   });
@@ -52,7 +71,7 @@ const initializeEnv = () => {
 };
 
 const copyPluginsMetaData = async () => {
-  if (!_.startsWith(_.toLower(envs.APP_ID), "local")) {
+  if (!_.startsWith(_.toLower(envs["APP_ID"]), "local")) {
     for (const plugin of frameworkConfig.plugins) {
       await fse.copy(
         path.join(__dirname, plugin.id),
@@ -263,10 +282,16 @@ const createChildWindow = () => {
 };
 
 const openFileWindow = contents => {
-  if (!child || child.isDestroyed()) { createChildWindow(); }
+  if (!child || child.isDestroyed()) {
+    createChildWindow();
+  }
   if (!child.isDestroyed() && !child.isVisible()) {
-    child.once('ready-to-show', () => { child.show(); });
-    child.on('show', () => { child.webContents.send("content:import", contents, appBaseUrl); });
+    child.once("ready-to-show", () => {
+      child.show();
+    });
+    child.on("show", () => {
+      child.webContents.send("content:import", contents, appBaseUrl);
+    });
   } else {
     child.webContents.send("content:import", contents, appBaseUrl);
   }
@@ -275,7 +300,10 @@ const openFileWindow = contents => {
 // to handle ecar file open in windows
 const checkForOpenFileInWindows = (files?: string[]) => {
   let contents = files || process.argv;
-  if ((os.platform() === "win32" || os.platform() === "linux") && !_.isEmpty(contents)) {
+  if (
+    (os.platform() === "win32" || os.platform() === "linux") &&
+    !_.isEmpty(contents)
+  ) {
     _.forEach(contents, file => {
       if (_.endsWith(_.toLower(file), ".ecar")) {
         openFileContents.push({
@@ -292,13 +320,13 @@ const checkForOpenFileInWindows = (files?: string[]) => {
 
 ipcMain.on("child:logging", (event, data) => {
   switch (data.logType) {
-    case 'INFO':
+    case "INFO":
       logger.info(data.message + data.details);
       break;
-    case 'ERROR':
+    case "ERROR":
       logger.error(data.message + data.details);
       break;
-    case 'DEBUG':
+    case "DEBUG":
       logger.info(data.message + data.details);
       break;
   }
@@ -313,6 +341,9 @@ ipcMain.on("content:import:completed", (event, data) => {
     _.startsWith(urlPath, "/play") || _.startsWith(urlPath, "/browse/play");
   if (data.totalFileCount === 1 && data.completed.length === 1) {
     let url = constructRedirectUrl(data.completed[0].content);
+    if(!url){
+      return;
+    }
     if (isContentPlayPage) {
       const options = {
         type: "question",
@@ -338,13 +369,12 @@ ipcMain.on("content:import:completed", (event, data) => {
 });
 
 const constructRedirectUrl = content => {
+  if(!content || !content.identifier){
+    return;
+  }
   if (content.mimeType === "application/vnd.ekstep.content-collection") {
-    return `${appBaseUrl}/play/collection/${content.identifier}/?contentType=${
-      content.contentType
-    }`;
+    return `${appBaseUrl}/play/collection/${content.identifier}/?contentType=${content.contentType}`;
   } else {
-    return `${appBaseUrl}/play/content/${content.identifier}/?contentType=${
-      content.contentType
-    }`;
+    return `${appBaseUrl}/play/content/${content.identifier}/?contentType=${content.contentType}`;
   }
 };
