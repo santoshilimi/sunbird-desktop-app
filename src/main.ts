@@ -156,49 +156,54 @@ function createWindow() {
     alwaysOnTop: true,
     icon: windowIcon
   });
+
+
+  splash.once('show', () => {
+      // Create the main window.
+      win = new BrowserWindow({
+        titleBarStyle: "hidden",
+        show: false,
+        minWidth: 700,
+        minHeight: 500,
+        webPreferences: {
+          nodeIntegration: false
+        },
+        icon: windowIcon
+      });
+
+      win.webContents.once('dom-ready', () => {
+        splash.destroy();
+        win.show();
+        win.maximize();
+        });
+
+        // create admin for the database
+        bootstrapDependencies()
+        .then(() => {
+            appBaseUrl = `http://localhost:${process.env.APPLICATION_PORT}`;
+            win.loadURL(appBaseUrl);
+            win.focus();
+            // Open the DevTools.
+            // win.webContents.openDevTools();
+            isAppBootstrapped = true;
+            checkForOpenFileInWindows();
+            if (openFileContents.length > 0) {
+              openFileWindow(openFileContents);
+            }
+        })
+        .catch(err => {
+          logger.error("unable to start the app ", err);
+        });
+          // Emitted when the window is closed.
+          win.on("closed", () => {
+            // Dereference the window object, usually you would store windows
+            // in an array if your app supports multi windows, this is the time
+            // when you should delete the corresponding element.
+            win = null;
+          });
+  });
   splash.loadFile(path.join(__dirname, "loading", "index.html"));
-
-  // Create the main window.
-  win = new BrowserWindow({
-    titleBarStyle: "hidden",
-    show: false,
-    minWidth: 700,
-    minHeight: 500,
-    webPreferences: {
-      nodeIntegration: false
-    },
-    icon: windowIcon
-  });
-
-  // create admin for the database
-
-  bootstrapDependencies()
-    .then(() => {
-      splash.destroy();
-      appBaseUrl = `http://localhost:${process.env.APPLICATION_PORT}`;
-      win.loadURL(appBaseUrl);
-      win.show();
-      win.maximize();
-      // Open the DevTools.
-      // win.webContents.openDevTools();
-      win.focus();
-      isAppBootstrapped = true;
-      checkForOpenFileInWindows();
-      if (openFileContents.length > 0) {
-        openFileWindow(openFileContents);
-      }
-    })
-    .catch(err => {
-      logger.error("unable to start the app ", err);
-    });
-
-  // Emitted when the window is closed.
-  win.on("closed", () => {
-    // Dereference the window object, usually you would store windows
-    // in an array if your app supports multi windows, this is the time
-    // when you should delete the corresponding element.
-    win = null;
-  });
+  splash.show();
 }
 
 let gotTheLock = app.requestSingleInstanceLock();
