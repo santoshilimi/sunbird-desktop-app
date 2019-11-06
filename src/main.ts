@@ -13,7 +13,7 @@ import portscanner from "portscanner";
 import * as bodyParser from "body-parser";
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
-const request = require("request");
+import { HTTPService } from "@project-sunbird/ext-framework-server/services";
 import * as os from "os";
 const { URL } = require("url");
 const uuid = require("uuid/v4");
@@ -285,23 +285,10 @@ app.on("open-file", (e, path) => {
   }
 });
 
-const makeImportApiCall = (contents: Array<string>) => {
-  const options = {
-    method: 'POST',
-    url: appBaseUrl + '/api/content/v1/import',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: contents,
-    json: true
-  }
-  request(options, function(error, response, body) {
-    if(error){
-      console.log('error', error);
-    } else {
-      console.log('succ', error);
-    }
-  })
+const makeImportApiCall = async (contents: Array<string>) => {
+  await HTTPService.post(`${appBaseUrl}/api/content/v1/import`, contents).toPromise()
+  .then(data => logger.info('Content import started successfully', contents))
+  .catch(error => logger.error('Content import failed with', error, 'for contents', contents));
 };
 
 // to handle ecar file open in windows
