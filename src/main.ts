@@ -11,9 +11,11 @@ import { frameworkConfig } from "./framework.config";
 import express from "express";
 import portscanner from "portscanner";
 import * as bodyParser from "body-parser";
+import { Subject } from "rxjs";
+import { debounceTime } from "rxjs/operators";
+import { HTTPService } from "@project-sunbird/ext-framework-server/services";
 import * as os from "os";
-const { URL } = require("url");
-const uuid = require("uuid/v4");
+const startTime = Date.now();
 let envs = {};
 const windowIcon = path.join(__dirname, "build", "icons", "png", "512x512.png");
 // Keep a global reference of the window object, if you don't, the window will
@@ -26,32 +28,53 @@ let isAppBootstrapped = false;
 
 const expressApp = express();
 expressApp.use(bodyParser.json());
+let fileSDK = containerAPI.getFileSDKInstance("");
 
-expressApp.use('/dialog/content/import', (req, res) => {
-  res.send({ message: 'SUCCUSS', responseCode: 'OK'});
+const reloadUIOnFileChange = () => {
+  const subject = new Subject<any>();
+  subject.pipe(debounceTime(2500)).subscribe(data => {
+    let currentURL = win.webContents.getURL();
+    console.log(
+      "portal file changed- reloading screen with current url",
+      currentURL
+    );
+    fs.rename(
+      path.join("public", "portal", "index.html"),
+      path.join("public", "portal", "index.ejs"),
+      err => {
+        if (err) console.log("ERROR: " + err);
+        win.reload();
+      }
+    );
+  });
+  fileSDK
+    .watch([path.join("public", "portal")])
+    .on("add", path => subject.next(path))
+    .on("change", path => subject.next(path))
+    .on("unlink", path => subject.next(path));
+};
+if (!app.isPackaged) {
+  reloadUIOnFileChange();
+}
+expressApp.use("/dialog/content/import", (req, res) => {
+  res.send({ message: "SUCCESS", responseCode: "OK" });
   importContent();
 });
 
 const importContent = () => {
-  const path = dialog.showOpenDialog({ 
-    properties: ['openFile', 'multiSelections'], 
-    filters: [{ name: 'Custom File Type', extensions: ['ecar'] }] 
+  const path = dialog.showOpenDialog({
+    properties: ["openFile", "multiSelections"],
+    filters: [{ name: "Custom File Type", extensions: ["ecar"] }]
   });
-  if(path){
-    const ecarPaths = path.map(ecarPath => ({
-      filePath: ecarPath,
-      id: uuid()
-    }))
-    openFileWindow(ecarPaths);
+  if (path) {
+    makeImportApiCall(path);
   }
-}
+};
 
 const getFilesPath = () => {
-  if (_.startsWith(_.toLower(envs["APP_ID"]), "local")) {
-    return __dirname;
-  } else {
-    return path.join(app.getPath("userData"), "." + envs["APP_NAME"]);
-  }
+  return app.isPackaged
+    ? path.join(app.getPath("userData"), "." + envs["APP_NAME"])
+    : __dirname;
 };
 
 // set the env
@@ -59,24 +82,47 @@ const initializeEnv = () => {
   envs = JSON.parse(
     fs.readFileSync(path.join(__dirname, "env.json"), { encoding: "utf-8" })
   );
+  let rootOrgObj = JSON.parse(
+    fs.readFileSync(
+      path.join(
+        __dirname,
+        frameworkConfig.plugins[0].id,
+        "data",
+        "organizations",
+        `${envs["CHANNEL"]}.json`
+      ),
+      { encoding: "utf-8" }
+    )
+  );
+  process.env.ROOT_ORG_ID =
+    _.get(rootOrgObj, "result.response.content[0].rootOrgId") ||
+    _.get(rootOrgObj, "result.response.content[0].hashTagId");
+  process.env.ROOT_ORG_HASH_TAG_ID = _.get(
+    rootOrgObj,
+    "result.response.content[0].hashTagId"
+  );
+  process.env.TELEMETRY_VALIDATION = app.isPackaged ? "false" : "true";
+  process.env.APP_VERSION = app.getVersion();
+
   _.forEach(envs, (value, key) => {
     process.env[key] = value;
   });
   process.env.DATABASE_PATH = path.join(getFilesPath(), "database");
   process.env.FILES_PATH = getFilesPath();
-  console.log(`FILES_PATH for the app is ${process.env.FILES_PATH}`);
   if (!fs.existsSync(process.env.DATABASE_PATH)) {
     fse.ensureDirSync(process.env.DATABASE_PATH);
   }
 };
 
 const copyPluginsMetaData = async () => {
-  if (!_.startsWith(_.toLower(envs["APP_ID"]), "local")) {
+  if (app.isPackaged) {
     for (const plugin of frameworkConfig.plugins) {
-      await fse.copy(
-        path.join(__dirname, plugin.id),
-        path.join(getFilesPath(), plugin.id)
-      );
+      if (!fs.existsSync(path.join(getFilesPath(), plugin.id))) {
+        await fse.copy(
+          path.join(__dirname, plugin.id),
+          path.join(getFilesPath(), plugin.id)
+        );
+      }
     }
   }
 };
@@ -101,6 +147,7 @@ const framework = async () => {
         resolve();
       })
       .catch((error: any) => {
+        console.error(error);
         resolve();
       });
   });
@@ -133,7 +180,6 @@ const checkPluginsInitialized = () => {
 };
 // start loading all the dependencies
 const bootstrapDependencies = async () => {
-  initializeEnv();
   await copyPluginsMetaData();
   await setAvailablePort();
   await framework();
@@ -147,6 +193,8 @@ const bootstrapDependencies = async () => {
 };
 
 function createWindow() {
+  //initialize the environment variables
+  initializeEnv();
   //splash screen
   let splash = new BrowserWindow({
     width: 300,
@@ -156,49 +204,69 @@ function createWindow() {
     alwaysOnTop: true,
     icon: windowIcon
   });
-  splash.loadFile(path.join(__dirname, "loading", "index.html"));
 
-  // Create the main window.
-  win = new BrowserWindow({
-    titleBarStyle: "hidden",
-    show: false,
-    minWidth: 700,
-    minHeight: 500,
-    webPreferences: {
-      nodeIntegration: false
-    },
-    icon: windowIcon
-  });
-
-  // create admin for the database
-
-  bootstrapDependencies()
-    .then(() => {
-      splash.destroy();
-      appBaseUrl = `http://localhost:${process.env.APPLICATION_PORT}`;
-      win.loadURL(appBaseUrl);
-      win.show();
-      win.maximize();
-      // Open the DevTools.
-      // win.webContents.openDevTools();
-      win.focus();
-      isAppBootstrapped = true;
-      checkForOpenFileInWindows();
-      if (openFileContents.length > 0) {
-        openFileWindow(openFileContents);
+  splash.once("show", () => {
+    let telemetryInstance = containerAPI
+      .getTelemetrySDKInstance()
+      .getInstance();
+    telemetryInstance.impression({
+      context: {
+        env: "home"
+      },
+      edata: {
+        type: "view",
+        pageid: "splash",
+        uri: "loading/index.html",
+        duration: (Date.now() - startTime) / 1000
       }
-    })
-    .catch(err => {
-      logger.error("unable to start the app ", err);
     });
 
-  // Emitted when the window is closed.
-  win.on("closed", () => {
-    // Dereference the window object, usually you would store windows
-    // in an array if your app supports multi windows, this is the time
-    // when you should delete the corresponding element.
-    win = null;
+    // Create the main window.
+    win = new BrowserWindow({
+      titleBarStyle: "hidden",
+      show: false,
+      minWidth: 700,
+      minHeight: 500,
+      webPreferences: {
+        nodeIntegration: false
+      },
+      icon: windowIcon
+    });
+
+    win.webContents.once("dom-ready", () => {
+      splash.destroy();
+      win.show();
+      win.maximize();
+    });
+
+    // create admin for the database
+    bootstrapDependencies()
+      .then(() => {
+        appBaseUrl = `http://localhost:${process.env.APPLICATION_PORT}`;
+        win.loadURL(appBaseUrl);
+        win.focus();
+        // Open the DevTools.
+        // win.webContents.openDevTools();
+
+        isAppBootstrapped = true;
+        checkForOpenFileInWindows();
+        if (openFileContents.length > 0) {
+          makeImportApiCall(openFileContents);
+        }
+      })
+      .catch(err => {
+        logger.error("unable to start the app ", err);
+      });
+    // Emitted when the window is closed.
+    win.on("closed", () => {
+      // Dereference the window object, usually you would store windows
+      // in an array if your app supports multi windows, this is the time
+      // when you should delete the corresponding element.
+      win = null;
+    });
   });
+  splash.loadFile(path.join(__dirname, "loading", "index.html"));
+  splash.show();
 }
 
 let gotTheLock = app.requestSingleInstanceLock();
@@ -212,7 +280,7 @@ if (!gotTheLock) {
     // if the OS is windows file open call will come here when app is already open
     checkForOpenFileInWindows(commandLine);
     if (openFileContents.length > 0 && (child || isAppBootstrapped)) {
-      openFileWindow(openFileContents);
+      makeImportApiCall(openFileContents);
     }
     // if user open's second instance, we should focus our window
     if (win) {
@@ -254,47 +322,26 @@ app.on("open-file", (e, path) => {
     //open child window if not opened
 
     //send the message to import the file
-    openFileContents.push({
-      filePath: path,
-      id: uuid()
-    });
+    openFileContents.push(path);
     // when the app already open and we are trying to open content
     if (child || isAppBootstrapped) {
-      openFileWindow(openFileContents);
+      makeImportApiCall(openFileContents);
     }
   }
 });
 
-const createChildWindow = () => {
-  child = new BrowserWindow({
-    parent: win,
-    frame: false,
-    modal: true,
-    show: false,
-    width: 500,
-    height: 200,
-    icon: windowIcon,
-    resizable: false,
-    movable: true,
-    center: true
-  });
-  child.loadFile(path.join(__dirname, "upload-window", "index.html"));
-};
-
-const openFileWindow = contents => {
-  if (!child || child.isDestroyed()) {
-    createChildWindow();
-  }
-  if (!child.isDestroyed() && !child.isVisible()) {
-    child.once("ready-to-show", () => {
-      child.show();
-    });
-    child.on("show", () => {
-      child.webContents.send("content:import", contents, appBaseUrl);
-    });
-  } else {
-    child.webContents.send("content:import", contents, appBaseUrl);
-  }
+const makeImportApiCall = async (contents: Array<string>) => {
+  await HTTPService.post(`${appBaseUrl}/api/content/v1/import`, contents)
+    .toPromise()
+    .then(data => logger.info("Content import started successfully", contents))
+    .catch(error =>
+      logger.error(
+        "Content import failed with",
+        error,
+        "for contents",
+        contents
+      )
+    );
 };
 
 // to handle ecar file open in windows
@@ -306,75 +353,11 @@ const checkForOpenFileInWindows = (files?: string[]) => {
   ) {
     _.forEach(contents, file => {
       if (_.endsWith(_.toLower(file), ".ecar")) {
-        openFileContents.push({
-          filePath: file,
-          id: uuid()
-        });
+        openFileContents.push(file);
       }
     });
     logger.info(
       `Got request to open the  ecars : ${JSON.stringify(openFileContents)}`
     );
-  }
-};
-
-ipcMain.on("child:logging", (event, data) => {
-  switch (data.logType) {
-    case "INFO":
-      logger.info(data.message + data.details);
-      break;
-    case "ERROR":
-      logger.error(data.message + data.details);
-      break;
-    case "DEBUG":
-      logger.info(data.message + data.details);
-      break;
-  }
-});
-
-ipcMain.on("content:import:completed", (event, data) => {
-  openFileContents = [];
-  child.destroy();
-  const currentURL = new URL(win.webContents.getURL());
-  const urlPath = currentURL.pathname;
-  const isContentPlayPage =
-    _.startsWith(urlPath, "/play") || _.startsWith(urlPath, "/browse/play");
-  if (data.totalFileCount === 1 && data.completed.length === 1) {
-    let url = constructRedirectUrl(data.completed[0].content);
-    if(!url){
-      return;
-    }
-    if (isContentPlayPage) {
-      const options = {
-        type: "question",
-        buttons: ["Play", "Cancel"],
-        defaultId: 1,
-        title: "Question",
-        message:
-          "You are already playing a content. Do you want to play this content ?"
-      };
-      dialog.showMessageBox(null, options, response => {
-        if (response === 0) {
-          win.loadURL(url);
-        }
-      });
-    } else {
-      win.loadURL(url);
-    }
-    return false;
-  }
-  if (!isContentPlayPage) {
-    win.reload();
-  }
-});
-
-const constructRedirectUrl = content => {
-  if(!content || !content.identifier){
-    return;
-  }
-  if (content.mimeType === "application/vnd.ekstep.content-collection") {
-    return `${appBaseUrl}/play/collection/${content.identifier}/?contentType=${content.contentType}`;
-  } else {
-    return `${appBaseUrl}/play/content/${content.identifier}/?contentType=${content.contentType}`;
   }
 };
