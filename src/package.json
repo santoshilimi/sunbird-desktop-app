@@ -1,7 +1,7 @@
 {
-    "name": "desktop-app",
+    "name": "sunbird",
     "version": "1.0.0",
-    "description": "",
+    "description": "sunbird desktop app",
     "main": "main.js",
     "scripts": {
         "build": "tsc",
