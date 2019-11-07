@@ -234,6 +234,15 @@ function createWindow() {
     });
 
     win.webContents.once("dom-ready", () => {
+      telemetryInstance.start({
+        context: {
+          env: "home"
+        },
+        edata: {
+          type: "app",
+          duration: (Date.now() - startTime) / 1000
+        }
+      });
       splash.destroy();
       win.show();
       win.maximize();
