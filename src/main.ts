@@ -38,7 +38,7 @@ const reloadUiOnFileChange = () => {
     console.log('portal file changed- reloading screen with current url', currentURL);
     fs.rename(path.join('public', 'portal','index.html'), path.join('public', 'portal','index.ejs'), (err) => {
       if ( err ) console.log('ERROR: ' + err);
-        win.loadURL('http://localhost:9000/' || currentURL);
+        win.loadURL(currentURL || 'http://localhost:9000/');
     });
   });
   fileSDK.watch([path.join('public', 'portal')])
@@ -50,18 +50,35 @@ if (!app.isPackaged) {
   reloadUiOnFileChange();
 }
 expressApp.use('/dialog/content/import', (req, res) => {
-  res.send({ message: 'SUCCUSS', responseCode: 'OK'});
-  importContent();
+  const filePaths = importContent();
+  res.send({ message: 'SUCCUSS', responseCode: 'OK', filePaths});
+});
+expressApp.use('/dialog/content/export', (req, res) => {
+  let destFolder = exportContent();
+  if(destFolder && destFolder[0]){
+    res.send({ message: 'SUCCUSS', responseCode: 'OK', destFolder: destFolder[0]});
+  } else {
+    res.status(400).send({ message: 'Ecar dest folder not selected', responseCode: 'NO_DEST_FOLDER'});
+  }
 });
 
+const exportContent = () => {
+  const destFolder = dialog.showOpenDialog({
+    properties: ['openDirectory', 'createDirectory'], 
+    filters: [{ name: 'Custom File Type', extensions: ['ecar'] }] 
+  });
+  return destFolder;
+}
+
 const importContent = () => {
-  const path = dialog.showOpenDialog({ 
+  const filePaths = dialog.showOpenDialog({ 
     properties: ['openFile', 'multiSelections'], 
     filters: [{ name: 'Custom File Type', extensions: ['ecar'] }] 
   });
   if(path){
-    makeImportApiCall(path);
+    makeImportApiCall(filePaths);
   }
+  return filePaths;
 }
 
 const getFilesPath = () => {
@@ -202,7 +219,9 @@ function createWindow() {
             win.loadURL(appBaseUrl);
             win.focus();
             // Open the DevTools.
-            // win.webContents.openDevTools();
+            if (!app.isPackaged) {
+              win.webContents.openDevTools();       
+            }
             isAppBootstrapped = true;
             checkForOpenFileInWindows();
             if (openFileContents.length > 0) {
