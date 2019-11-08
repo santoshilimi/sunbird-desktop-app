@@ -58,7 +58,7 @@ if (!app.isPackaged) {
 }
 expressApp.use("/dialog/content/import", (req, res) => {
   const filePaths = importContent();
-  res.send({ message: 'SUCCUSS', responseCode: 'OK', filePaths});
+  res.send({ message: 'SUCCESS', responseCode: 'OK', filePaths});
 });
 
 const importContent = () => {
@@ -75,7 +75,7 @@ const importContent = () => {
 expressApp.use('/dialog/content/export', (req, res) => {
   let destFolder = exportContent();
   if(destFolder && destFolder[0]){
-    res.send({ message: 'SUCCUSS', responseCode: 'OK', destFolder: destFolder[0]});
+    res.send({ message: 'SUCCESS', responseCode: 'OK', destFolder: destFolder[0]});
   } else {
     res.status(400).send({ message: 'Ecar dest folder not selected', responseCode: 'NO_DEST_FOLDER'});
   }
