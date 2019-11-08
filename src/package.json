@@ -1,13 +1,14 @@
 {
-    "name": "desktop-app",
+    "name": "sunbird",
     "version": "1.0.0",
-    "description": "",
+    "description": "sunbird desktop app",
     "main": "main.js",
     "scripts": {
         "build": "tsc",
         "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "electron main.js",
+        "start": "electron .",
         "dev": "npm run build && npm run start",
+        "debug": "npm run build && electron . --inspect",
         "dist": "gulp  dist",
         "dist-win64": "npm run build-icons && electron-builder -w --x64",
         "dist-win32": "npm run build-icons && electron-builder -w --ia32",
@@ -18,7 +19,7 @@
         "publish-mac": "npm run build-icons && electron-builder -m --x64 -p always",
         "publish-linux": "npm run build-icons && electron-builder -l --x64 -p always",
         "public": "gulp",
-        "postinstall": "cd node_modules/OpenRAP && npm run build && electron-builder install-app-deps",
+        "postinstall": "electron-builder install-app-deps",
         "build-icons": "electron-icon-maker --input=logo.png --output=./build"
     },
     "build": {
@@ -70,11 +71,11 @@
         "express": "^4.17.0",
         "fs-extra": "^8.1.0",
         "lodash": "^4.17.11",
-        "openrap-sunbirded-plugin": "0.0.32",
+        "openrap-sunbirded-plugin": "0.0.36",
         "portscanner": "^2.2.0",
         "request": "^2.88.0",
-        "uuid": "^3.3.2",
-        "rxjs": "^6.2.1"
+        "rxjs": "^6.2.1",
+        "uuid": "^3.3.2"
     },
     "devDependencies": {
         "@types/lodash": "^4.14.123",

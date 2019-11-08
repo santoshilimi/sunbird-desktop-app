@@ -6,7 +6,11 @@ const NodeGit = require("nodegit");
 const path = require("path");
 
 gulp.task("download:portal", cb => {
-  download("Sunbird-Ed/SunbirdEd-portal#release-2.3.0", "temp/portal", cb);
+  download(
+    "Sunbird-Ed/SunbirdEd-portal#desktop-app-refactoring",
+    "temp/portal",
+    cb
+  );
 });
 
 gulp.task("client:install", cb => {
@@ -137,6 +141,7 @@ gulp.task("update-static-data", cb => {
   envJSON.APP_BASE_URL_TOKEN = appConfig.APP_BASE_URL_TOKEN;
   envJSON.APP_NAME = appConfig.APP_NAME;
   envJSON.MODE = appConfig.MODE;
+  envJSON.DEVICE_REGISTRY_URL = appConfig.DEVICE_REGISTRY_URL;
 
   fs.writeFileSync("./env.json", JSON.stringify(envJSON));
 
