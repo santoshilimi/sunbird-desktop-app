@@ -1,7 +1,7 @@
 {
-    "name": "desktop-app",
+    "name": "sunbird",
     "version": "1.0.0",
-    "description": "",
+    "description": "sunbird desktop app",
     "main": "main.js",
     "scripts": {
         "build": "tsc",
@@ -74,8 +74,8 @@
         "openrap-sunbirded-plugin": "0.0.36",
         "portscanner": "^2.2.0",
         "request": "^2.88.0",
-        "uuid": "^3.3.2",
-        "rxjs": "^6.2.1"
+        "rxjs": "^6.2.1",
+        "uuid": "^3.3.2"
     },
     "devDependencies": {
         "@types/lodash": "^4.14.123",

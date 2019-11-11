@@ -57,19 +57,37 @@ if (!app.isPackaged) {
   reloadUIOnFileChange();
 }
 expressApp.use("/dialog/content/import", (req, res) => {
-  res.send({ message: "SUCCESS", responseCode: "OK" });
-  importContent();
+  const filePaths = importContent();
+  res.send({ message: 'SUCCESS', responseCode: 'OK', filePaths});
 });
 
 const importContent = () => {
-  const path = dialog.showOpenDialog({
+  const filePaths = dialog.showOpenDialog({
     properties: ["openFile", "multiSelections"],
     filters: [{ name: "Custom File Type", extensions: ["ecar"] }]
   });
-  if (path) {
-    makeImportApiCall(path);
+  if (filePaths) {
+    makeImportApiCall(filePaths);
   }
+  return filePaths;
 };
+
+expressApp.use('/dialog/content/export', (req, res) => {
+  let destFolder = exportContent();
+  if(destFolder && destFolder[0]){
+    res.send({ message: 'SUCCESS', responseCode: 'OK', destFolder: destFolder[0]});
+  } else {
+    res.status(400).send({ message: 'Ecar dest folder not selected', responseCode: 'NO_DEST_FOLDER'});
+  }
+});
+
+const exportContent = () => {
+  const destFolder = dialog.showOpenDialog({
+    properties: ['openDirectory', 'createDirectory'], 
+    filters: [{ name: 'Custom File Type', extensions: ['ecar'] }] 
+  });
+  return destFolder;
+}
 
 const getFilesPath = () => {
   return app.isPackaged
@@ -234,6 +252,15 @@ function createWindow() {
     });
 
     win.webContents.once("dom-ready", () => {
+      telemetryInstance.start({
+        context: {
+          env: "home"
+        },
+        edata: {
+          type: "app",
+          duration: (Date.now() - startTime) / 1000
+        }
+      });
       splash.destroy();
       win.show();
       win.maximize();
