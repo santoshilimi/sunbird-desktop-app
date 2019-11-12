@@ -373,7 +373,9 @@ const checkForOpenFile = (files?: string[]) => {
         openFileContents.push(file);
       }
     });
-    makeImportApiCall(openFileContents);
+    if (appBaseUrl) {
+      makeImportApiCall(openFileContents);
+    }
     logger.info(
       `Got request to open the  ecars : ${JSON.stringify(openFileContents)}`
     );
