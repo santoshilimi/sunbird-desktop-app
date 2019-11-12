@@ -55,7 +55,7 @@ if (!app.isPackaged) {
 }
 expressApp.use("/dialog/content/import", (req, res) => {
   const filePaths = importContent();
-  res.send({ message: 'SUCCESS', responseCode: 'OK', filePaths});
+  res.send({ message: 'SUCCESS', responseCode: 'OK', filePaths });
 });
 
 const importContent = () => {
@@ -71,17 +71,17 @@ const importContent = () => {
 
 expressApp.use('/dialog/content/export', (req, res) => {
   let destFolder = exportContent();
-  if(destFolder && destFolder[0]){
-    res.send({ message: 'SUCCESS', responseCode: 'OK', destFolder: destFolder[0]});
+  if (destFolder && destFolder[0]) {
+    res.send({ message: 'SUCCESS', responseCode: 'OK', destFolder: destFolder[0] });
   } else {
-    res.status(400).send({ message: 'Ecar dest folder not selected', responseCode: 'NO_DEST_FOLDER'});
+    res.status(400).send({ message: 'Ecar dest folder not selected', responseCode: 'NO_DEST_FOLDER' });
   }
 });
 
 const exportContent = () => {
   const destFolder = dialog.showOpenDialog({
-    properties: ['openDirectory', 'createDirectory'], 
-    filters: [{ name: 'Custom File Type', extensions: ['ecar'] }] 
+    properties: ['openDirectory', 'createDirectory'],
+    filters: [{ name: 'Custom File Type', extensions: ['ecar'] }]
   });
   return destFolder;
 }
@@ -269,9 +269,10 @@ function createWindow() {
         appBaseUrl = `http://localhost:${process.env.APPLICATION_PORT}`;
         win.loadURL(appBaseUrl);
         win.focus();
+        checkForOpenFile();
+
         // Open the DevTools.
         // win.webContents.openDevTools();
-        checkForOpenFileInWindows();
       })
       .catch(err => {
         logger.error("unable to start the app ", err);
@@ -297,7 +298,12 @@ if (!gotTheLock) {
       `trying to open second-instance of the app ${JSON.stringify(commandLine)}`
     );
     // if the OS is windows file open call will come here when app is already open
-    checkForOpenFileInWindows(commandLine);
+    let interval = setInterval(() => {
+      if (appBaseUrl) {
+        checkForOpenFile(commandLine);
+        clearInterval(interval);
+      }
+    }, 1000);
     // if user open's second instance, we should focus our window
     if (win) {
       if (win.isMinimized()) win.restore();
@@ -334,13 +340,19 @@ app.on("activate", () => {
 app.on("open-file", (e, path) => {
   e.preventDefault();
   logger.info(`trying to open content with path ${path}`);
-  checkForOpenFileInWindows([path]);
+  checkForOpenFile([path]);
 });
 
 const makeImportApiCall = async (contents: Array<string>) => {
   await HTTPService.post(`${appBaseUrl}/api/content/v1/import`, contents)
     .toPromise()
-    .then(data => logger.info("Content import started successfully", contents))
+    .then(data => {
+      win.webContents.executeJavaScript(`
+        var event = new Event("content:import", {bubbles: true});
+        document.dispatchEvent(event);
+      `);
+      logger.info("Content import started successfully", contents)
+    })
     .catch(error =>
       logger.error(
         "Content import failed with",
@@ -351,14 +363,11 @@ const makeImportApiCall = async (contents: Array<string>) => {
     );
 };
 
-// to handle ecar file open in windows
-const checkForOpenFileInWindows = (files?: string[]) => {
+// to handle ecar file open in windows and linux
+const checkForOpenFile = (files?: string[]) => {
   let contents = files || process.argv;
   const openFileContents = []
-  if (
-    (os.platform() === "win32" || os.platform() === "linux") &&
-    !_.isEmpty(contents)
-  ) {
+  if ((os.platform() === "win32" || os.platform() === "linux") && !_.isEmpty(contents)) {
     _.forEach(contents, file => {
       if (_.endsWith(_.toLower(file), ".ecar")) {
         openFileContents.push(file);
