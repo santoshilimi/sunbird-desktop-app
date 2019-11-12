@@ -140,12 +140,12 @@ const initializeEnv = () => {
 const copyPluginsMetaData = async () => {
   if (app.isPackaged) {
     for (const plugin of frameworkConfig.plugins) {
-      if (!fs.existsSync(path.join(getFilesPath(), plugin.id))) {
+      //if (!fs.existsSync(path.join(getFilesPath(), plugin.id))) {
         await fse.copy(
           path.join(__dirname, plugin.id),
           path.join(getFilesPath(), plugin.id)
         );
-      }
+      //}
     }
   }
 };
