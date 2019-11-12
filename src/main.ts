@@ -21,10 +21,7 @@ const windowIcon = path.join(__dirname, "build", "icons", "png", "512x512.png");
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let win: any;
-let child: any;
-let openFileContents = [];
 let appBaseUrl;
-let isAppBootstrapped = false;
 
 const expressApp = express();
 expressApp.use(bodyParser.json());
@@ -274,12 +271,7 @@ function createWindow() {
         win.focus();
         // Open the DevTools.
         // win.webContents.openDevTools();
-
-        isAppBootstrapped = true;
         checkForOpenFileInWindows();
-        if (openFileContents.length > 0) {
-          makeImportApiCall(openFileContents);
-        }
       })
       .catch(err => {
         logger.error("unable to start the app ", err);
@@ -306,9 +298,6 @@ if (!gotTheLock) {
     );
     // if the OS is windows file open call will come here when app is already open
     checkForOpenFileInWindows(commandLine);
-    if (openFileContents.length > 0 && (child || isAppBootstrapped)) {
-      makeImportApiCall(openFileContents);
-    }
     // if user open's second instance, we should focus our window
     if (win) {
       if (win.isMinimized()) win.restore();
@@ -345,16 +334,7 @@ app.on("activate", () => {
 app.on("open-file", (e, path) => {
   e.preventDefault();
   logger.info(`trying to open content with path ${path}`);
-  if (_.endsWith(_.toLower(path), ".ecar")) {
-    //open child window if not opened
-
-    //send the message to import the file
-    openFileContents.push(path);
-    // when the app already open and we are trying to open content
-    if (child || isAppBootstrapped) {
-      makeImportApiCall(openFileContents);
-    }
-  }
+  checkForOpenFileInWindows([path]);
 });
 
 const makeImportApiCall = async (contents: Array<string>) => {
@@ -374,6 +354,7 @@ const makeImportApiCall = async (contents: Array<string>) => {
 // to handle ecar file open in windows
 const checkForOpenFileInWindows = (files?: string[]) => {
   let contents = files || process.argv;
+  const openFileContents = []
   if (
     (os.platform() === "win32" || os.platform() === "linux") &&
     !_.isEmpty(contents)
@@ -383,6 +364,7 @@ const checkForOpenFileInWindows = (files?: string[]) => {
         openFileContents.push(file);
       }
     });
+    makeImportApiCall(openFileContents);
     logger.info(
       `Got request to open the  ecars : ${JSON.stringify(openFileContents)}`
     );

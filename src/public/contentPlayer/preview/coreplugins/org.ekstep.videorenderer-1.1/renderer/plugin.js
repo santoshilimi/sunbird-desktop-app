@@ -43,12 +43,14 @@ org.ekstep.contentrenderer.baseLauncher.extend({
         } else {
             path = data.artifactUrl;
         }
-        console.log("path", path);
-        console.log("data", data);
         this.createVideo(path, data);
         this.configOverlay();
     },
     createVideo: function (path, data) {
+        // User has to long press to play/pause or mute/unmute the video in mobile view.
+        // TO fix this problem we are removing the tap events of the videoJs library.
+        // link:- https://github.com/videojs/video.js/issues/6222
+        videojs.getComponent('Component').prototype.emitTapEvents = function () {};
         video = document.createElement('video-js');
         video.style.width = '100%';
         video.style.height = '100%';
@@ -58,21 +60,11 @@ org.ekstep.contentrenderer.baseLauncher.extend({
         video.className = 'vjs-default-skin';
 		document.body.appendChild(video);
 
-        var loaderArea = document.createElement('div');
-        loaderArea.id = 'loaderArea';
-        var element = '<div class="loading">Loading&#8230;</div>'
-        loaderArea.innerHTML = element;
-
-        EkstepRendererAPI.dispatchEvent("renderer:splash:hide");
         EkstepRendererAPI.dispatchEvent("renderer:content:start");
-
-
-        document.body.appendChild(loaderArea);
-        jQuery('#loaderArea').show();
 
         if (data.mimeType === "video/x-youtube") {
         $('.vjs-default-skin').css('opacity', '0');
-        this._loadYoutube(data.artifactUrl);
+            this._loadYoutube(data.artifactUrl);
         } else if (data.streamingUrl && (data.mimeType != "video/x-youtube")) {
             data.mimeType = this.supportedStreamingMimeType;
             this._loadVideo(data.streamingUrl, data);
@@ -100,10 +92,20 @@ org.ekstep.contentrenderer.baseLauncher.extend({
         source.type = data.mimeType;
         video.appendChild(source);
 
-        if (data.streamingUrl || window.cordova) {
+        if (window.cordova) {
             var videoPlayer = videojs('videoElement', {
                 "controls": true, "autoplay": true, "preload": "auto",
-                "nativeControlsForTouch": true
+                "nativeControlsForTouch": true,
+                html5: {
+                    hls: {
+                        overrideNative: true,
+                    }
+                }
+            }, function () {
+                this.on('downloadvideo', function () {
+                    EkstepRendererAPI.dispatchEvent("renderer:splash:hide");
+                    console.log("downloadvideo");
+                })
             });
         } else {
             var videoPlayer = videojs('videoElement', {
@@ -112,11 +114,14 @@ org.ekstep.contentrenderer.baseLauncher.extend({
                     vjsdownload: {
                         beforeElement: 'playbackRateMenuButton',
                         textControl: 'Download video',
-                        name: 'downloadButton'
+                        name: 'downloadButton',
+                        downloadURL: data.artifactUrl
                     }
                 }
             }, function () {
                 this.on('downloadvideo', function () {
+                    EkstepRendererAPI.dispatchEvent("renderer:splash:hide");
+                    console.log("downloadvideo");
                     EkstepRendererAPI.getTelemetryService().interact("TOUCH", "Download", "TOUCH", {
                         stageId: 'videostage',
                         subtype: ''
@@ -126,6 +131,42 @@ org.ekstep.contentrenderer.baseLauncher.extend({
         }
         instance.addVideoListeners(videoPlayer, path, data);
         instance.videoPlayer = videoPlayer;
+        instance.applyResolutionSwitcher();
+        $('.vjs-loading-spinner').css({"display": "none"});
+    },
+    applyResolutionSwitcher: function (){
+        var instance = this;
+        instance.videoPlayer.hlsQualitySelector();
+        var qualityLevels = instance.videoPlayer.qualityLevels();
+        qualityLevels.on('change', function(event) {
+            var qualityLevel = instance.videoPlayer.qualityLevels()[event.selectedIndex];
+            var currentResolution = (qualityLevel.height) ? qualityLevel.height : "Auto";
+            instance.logResolution(currentResolution);
+
+        });
+    },
+    logResolution: function(currentResolution){
+        var instance = this;
+        instance.logTelemetry('TOUCH', {
+            stageId: 'videostage',
+            subtype: "CHANGE"
+        }, "", {
+            context: {
+                cdata: [{
+                    type: 'Feature',
+                    id: 'video:resolutionChange'
+                }, {
+                    type: 'Task',
+                    id: 'SB-13358',
+                }, {
+                    type: 'Resolution',
+                    id: String(currentResolution)
+                },{
+                    type: 'ResolutionChange',
+                    id: "Auto"
+                }]
+            }
+        })
     },
     _loadYoutube: function (path) {
         var instance = this;
@@ -140,21 +181,49 @@ org.ekstep.contentrenderer.baseLauncher.extend({
         var vid = videojs("videoElement", {
             "techOrder": ["youtube"],
             "src": path,
-            "controls": true, "autoplay": true, "preload": "auto"
+            "controls": true, "autoplay": true, "preload": "auto",
+            "youtube": {
+                "onPlayerPlaybackQualityChange" : function(e){
+                    var resolution = (e && e.data) ? e.data : "Auto";
+                    instance.logResolution(resolution);
+                }
+            }
         });
         videojs("videoElement").ready(function () {
-			var youtubeInstance = this;
-			$('.vjs-default-skin').css('opacity', '1');
+            var youtubeInstance = this;
+
+            // Adding origin value as host, to follow youtube ads policy
+            var iframeSrc = $('#videoElement iframe')[0].src;
+            var origin = globalConfig.context && globalConfig.context.origin? globalConfig.context.origin : undefined;
+            if(origin){
+                $('#videoElement iframe')[0].src = instance.replaceOrigin(iframeSrc, "origin", origin);
+            }
+            $('.vjs-default-skin').css('opacity', '1');
             youtubeInstance.src({
                 type: 'video/youtube',
                 src: path
             });
-            jQuery('#loaderArea').hide();
             youtubeInstance.play();
+            $('.vjs-loading-spinner').css({"display": "none"});
             instance.addYOUTUBEListeners(youtubeInstance);
             instance.setYoutubeStyles(youtubeInstance);
             instance.videoPlayer = youtubeInstance;
+            instance.applyResolutionSwitcher();
+            EkstepRendererAPI.dispatchEvent("renderer:splash:hide");
+            console.log("downloadvideo");
         });
+    },
+    replaceOrigin: function(url, paramName, paramValue)
+    {
+       if (paramValue == null) {
+           paramValue = '';
+       }
+       var pattern = new RegExp('\\b('+paramName+'=).*?(&|#|$)');
+       if (url.search(pattern)>=0) {
+           return url.replace(pattern,'$1' + paramValue + '$2');
+       }
+       url = url.replace(/[?#]$/,'');
+       return url + (url.indexOf('?')>0 ? '&' : '?') + paramName + '=' + paramValue;
     },
     setYoutubeStyles: function (youtube) {
         var instance = this;
@@ -169,6 +238,11 @@ org.ekstep.contentrenderer.baseLauncher.extend({
             EkstepRendererAPI.getTelemetryService().navigate(stageid, stageid, {
                 "duration": (Date.now() / 1000) - window.PLAYER_STAGE_START_TIME
             });
+            $('.vjs-loading-spinner').css({"top": "46%","left": "49%",
+            "width": "72px",
+            "height": "70px",
+            "border-radius": "70px",
+            "border": "5px solid rgba(47, 51, 63, 0.7)"});
         }
         var instance = this;
         instance.heartBeatEvent(true);
@@ -217,9 +291,6 @@ org.ekstep.contentrenderer.baseLauncher.extend({
     addVideoListeners: function (videoPlayer, path, data) {
         var instance = this;
         videoPlayer.on("play", function (e) {
-            if (jQuery('#loaderArea').css("display") == "block") {
-                jQuery('#loaderArea').hide();
-            }
             instance.play("videostage", Math.floor(instance.videoPlayer.currentTime()) * 1000);
         });
 
@@ -266,8 +337,8 @@ org.ekstep.contentrenderer.baseLauncher.extend({
             instance.seeked("youtubestage", Math.floor(videoPlayer.currentTime()) * 1000);
         });
     },
-    logTelemetry: function (type, eksData) {
-        EkstepRendererAPI.getTelemetryService().interact(type || 'TOUCH', "", "", eksData);
+    logTelemetry: function (type, eksData, eid, options) {
+        EkstepRendererAPI.getTelemetryService().interact(type || 'TOUCH', "", "", eksData, eid, options);
     },
     replay: function () {
         if (this.sleepMode) return;
