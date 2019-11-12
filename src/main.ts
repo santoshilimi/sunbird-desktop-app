@@ -55,7 +55,7 @@ if (!app.isPackaged) {
 }
 expressApp.use("/dialog/content/import", (req, res) => {
   const filePaths = importContent();
-  res.send({ message: 'SUCCESS', responseCode: 'OK', filePaths });
+  res.send({ message: "SUCCESS", responseCode: "OK", filePaths });
 });
 
 const importContent = () => {
@@ -69,22 +69,30 @@ const importContent = () => {
   return filePaths;
 };
 
-expressApp.use('/dialog/content/export', (req, res) => {
+expressApp.use("/dialog/content/export", (req, res) => {
   let destFolder = exportContent();
   if (destFolder && destFolder[0]) {
-    res.send({ message: 'SUCCESS', responseCode: 'OK', destFolder: destFolder[0] });
+    res.send({
+      message: "SUCCESS",
+      responseCode: "OK",
+      destFolder: destFolder[0]
+    });
   } else {
-    res.status(400).send({ message: 'Ecar dest folder not selected', responseCode: 'NO_DEST_FOLDER' });
+    res
+      .status(400)
+      .send({
+        message: "Ecar dest folder not selected",
+        responseCode: "NO_DEST_FOLDER"
+      });
   }
 });
 
 const exportContent = () => {
   const destFolder = dialog.showOpenDialog({
-    properties: ['openDirectory', 'createDirectory'],
-    filters: [{ name: 'Custom File Type', extensions: ['ecar'] }]
+    properties: ["openDirectory", "createDirectory"]
   });
   return destFolder;
-}
+};
 
 const getFilesPath = () => {
   return app.isPackaged
@@ -351,7 +359,7 @@ const makeImportApiCall = async (contents: Array<string>) => {
         var event = new Event("content:import", {bubbles: true});
         document.dispatchEvent(event);
       `);
-      logger.info("Content import started successfully", contents)
+      logger.info("Content import started successfully", contents);
     })
     .catch(error =>
       logger.error(
@@ -366,8 +374,11 @@ const makeImportApiCall = async (contents: Array<string>) => {
 // to handle ecar file open in windows and linux
 const checkForOpenFile = (files?: string[]) => {
   let contents = files || process.argv;
-  const openFileContents = []
-  if ((os.platform() === "win32" || os.platform() === "linux") && !_.isEmpty(contents)) {
+  const openFileContents = [];
+  if (
+    (os.platform() === "win32" || os.platform() === "linux") &&
+    !_.isEmpty(contents)
+  ) {
     _.forEach(contents, file => {
       if (_.endsWith(_.toLower(file), ".ecar")) {
         openFileContents.push(file);

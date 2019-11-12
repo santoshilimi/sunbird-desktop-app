@@ -27,7 +27,7 @@ gulp.task("client:install", cb => {
 
 gulp.task("offline-client:dist", cb => {
   exec(
-    "npm run build-offline-prod --prefix ./temp/portal/src/app/client ",
+    "npm run offline-prod --prefix ./temp/portal/src/app/client ",
     { maxBuffer: Infinity },
     function(err, stdout, stderr) {
       console.log(stdout);
@@ -89,9 +89,7 @@ gulp.task(
 // });
 
 gulp.task("download:static-data", cb => {
-  const cloneURL = `https://${
-    process.env.GITHUB_ACCESS_TOKEN
-  }:x-oauth-basic@github.com/${process.env.GITHUB_PRIVATE_REPO}`;
+  const cloneURL = `https://${process.env.GITHUB_ACCESS_TOKEN}:x-oauth-basic@github.com/${process.env.GITHUB_PRIVATE_REPO}`;
   const cloneOptions = {
     fetchOpts: {
       callbacks: {
