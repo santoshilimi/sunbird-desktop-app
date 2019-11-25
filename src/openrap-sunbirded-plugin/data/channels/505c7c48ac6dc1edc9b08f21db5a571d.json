@@ -17,12 +17,20 @@
             "consumerId": "0aa13c48-dda0-4259-9007-c795dacd7b9c",
             "channel": "test",
             "description": "This is test channel",
-            "suggested_frameworks": [
-                {
-                    "identifier": "test_k-12",
-                    "code": "test_k-12",
-                    "name": "Test Framework",
-                    "objectType": "Framework"
+            "suggested_frameworks": [{
+                "identifier": "test_k-12",
+                "code": "test_k-12",
+                "name": "Test Framework",
+                "objectType": "Framework"
+            }],
+            "frameworks": [{
+                    "identifier": "TEST",
+                    "name": "Test framework",
+                    "objectType": "Framework",
+                    "relation": "hasSequenceMember",
+                    "description": "Test framework",
+                    "index": 3,
+                    "status": "Live"
                 }
             ],
             "createdOn": "2018-02-12T11:38:44.292+0000",
