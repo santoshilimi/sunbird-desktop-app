@@ -1,0 +1,47 @@
+{
+  "id": "api.location.search",
+  "ver": "v1",
+  "ts": "2019-11-12 09:08:47:387+0000",
+  "params": {
+    "resmsgid": null,
+    "msgid": null,
+    "err": null,
+    "status": "success",
+    "errmsg": null
+  },
+  "responseCode": "OK",
+  "result": {
+    "response": [
+      {
+        "code": "29",
+        "name": "Karnataka",
+        "id": "4a6d77a1-6653-4e30-9be8-93371b6b53b5",
+        "type": "state"
+      },
+      {
+        "code": "9",
+        "name": "Uttar Pradesh",
+        "id": "f1fe9665-bf2e-43cd-9063-57b0f330144b",
+        "type": "state"
+      },
+      {
+        "code": "28",
+        "name": "Andhra Pradesh",
+        "id": "f62a597d-17bd-499e-9565-734e3d5562a3",
+        "type": "state"
+      },
+      {
+        "code": "1",
+        "name": "Jammu And Kashmir",
+        "id": "f138e9c2-adae-4e5b-ab3c-0527ff6a2b5f",
+        "type": "state"
+      },
+      {
+        "code": "34",
+        "name": "Puducherry",
+        "id": "f799d459-fd01-42af-b249-10341fbea415",
+        "type": "state"
+      }
+    ]
+  }
+}
