@@ -7,7 +7,7 @@ const path = require("path");
 
 gulp.task("download:portal", cb => {
   download(
-    "Sunbird-Ed/SunbirdEd-portal#desktop-app-refactoring",
+    "Sunbird-Ed/SunbirdEd-portal#release-2.6.0",
     "temp/portal",
     cb
   );
