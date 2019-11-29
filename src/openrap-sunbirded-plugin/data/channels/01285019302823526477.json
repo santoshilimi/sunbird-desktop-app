@@ -23,6 +23,25 @@
                 "name": "Test Framework",
                 "objectType": "Framework"
             }],
+            "frameworks": [{
+                    "identifier": "as_k-12",
+                    "name": "State (Assam)",
+                    "objectType": "Framework",
+                    "relation": "hasSequenceMember",
+                    "description": "as_k-12 Assam",
+                    "index": 3,
+                    "status": "Live"
+                },
+                {
+                    "identifier": "ka_k-12",
+                    "name": "State (Karnataka)",
+                    "objectType": "Framework",
+                    "relation": "hasSequenceMember",
+                    "description": "State (Karnataka)",
+                    "index": 13,
+                    "status": "Live"
+                }
+            ],
             "createdOn": "2018-02-12T11:38:44.292+0000",
             "versionKey": "1518435524292",
             "appId": "sunbird_portal",
