@@ -140,6 +140,7 @@ gulp.task("update-static-data", cb => {
   envJSON.APP_NAME = appConfig.APP_NAME;
   envJSON.MODE = appConfig.MODE;
   envJSON.DEVICE_REGISTRY_URL = appConfig.DEVICE_REGISTRY_URL;
+  envJSON.FAQ_BLOB_URL = appConfig.FAQ_BLOB_URL;
 
   fs.writeFileSync("./env.json", JSON.stringify(envJSON));
 
@@ -185,6 +186,7 @@ gulp.task("app:dist", cb => {
 gulp.task(
   "dist",
   gulp.series(
+    "clean", 
     "app:dist",
     "default",
     "download:static-data",
