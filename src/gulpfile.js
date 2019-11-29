@@ -141,6 +141,8 @@ gulp.task("update-static-data", cb => {
   envJSON.MODE = appConfig.MODE;
   envJSON.DEVICE_REGISTRY_URL = appConfig.DEVICE_REGISTRY_URL;
   envJSON.FAQ_BLOB_URL = appConfig.FAQ_BLOB_URL;
+  envJSON.CUSTODIAN_ORG = appConfig.CUSTODIAN_ORG;
+  
 
   fs.writeFileSync("./env.json", JSON.stringify(envJSON));
 
