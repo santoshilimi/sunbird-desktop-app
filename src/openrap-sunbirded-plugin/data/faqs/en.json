@@ -9,16 +9,16 @@
             "description": "You may have downloaded YouTube content. You can play YouTube content only when you are online. Connect the computer to the Internet try again. "
         },
         {
-            "topic": "I need to update my {{APP_NAME}} desktop app",
-            "description": "Connect your computer to the Internet and check https://diksha.gov.in/desktop/latest for the latest app version "
+            "topic": "I need to update my Sunbird desktop app",
+            "description": "Connect your computer to the Internet and check https://sunbird.com/desktop/latest for the latest app version "
         },
         {
             "topic": "I do not have access to a laptop with an Internet connection, but I want to add or update content on the desktop app",
-            "description": "If you have a mobile phone, download the {{APP_NAME}} mobile app from the google playstore. Browse for the content in the app. Download the content from the {{APP_NAME}} library. Copy it on a pendrive or SD card and upload it to the {{APP_NAME}} desktop app."
+            "description": "If you have a mobile phone, download the Sunbird mobile app from the google playstore. Browse for the content in the app. Download the content from the Sunbird library. Copy it on a pendrive or SD card and upload it to the Sunbird desktop app."
         },
         {
             "topic": "I do not find content for a particular topic, or I find the content irrelevant",
-            "description": "Browse {{APP_NAME}}'s online library to search for the content. If it is still unavailable, send your feedback about content to the State SCERT"
+            "description": "Browse Sunbird's online library to search for the content. If it is still unavailable, send your feedback about content to the State SCERT"
         },
         {
             "topic": "The app is very slow",
@@ -37,7 +37,7 @@
             "description": "The time taken to copy depends on the size of the content file. Some large textbooks take time to copy. We recommend that you do not stop the process in between. Doing so may lead to inconsistent files."
         },
         {
-            "topic": "My computer does not have any free space because of {{APP_NAME}} content",
+            "topic": "My computer does not have any free space because of Sunbird content",
             "description": "Delete downloaded content from the My Downloads tab of the app to free up space on your computer"
         }
     ],
