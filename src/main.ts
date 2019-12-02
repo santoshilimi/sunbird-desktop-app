@@ -352,7 +352,11 @@ app.on("open-file", (e, path) => {
 });
 
 const makeImportApiCall = async (contents: Array<string>) => {
-  await HTTPService.post(`${appBaseUrl}/api/content/v1/import`, contents)
+  if(_.isEmpty(contents)){
+    logger.error('Content import api call error', 'Reason: makeImportApiCall called with empty array');
+    return;
+  }
+  await HTTPService.post(`${appBaseUrl}/api/content/v1/import`, [])
     .toPromise()
     .then(data => {
       win.webContents.executeJavaScript(`
@@ -364,7 +368,7 @@ const makeImportApiCall = async (contents: Array<string>) => {
     .catch(error =>
       logger.error(
         "Content import failed with",
-        error,
+        _.get(error, 'response.data') || error.message,
         "for contents",
         contents
       )
