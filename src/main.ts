@@ -356,7 +356,7 @@ const makeImportApiCall = async (contents: Array<string>) => {
     logger.error('Content import api call error', 'Reason: makeImportApiCall called with empty array');
     return;
   }
-  await HTTPService.post(`${appBaseUrl}/api/content/v1/import`, [])
+  await HTTPService.post(`${appBaseUrl}/api/content/v1/import`, contents)
     .toPromise()
     .then(data => {
       win.webContents.executeJavaScript(`
