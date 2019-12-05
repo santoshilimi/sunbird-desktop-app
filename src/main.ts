@@ -15,7 +15,6 @@ import { Subject } from "rxjs";
 import { debounceTime } from "rxjs/operators";
 import { HTTPService } from "@project-sunbird/ext-framework-server/services";
 import * as os from "os";
-const {shell} = require('electron');
 const startTime = Date.now();
 let envs = {};
 const windowIcon = path.join(__dirname, "build", "icons", "png", "512x512.png");
