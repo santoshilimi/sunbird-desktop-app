@@ -256,7 +256,7 @@ function createWindow() {
       icon: windowIcon
     });
 
-      win.webContents.on('new-window', ( options) => {
+      win.webContents.on('new-window', (event, url, frameName, disposition, options, additionalFeatures) => {
         options.show = false;
       })
 
