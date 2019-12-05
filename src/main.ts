@@ -15,6 +15,7 @@ import { Subject } from "rxjs";
 import { debounceTime } from "rxjs/operators";
 import { HTTPService } from "@project-sunbird/ext-framework-server/services";
 import * as os from "os";
+const {shell} = require('electron');
 const startTime = Date.now();
 let envs = {};
 const windowIcon = path.join(__dirname, "build", "icons", "png", "512x512.png");
@@ -256,6 +257,10 @@ function createWindow() {
       icon: windowIcon
     });
 
+      win.webContents.on('new-window', ( options) => {
+        options.show = false;
+      })
+
     win.webContents.once("dom-ready", () => {
       telemetryInstance.start({
         context: {
@@ -295,6 +300,7 @@ function createWindow() {
   });
   splash.loadFile(path.join(__dirname, "loading", "index.html"));
   splash.show();
+  
 }
 
 let gotTheLock = app.requestSingleInstanceLock();
