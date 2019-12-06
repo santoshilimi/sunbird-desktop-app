@@ -256,6 +256,10 @@ function createWindow() {
       icon: windowIcon
     });
 
+      win.webContents.on('new-window', (event, url, frameName, disposition, options, additionalFeatures) => {
+        options.show = false;
+      })
+
     win.webContents.once("dom-ready", () => {
       telemetryInstance.start({
         context: {
@@ -295,6 +299,7 @@ function createWindow() {
   });
   splash.loadFile(path.join(__dirname, "loading", "index.html"));
   splash.show();
+  
 }
 
 let gotTheLock = app.requestSingleInstanceLock();
