@@ -136,7 +136,6 @@ gulp.task("update-static-data", cb => {
     appConfig.TELEMETRY_SYNC_INTERVAL_IN_SECS;
   envJSON.APP_ID = appConfig.APP_ID;
   envJSON.TELEMETRY_PACKET_SIZE = appConfig.TELEMETRY_PACKET_SIZE;
-  envJSON.APP_BASE_URL_TOKEN = appConfig.APP_BASE_URL_TOKEN;
   envJSON.APP_NAME = appConfig.APP_NAME;
   envJSON.MODE = appConfig.MODE;
   envJSON.DEVICE_REGISTRY_URL = appConfig.DEVICE_REGISTRY_URL;
@@ -185,10 +184,15 @@ gulp.task("app:dist", cb => {
   });
 });
 
+gulp.task("clean:portal", cb => {
+  fs.emptyDir("./public/portal", cb);
+});
+
 gulp.task(
   "dist",
   gulp.series(
     "clean", 
+    "clean:portal",
     "app:dist",
     "default",
     "download:static-data",
