@@ -1,5 +1,5 @@
 import { containerAPI } from "OpenRAP/dist/api/index";
-import { app, BrowserWindow, ipcMain, dialog } from "electron";
+import { app, BrowserWindow, dialog } from "electron";
 import * as _ from "lodash";
 import * as path from "path";
 import * as fs from "fs";
@@ -53,13 +53,13 @@ const reloadUIOnFileChange = () => {
 if (!app.isPackaged) {
   reloadUIOnFileChange();
 }
-expressApp.use("/dialog/content/import", (req, res) => {
-  const filePaths = importContent();
+expressApp.use("/dialog/content/import", async (req, res) => {
+  const filePaths = await importContent();
   res.send({ message: "SUCCESS", responseCode: "OK", filePaths });
 });
 
-const importContent = () => {
-  const filePaths = dialog.showOpenDialog({
+const importContent = async () => {
+  const {filePaths} = await dialog.showOpenDialog({
     properties: ["openFile", "multiSelections"],
     filters: [{ name: "Custom File Type", extensions: ["ecar"] }]
   });
@@ -69,8 +69,8 @@ const importContent = () => {
   return filePaths;
 };
 
-expressApp.use("/dialog/content/export", (req, res) => {
-  let destFolder = exportContent();
+expressApp.use("/dialog/content/export", async (req, res) => {
+  let destFolder = await exportContent();
   if (destFolder && destFolder[0]) {
     res.send({
       message: "SUCCESS",
@@ -87,11 +87,11 @@ expressApp.use("/dialog/content/export", (req, res) => {
   }
 });
 
-const exportContent = () => {
-  const destFolder = dialog.showOpenDialog({
+const exportContent = async () => {
+  const {filePaths} = await dialog.showOpenDialog({
     properties: ["openDirectory", "createDirectory"]
   });
-  return destFolder;
+  return filePaths;
 };
 
 const getFilesPath = () => {
@@ -225,7 +225,11 @@ function createWindow() {
     transparent: true,
     frame: false,
     alwaysOnTop: true,
-    icon: windowIcon
+    icon: windowIcon,
+    webPreferences: {
+      nodeIntegration: false,
+      enableRemoteModule: false
+    }
   });
 
   splash.once("show", () => {
@@ -251,7 +255,8 @@ function createWindow() {
       minWidth: 700,
       minHeight: 500,
       webPreferences: {
-        nodeIntegration: false
+        nodeIntegration: false,
+        enableRemoteModule: false
       },
       icon: windowIcon
     });

@@ -6,7 +6,7 @@
     "scripts": {
         "build": "tsc",
         "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "electron .",
+        "start": "electron --no-sandbox .",
         "dev": "npm run build && npm run start",
         "debug": "npm run build && electron . --inspect",
         "dist": "gulp  dist",
@@ -69,7 +69,7 @@
         "body-parser": "^1.19.0",
         "express": "^4.17.0",
         "fs-extra": "^8.1.0",
-        "lodash": "^4.17.11",
+        "lodash": "^4.17.15",
         "openrap-sunbirded-plugin": "0.0.47",
         "portscanner": "^2.2.0",
         "request": "^2.88.0",
@@ -79,16 +79,20 @@
     "devDependencies": {
         "@types/lodash": "^4.14.123",
         "cpy-cli": "^2.0.0",
+        "devtron": "^1.4.0",
         "download-git-repo": "^1.1.0",
-        "electron": "4.0.3",
-        "electron-builder": "^20.39.0",
-        "electron-builder-squirrel-windows": "^20.42.0",
+        "electron": "7.1.7",
+        "electron-builder": "^21.2.0",
+        "electron-builder-squirrel-windows": "^22.2.0",
         "electron-icon-maker": "0.0.4",
         "grunt": "^1.0.4",
         "gulp": "^4.0.2",
-        "nodegit": "^0.24.3",
-        "typescript": "^2.8.4"
+        "nodegit": "^0.26.3",
+        "typescript": "^3.7.3"
     },
     "keywords": [],
-    "license": "MIT"
+    "license": "MIT",
+    "engines": {
+        "node": ">=12.14.0"
+    }
 }
