@@ -225,7 +225,11 @@ function createWindow() {
     transparent: true,
     frame: false,
     alwaysOnTop: true,
-    icon: windowIcon
+    icon: windowIcon,
+    webPreferences: {
+      nodeIntegration: false,
+      enableRemoteModule: false
+    }
   });
 
   splash.once("show", () => {
