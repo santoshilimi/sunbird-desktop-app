@@ -1,5 +1,5 @@
 import { containerAPI } from "OpenRAP/dist/api/index";
-import { app, BrowserWindow, ipcMain, dialog } from "electron";
+import { app, BrowserWindow, dialog } from "electron";
 import * as _ from "lodash";
 import * as path from "path";
 import * as fs from "fs";
@@ -251,7 +251,8 @@ function createWindow() {
       minWidth: 700,
       minHeight: 500,
       webPreferences: {
-        nodeIntegration: false
+        nodeIntegration: false,
+        enableRemoteModule: false
       },
       icon: windowIcon
     });
