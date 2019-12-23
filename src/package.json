@@ -1,12 +1,12 @@
 {
     "name": "sunbird",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "description": "sunbird desktop app",
     "main": "main.js",
     "scripts": {
         "build": "tsc",
         "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "electron .",
+        "start": "electron --no-sandbox .",
         "dev": "npm run build && npm run start",
         "debug": "npm run build && electron . --inspect",
         "dist": "gulp  dist",
@@ -70,7 +70,7 @@
         "express": "^4.17.0",
         "fs-extra": "^8.1.0",
         "lodash": "^4.17.15",
-        "openrap-sunbirded-plugin": "0.0.42",
+        "openrap-sunbirded-plugin": "0.0.47",
         "portscanner": "^2.2.0",
         "request": "^2.88.0",
         "rxjs": "^6.2.1",
