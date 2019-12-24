@@ -161,15 +161,15 @@ const framework = async () => {
   const subApp = express();
   subApp.use(bodyParser.json({ limit: "100mb" }));
   expressApp.use("/", subApp);
-  return new Promise((resolve, reject) => {
+  return new Promise(async (resolve, reject) => {
     frameworkConfig.db.pouchdb.path = process.env.DATABASE_PATH;
     frameworkConfig["logBasePath"] = getFilesPath();
     frameworkAPI
       .bootstrap(frameworkConfig, subApp)
-      .then(() => {
+      .then(async () => {
         resolve();
       })
-      .catch((error: any) => {
+      .catch(async (error: any) => {
         console.error(error);
         resolve();
       });
@@ -203,10 +203,9 @@ const checkPluginsInitialized = () => {
 };
 // start loading all the dependencies
 const bootstrapDependencies = async () => {
-  await checkPluginsInitialized();
   await copyPluginsMetaData();
   await setAvailablePort();
-  await framework();
+  await Promise.all([framework(), checkPluginsInitialized()]);
   await containerAPI.bootstrap();
   await startApp();
 
