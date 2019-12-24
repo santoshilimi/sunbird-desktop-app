@@ -205,10 +205,9 @@ const checkPluginsInitialized = () => {
 const bootstrapDependencies = async () => {
   await copyPluginsMetaData();
   await setAvailablePort();
-  await framework();
+  await Promise.all([framework(), checkPluginsInitialized()]);
   await containerAPI.bootstrap();
   await startApp();
-  await checkPluginsInitialized();
 
   //to handle the unexpected navigation to unknown route
 
@@ -229,7 +228,7 @@ function createWindow() {
     webPreferences: {
       nodeIntegration: false,
       enableRemoteModule: false
-    }
+    },
   });
 
   splash.once("show", () => {
