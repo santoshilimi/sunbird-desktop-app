@@ -161,15 +161,15 @@ const framework = async () => {
   const subApp = express();
   subApp.use(bodyParser.json({ limit: "100mb" }));
   expressApp.use("/", subApp);
-  return new Promise(async (resolve, reject) => {
+  return new Promise((resolve, reject) => {
     frameworkConfig.db.pouchdb.path = process.env.DATABASE_PATH;
     frameworkConfig["logBasePath"] = getFilesPath();
     frameworkAPI
       .bootstrap(frameworkConfig, subApp)
-      .then(async () => {
+      .then(() => {
         resolve();
       })
-      .catch(async (error: any) => {
+      .catch((error: any) => {
         console.error(error);
         resolve();
       });
