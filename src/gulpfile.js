@@ -136,12 +136,12 @@ gulp.task("update-static-data", cb => {
     appConfig.TELEMETRY_SYNC_INTERVAL_IN_SECS;
   envJSON.APP_ID = appConfig.APP_ID;
   envJSON.TELEMETRY_PACKET_SIZE = appConfig.TELEMETRY_PACKET_SIZE;
-  envJSON.APP_BASE_URL_TOKEN = appConfig.APP_BASE_URL_TOKEN;
   envJSON.APP_NAME = appConfig.APP_NAME;
   envJSON.MODE = appConfig.MODE;
   envJSON.DEVICE_REGISTRY_URL = appConfig.DEVICE_REGISTRY_URL;
   envJSON.FAQ_BLOB_URL = appConfig.FAQ_BLOB_URL;
   envJSON.CUSTODIAN_ORG = appConfig.CUSTODIAN_ORG;
+  envJSON.RELEASE_DATE = Date.now();
   
 
   fs.writeFileSync("./env.json", JSON.stringify(envJSON));
