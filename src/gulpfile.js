@@ -185,10 +185,15 @@ gulp.task("app:dist", cb => {
   });
 });
 
+gulp.task("clean:portal", cb => {
+  fs.emptyDir("./public/portal", cb);
+});
+
 gulp.task(
   "dist",
   gulp.series(
     "clean", 
+    "clean:portal",
     "app:dist",
     "default",
     "download:static-data",
