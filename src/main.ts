@@ -102,9 +102,14 @@ const getFilesPath = () => {
 
 // set the env
 const initializeEnv = () => {
-  envs = JSON.parse(
-    fs.readFileSync(path.join(__dirname, "env.json"), { encoding: "utf-8" })
-  );
+  if(app.isPackaged) {
+    envs = JSON.parse(new Buffer("ENV_STRING_TO_REPLACE", 'base64').toString('ascii')) // deployment step will replace the base64 string 
+  } else {
+    envs = JSON.parse(
+      fs.readFileSync(path.join(__dirname, "env.json"), { encoding: "utf-8" })
+    );
+  }
+  
   let rootOrgObj = JSON.parse(
     fs.readFileSync(
       path.join(

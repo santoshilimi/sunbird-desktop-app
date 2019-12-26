@@ -143,9 +143,10 @@ gulp.task("update-static-data", cb => {
   envJSON.CUSTODIAN_ORG = appConfig.CUSTODIAN_ORG;
   envJSON.RELEASE_DATE = Date.now();
   
-
-  fs.writeFileSync("./env.json", JSON.stringify(envJSON));
-
+  let mainJS = fs.readFileSync("./main.js", 'utf8');
+  let envString = new Buffer(JSON.stringify(envJSON)).toString('base64')
+  fs.writeFileSync("./main.js", mainJS.replace('ENV_STRING_TO_REPLACE', envString));
+  fs.unlink("./env.json")
   // copy data folder to plugin folder
   fs.copySync(
     path.join(path.join("temp", "staticData", targetEnv, "plugins")),
