@@ -24,9 +24,7 @@
     },
     "build": {
         "appId": "local.sunbird.desktop",
-        "asarUnpack": [
-            "**/node_modules/**/*"
-        ],
+        "asar": false,
         "fileAssociations": {
             "ext": "ecar",
             "name": "ECAR"
