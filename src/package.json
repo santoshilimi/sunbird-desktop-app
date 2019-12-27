@@ -24,11 +24,13 @@
     },
     "build": {
         "appId": "local.sunbird.desktop",
+        "asarUnpack": [
+            "**/node_modules/**/*"
+        ],
         "fileAssociations": {
             "ext": "ecar",
             "name": "ECAR"
         },
-        "asar": false,
         "win": {
             "icon": "build/icons/win/icon.ico"
         },
