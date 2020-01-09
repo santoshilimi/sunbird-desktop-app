@@ -102,33 +102,32 @@ const getFilesPath = () => {
 
 // set the env
 const initializeEnv = () => {
+  let rootOrgId, hashTagId;
   if(app.isPackaged) {
     envs = JSON.parse(new Buffer("ENV_STRING_TO_REPLACE", 'base64').toString('ascii')) // deployment step will replace the base64 string 
+    rootOrgId = "ROOT_ORG_ID";
+    hashTagId = "HASH_TAG_ID";
   } else {
     envs = JSON.parse(
       fs.readFileSync(path.join(__dirname, "env.json"), { encoding: "utf-8" })
     );
+    let rootOrgObj = JSON.parse(
+      fs.readFileSync(
+        path.join(
+          __dirname,
+          frameworkConfig.plugins[0].id,
+          "data",
+          "organizations",
+          `${envs["CHANNEL"]}.json`
+        ),
+        { encoding: "utf-8" }
+      )
+    );
+    rootOrgId = _.get(rootOrgObj, "result.response.content[0].rootOrgId");
+    hashTagId = _.get(rootOrgObj, "result.response.content[0].hashTagId");
   }
-  
-  let rootOrgObj = JSON.parse(
-    fs.readFileSync(
-      path.join(
-        __dirname,
-        frameworkConfig.plugins[0].id,
-        "data",
-        "organizations",
-        `${envs["CHANNEL"]}.json`
-      ),
-      { encoding: "utf-8" }
-    )
-  );
-  process.env.ROOT_ORG_ID =
-    _.get(rootOrgObj, "result.response.content[0].rootOrgId") ||
-    _.get(rootOrgObj, "result.response.content[0].hashTagId");
-  process.env.ROOT_ORG_HASH_TAG_ID = _.get(
-    rootOrgObj,
-    "result.response.content[0].hashTagId"
-  );
+  process.env.ROOT_ORG_ID = rootOrgId || hashTagId;
+  process.env.ROOT_ORG_HASH_TAG_ID = hashTagId;
   process.env.TELEMETRY_VALIDATION = app.isPackaged ? "false" : "true";
   process.env.APP_VERSION = app.getVersion();
 
@@ -145,12 +144,10 @@ const initializeEnv = () => {
 const copyPluginsMetaData = async () => {
   if (app.isPackaged) {
     for (const plugin of frameworkConfig.plugins) {
-      //if (!fs.existsSync(path.join(getFilesPath(), plugin.id))) {
         await fse.copy(
           path.join(__dirname, plugin.id),
           path.join(getFilesPath(), plugin.id)
         );
-      //}
     }
   }
 };
@@ -270,15 +267,17 @@ function createWindow() {
       win.webContents.on('new-window', (event, url, frameName, disposition, options, additionalFeatures) => {
         options.show = false;
       })
-
+    
     win.webContents.once("dom-ready", () => {
+    const startUpDuration = (Date.now() - startTime) / 1000  
+    logger.info(`App took ${startUpDuration} sec to start`);
       telemetryInstance.start({
         context: {
           env: "home"
         },
         edata: {
           type: "app",
-          duration: (Date.now() - startTime) / 1000
+          duration: startUpDuration
         }
       });
       splash.destroy();

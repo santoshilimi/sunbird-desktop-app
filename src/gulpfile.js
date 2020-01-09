@@ -145,8 +145,15 @@ gulp.task("update-static-data", cb => {
   
   let mainJS = fs.readFileSync("./main.js", 'utf8');
   let envString = new Buffer(JSON.stringify(envJSON)).toString('base64')
-  fs.writeFileSync("./main.js", mainJS.replace('ENV_STRING_TO_REPLACE', envString));
+  mainJS = mainJS.replace('ENV_STRING_TO_REPLACE', envString)
   fs.unlink("./env.json")
+  let rootOrgObj = JSON.parse(fs.readFileSync(
+    path.join('./openrap-sunbirded-plugin', "data", "organizations", `${envJSON.CHANNEL}.json`),'utf8'));
+
+  mainJS = mainJS.replace('ROOT_ORG_ID', rootOrgObj.result.response.content[0].rootOrgId)
+  mainJS = mainJS.replace('HASH_TAG_ID', rootOrgObj.result.response.content[0].hashTagId)
+  fs.writeFileSync("./main.js", mainJS);    
+
   // copy data folder to plugin folder
   fs.copySync(
     path.join(path.join("temp", "staticData", targetEnv, "plugins")),
