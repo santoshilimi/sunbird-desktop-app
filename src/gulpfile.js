@@ -112,6 +112,13 @@ gulp.task("download:static-data", cb => {
 gulp.task("update-static-data", cb => {
   let targetEnv = process.env.TARGET_ENVIRONMENT;
 
+    // copy data folder to plugin folder
+    fs.copySync(
+      path.join(path.join("temp", "staticData", targetEnv, "plugins")),
+      __dirname
+    );
+
+    
   let appConfig = JSON.parse(
     fs.readFileSync(
       path.join("temp", "staticData", targetEnv, "appConfig.json"),
@@ -154,11 +161,6 @@ gulp.task("update-static-data", cb => {
   mainJS = mainJS.replace('HASH_TAG_ID', rootOrgObj.result.response.content[0].hashTagId)
   fs.writeFileSync("./main.js", mainJS);    
 
-  // copy data folder to plugin folder
-  fs.copySync(
-    path.join(path.join("temp", "staticData", targetEnv, "plugins")),
-    __dirname
-  );
 
   // update logos
 
