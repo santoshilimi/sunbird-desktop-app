@@ -77,9 +77,7 @@ gulp.task(
     "download:portal",
     "client:install",
     "offline-client:dist",
-    "copy:portal",
-    "copy:plugins",
-    "copy:resource:bundles"
+    gulp.parallel("copy:portal", "copy:plugins", "copy:resource:bundles")
   )
 );
 
@@ -202,8 +200,7 @@ gulp.task("clean:portal", cb => {
 gulp.task(
   "dist",
   gulp.series(
-    "clean", 
-    "clean:portal",
+   gulp.parallel("clean", "clean:portal"),
     "app:dist",
     "default",
     "download:static-data",
