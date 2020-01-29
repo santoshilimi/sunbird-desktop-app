@@ -169,7 +169,7 @@ gulp.task("update-static-data", cb => {
 
   fs.copySync(
     path.join("temp", "staticData", targetEnv, "logo.png"),
-    path.join("public", "portal", "logo.png")
+    path.join("public", "portal", "assets", "images", "logo.png")
   );
 
   //copy help videos and pdfs
