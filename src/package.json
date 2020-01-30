@@ -4,7 +4,8 @@
     "description": "sunbird desktop app",
     "main": "main.js",
     "scripts": {
-        "build": "tsc",
+        "build-ts": "tsc",
+        "build": "gulp build",  
         "test": "echo \"Error: no test specified\" && exit 1",
         "start": "electron --no-sandbox .",
         "dev": "npm run build && npm run start",

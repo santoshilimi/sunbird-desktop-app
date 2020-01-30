@@ -182,7 +182,7 @@ gulp.task("update-static-data", cb => {
 });
 
 gulp.task("app:dist", cb => {
-  exec("npm run  build", { maxBuffer: Infinity }, function(
+  exec("npm run build-ts", { maxBuffer: Infinity }, function(
     err,
     stdout,
     stderr
@@ -197,12 +197,21 @@ gulp.task("clean:portal", cb => {
   fs.emptyDir("./public/portal", cb);
 });
 
+gulp.task("clean:node_modules", cb => {
+  fs.emptyDir("./node_modules", cb);
+});
+
+gulp.task("build",  gulp.series(
+  gulp.parallel("clean", "clean:portal"),
+   "app:dist",
+   "default",
+   "clean", 
+   "clean:node_modules"
+ ))
+
 gulp.task(
   "dist",
   gulp.series(
-   gulp.parallel("clean", "clean:portal"),
-    "app:dist",
-    "default",
     "download:static-data",
     "update-static-data",
     "clean"
