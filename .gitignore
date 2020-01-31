@@ -15,8 +15,6 @@ framework.config.d.ts
 framework.config.js
 main.d.ts
 main.js
-appInitializer.d.ts
-appInitializer.js
 src/database
 src/openrap-sunbirded-plugin/data/resourceBundles
 src/openrap-sunbirded-plugin/data/frameworks
