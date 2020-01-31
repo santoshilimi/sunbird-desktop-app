@@ -32,7 +32,7 @@ node() {
             docker run -d --name offline_build -w /offline i386/node:8.16.2-stretch sleep infinity
             docker cp . offline_build:/offline/
             docker exec offline_build bash -x build.sh
-            docker cp offline_build:/offline/src.zip .
+            docker cp offline_build:/offline/src.tar.gz .
             docker rm offline_build --force
             """
         }
@@ -41,7 +41,7 @@ node() {
         stage('Archive artifacts'){
             sh """
                         mkdir offline_desktop_artifacts
-                        cp -r src offline_desktop_artifacts
+                        cp src.tar.gz offline_desktop_artifacts
                         zip -j offline_desktop_artifacts.zip:${artifact_version} offline_desktop_artifacts/*
                     """
             archiveArtifacts artifacts: "offline_desktop_artifacts.zip:${artifact_version}", fingerprint: true, onlyIfSuccessful: true
