@@ -2,6 +2,7 @@
 
 #Build 
 cd src
-rm -rf node_modules
 npm install
 npm run build
+zip src src.zip
+
