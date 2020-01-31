@@ -29,23 +29,21 @@ node() {
 
         stage('Build') {
             sh """
-                 docker run --name offline_build -w offline i386/node:8.16.2-stretch sleep infinity
-                 docker cp . offline_build:/offline/
-                 docker exec offline_build bash -x build.sh
-                 docker cp offline_build:/offline/src.zip .
-                 docker rm offline_build
-                 
-               """
+            docker run --name offline_build -w offline i386/node:8.16.2-stretch sleep infinity
+            docker cp . offline_build:/offline/
+            docker exec offline_build bash -x build.sh
+            docker cp offline_build:/offline/src.zip .
+            docker rm offline_build
+            """
         }
 
+
         stage('Archive artifacts'){
-                 sh """
-                               mkdir offline_desktop_artifacts
-                               cp -r src offline_desktop_artifacts
-                               zip -j offline_desktop_artifacts.zip:${artifact_version} offline_desktop_artifacts/*
+            sh """
+                        mkdir offline_desktop_artifacts
+                        cp -r src offline_desktop_artifacts
+                        zip -j offline_desktop_artifacts.zip:${artifact_version} offline_desktop_artifacts/*
                     """
-              }
-                 
             archiveArtifacts artifacts: "offline_desktop_artifacts.zip:${artifact_version}", fingerprint: true, onlyIfSuccessful: true
             sh """echo {\\"artifact_name\\" : \\"offline_desktop_artifacts.zip\\", \\"artifact_version\\" : \\"${artifact_version}\\", \\"node_name\\" : \\"${env.NODE_NAME}\\"} > metadata.json"""
             archiveArtifacts artifacts: 'metadata.json', onlyIfSuccessful: true
