@@ -29,24 +29,16 @@ node() {
 
         stage('Build') {
             sh """
-                        cd src
-                        npm install
-                        npm run build
-                    """
+                 docker run --name offline_build -w offline i386/node:8.16.2-stretch sleep infinity
+                 docker cp . offline_build:/offline/
+                 docker exec offline_build bash -x build.sh
+                 docker cp offline_build:/offline/src.zip .
+                 docker rm offline_build
+                 
+               """
         }
 
         stage('Archive artifacts'){
-            if(params.profile_id == "platform-services"){
-                 sh """
-                        mkdir lp_artifacts
-                        cp platform-modules/service/target/learning-service.war lp_artifacts
-                        cp searchIndex-platform/module/search-api/search-manager/target/search-manager*.zip lp_artifacts
-                        cp platform-tools/spikes/sync-tool/target/sync-tool*.jar lp_artifacts
-                        cp platform-tools/spikes/content-tool/target/content-tool-*.jar lp_artifacts
-                        zip -j lp_artifacts.zip:${artifact_version} lp_artifacts/*
-                    """
-            }        
-            else {
                  sh """
                                mkdir offline_desktop_artifacts
                                cp -r src offline_desktop_artifacts
