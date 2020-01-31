@@ -148,16 +148,16 @@ gulp.task("update-static-data", cb => {
   envJSON.CUSTODIAN_ORG = appConfig.CUSTODIAN_ORG;
   envJSON.RELEASE_DATE = Date.now();
   
-  let mainJS = fs.readFileSync("./main.js", 'utf8');
+  let appInitializer = fs.readFileSync("./appInitializer.js", 'utf8');
   let envString = new Buffer(JSON.stringify(envJSON)).toString('base64')
-  mainJS = mainJS.replace('ENV_STRING_TO_REPLACE', envString)
+  appInitializer = appInitializer.replace('ENV_STRING_TO_REPLACE', envString)
   fs.unlink("./env.json")
   let rootOrgObj = JSON.parse(fs.readFileSync(
     path.join('./openrap-sunbirded-plugin', "data", "organizations", `${envJSON.CHANNEL}.json`),'utf8'));
 
-  mainJS = mainJS.replace('ROOT_ORG_ID', rootOrgObj.result.response.content[0].rootOrgId)
-  mainJS = mainJS.replace('HASH_TAG_ID', rootOrgObj.result.response.content[0].hashTagId)
-  fs.writeFileSync("./main.js", mainJS);    
+  appInitializer = appInitializer.replace('ROOT_ORG_ID', rootOrgObj.result.response.content[0].rootOrgId)
+  appInitializer = appInitializer.replace('HASH_TAG_ID', rootOrgObj.result.response.content[0].hashTagId)
+  fs.writeFileSync("./appInitializer.js", appInitializer);    
 
 
   // update logos
