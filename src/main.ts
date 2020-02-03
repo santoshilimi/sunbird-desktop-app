@@ -70,7 +70,7 @@ const importContent = async () => {
 };
 
 expressApp.use("/dialog/content/export", async (req, res) => {
-  let destFolder = await exportContent();
+  let destFolder = await showFileExplorer();
   if (destFolder && destFolder[0]) {
     res.send({
       message: "SUCCESS",
@@ -88,7 +88,7 @@ expressApp.use("/dialog/content/export", async (req, res) => {
 });
 
 expressApp.use("/dialog/telemetry/export", async (req, res) => {
-  let destFolder = await exportContent();
+  let destFolder = await showFileExplorer();
   if (destFolder && destFolder[0]) {
     res.send({
       message: "SUCCESS",
@@ -105,7 +105,7 @@ expressApp.use("/dialog/telemetry/export", async (req, res) => {
   }
 });
 
-const exportContent = async () => {
+const showFileExplorer = async () => {
   const {filePaths} = await dialog.showOpenDialog({
     properties: ["openDirectory", "createDirectory"]
   });
