@@ -70,7 +70,7 @@ const importContent = async () => {
 };
 
 expressApp.use("/dialog/content/export", async (req, res) => {
-  let destFolder = await exportContent();
+  let destFolder = await showFileExplorer();
   if (destFolder && destFolder[0]) {
     res.send({
       message: "SUCCESS",
@@ -87,7 +87,25 @@ expressApp.use("/dialog/content/export", async (req, res) => {
   }
 });
 
-const exportContent = async () => {
+expressApp.use("/dialog/telemetry/export", async (req, res) => {
+  let destFolder = await showFileExplorer();
+  if (destFolder && destFolder[0]) {
+    res.send({
+      message: "SUCCESS",
+      responseCode: "OK",
+      destFolder: destFolder[0]
+    });
+  } else {
+    res
+      .status(400)
+      .send({
+        message: "Ecar dest folder not selected",
+        responseCode: "NO_DEST_FOLDER"
+      });
+  }
+});
+
+const showFileExplorer = async () => {
   const {filePaths} = await dialog.showOpenDialog({
     properties: ["openDirectory", "createDirectory"]
   });
