@@ -301,6 +301,7 @@ function createWindow() {
       splash.destroy();
       win.show();
       win.maximize();
+      EventManager.emit("app:initialized", {})
     });
 
     // create admin for the database
