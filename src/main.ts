@@ -58,6 +58,46 @@ expressApp.use("/dialog/content/import", async (req, res) => {
   res.send({ message: "SUCCESS", responseCode: "OK", filePaths });
 });
 
+expressApp.use("/dialog/telemetry/import", async (req, res) => {
+  const filePaths = await importTelemetryFiles();
+  res.send({ message: "SUCCESS", responseCode: "OK", filePaths });
+});
+
+const importTelemetryFiles = async () => {
+  const {filePaths} = await dialog.showOpenDialog({
+    properties: ["openFile", "multiSelections"],
+    filters: [{ name: "Custom File Type", extensions: ["zip"] }]
+  });
+  if (filePaths) {
+    makeTelemetryImportApiCall(filePaths);
+  }
+  return filePaths;
+};
+
+const makeTelemetryImportApiCall = async (telemetryFiles: Array<string>) => {
+  if(_.isEmpty(telemetryFiles)){
+    logger.error('Telemetry import api call error', 'Reason: makeTelemetryImportApiCall called with empty array');
+    return;
+  }
+  await HTTPService.post(`${appBaseUrl}/api/telemetry/v1/import`, telemetryFiles)
+    .toPromise()
+    .then(data => {
+      win.webContents.executeJavaScript(`
+        var event = new Event("telemetry:import", {bubbles: true});
+        document.dispatchEvent(event);
+      `);
+      logger.info("Telemetry import started successfully", telemetryFiles);
+    })
+    .catch(error =>
+      logger.error(
+        "Telemetry import failed with",
+        _.get(error, 'response.data') || error.message,
+        "for ",
+        telemetryFiles
+      )
+    );
+};
+
 const importContent = async () => {
   const {filePaths} = await dialog.showOpenDialog({
     properties: ["openFile", "multiSelections"],
