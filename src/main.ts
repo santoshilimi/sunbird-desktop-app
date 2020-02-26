@@ -74,26 +74,26 @@ const importTelemetryFiles = async () => {
   return filePaths;
 };
 
-const makeTelemetryImportApiCall = async (contents: Array<string>) => {
-  if(_.isEmpty(contents)){
+const makeTelemetryImportApiCall = async (telemetryFiles: Array<string>) => {
+  if(_.isEmpty(telemetryFiles)){
     logger.error('Telemetry import api call error', 'Reason: makeTelemetryImportApiCall called with empty array');
     return;
   }
-  await HTTPService.post(`${appBaseUrl}/api/telemetry/v1/import`, contents)
+  await HTTPService.post(`${appBaseUrl}/api/telemetry/v1/import`, telemetryFiles)
     .toPromise()
     .then(data => {
       win.webContents.executeJavaScript(`
         var event = new Event("telemetry:import", {bubbles: true});
         document.dispatchEvent(event);
       `);
-      logger.info("Telemetry import started successfully", contents);
+      logger.info("Telemetry import started successfully", telemetryFiles);
     })
     .catch(error =>
       logger.error(
         "Telemetry import failed with",
         _.get(error, 'response.data') || error.message,
-        "for contents",
-        contents
+        "for ",
+        telemetryFiles
       )
     );
 };
