@@ -68,7 +68,7 @@ gulp.task("copy:resource:bundles", cb => {
 });
 
 gulp.task("clean", cb => {
-  fs.emptyDir("./temp", cb);
+  fs.remove(path.join(__dirname, "temp"), cb);
 });
 
 gulp.task(
@@ -194,19 +194,18 @@ gulp.task("app:dist", cb => {
 });
 
 gulp.task("clean:portal", cb => {
-  fs.emptyDir("./public/portal", cb);
+  fs.remove("./public/portal", cb);
 });
 
 gulp.task("clean:node_modules", cb => {
-  fs.emptyDir("./node_modules", cb);
+  fs.remove("./node_modules", cb);
 });
 
 gulp.task("build",  gulp.series(
   gulp.parallel("clean", "clean:portal"),
    "app:dist",
    "default",
-   "clean", 
-   "clean:node_modules"
+   gulp.parallel("clean", "clean:node_modules")
  ))
 
 gulp.task(
