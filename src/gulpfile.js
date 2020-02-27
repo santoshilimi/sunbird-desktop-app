@@ -27,7 +27,7 @@ gulp.task("client:install", cb => {
 
 gulp.task("offline-client:dist", cb => {
   exec(
-    'export NODE_OPTIONS="–max_old_space_size=4096" && npm run offline-prod --prefix ./temp/portal/src/app/client ',
+    'export NODE_OPTIONS="–max-old-space-size=4096" && npm run offline-prod --prefix ./temp/portal/src/app/client ',
     { maxBuffer: Infinity },
     function(err, stdout, stderr) {
       console.log(stdout);
