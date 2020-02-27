@@ -5,7 +5,8 @@
     "main": "main.js",
     "scripts": {
         "build-ts": "tsc",
-        "build": "gulp build",  
+        "build": "gulp build", 
+        "build-copy-clean": "gulp build:copy-clean", 
         "test": "echo \"Error: no test specified\" && exit 1",
         "start": "electron --no-sandbox .",
         "dev": "npm run build-ts && npm run start",
