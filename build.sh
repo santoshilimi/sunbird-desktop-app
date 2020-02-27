@@ -4,7 +4,9 @@
 cd src
 npm install
 npm run build
-npm run offline-prod --prefix ./temp/portal/src/app/client
+cd temp/portal/src/app/client
+node --max_old_space_size=8192 ./node_modules/@angular/cli/bin/ng build --project desktop --prod && mv ../dist/index.html ../dist/index.ejs
+cd ../../../../../
 npm run build-copy-clean
 cd ..
 tar -czvf src.tar.gz src
