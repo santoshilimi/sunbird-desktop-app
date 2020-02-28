@@ -52,6 +52,9 @@ node() {
         }
     }
     catch (err) {
+        sh """
+           docker rm offline_build --force
+           """
         currentBuild.result = "FAILURE"
         throw err
     }

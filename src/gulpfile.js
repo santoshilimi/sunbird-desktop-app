@@ -27,7 +27,7 @@ gulp.task("client:install", cb => {
 
 gulp.task("offline-client:dist", cb => {
   exec(
-    "npm run offline-prod --prefix ./temp/portal/src/app/client ",
+    'npm run offline-prod --prefix ./temp/portal/src/app/client',
     { maxBuffer: Infinity },
     function(err, stdout, stderr) {
       console.log(stdout);
@@ -68,18 +68,18 @@ gulp.task("copy:resource:bundles", cb => {
 });
 
 gulp.task("clean", cb => {
-  fs.emptyDir("./temp", cb);
+  fs.remove(path.join(__dirname, "temp"), cb);
 });
 
 gulp.task(
   "default",
   gulp.series(
     "download:portal",
-    "client:install",
-    "offline-client:dist",
-    gulp.parallel("copy:portal", "copy:plugins", "copy:resource:bundles")
+    "client:install"
   )
 );
+
+gulp.task('copy:portal:dist', gulp.parallel("copy:portal", "copy:plugins", "copy:resource:bundles"));
 
 // TODO: take data from command prompt for now read from env
 // gulp.task("read-build-data", cb => {
@@ -194,20 +194,22 @@ gulp.task("app:dist", cb => {
 });
 
 gulp.task("clean:portal", cb => {
-  fs.emptyDir("./public/portal", cb);
+  fs.remove("./public/portal", cb);
 });
 
 gulp.task("clean:node_modules", cb => {
-  fs.emptyDir("./node_modules", cb);
+  fs.remove("./node_modules", cb);
 });
+
+gulp.task('clean:build',  gulp.parallel("clean", "clean:node_modules"));
 
 gulp.task("build",  gulp.series(
   gulp.parallel("clean", "clean:portal"),
    "app:dist",
    "default",
-   "clean", 
-   "clean:node_modules"
  ))
+
+ gulp.task("build:copy-clean", gulp.series("copy:portal:dist", "clean:build"))
 
 gulp.task(
   "dist",
