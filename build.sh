@@ -2,12 +2,10 @@
 
 #Build 
 cd src
+export NODE_OPTIONS=--max_old_space_size=3012
 npm install
 npm run build
-export LIMIT=12096
-npm install -g increase-memory-limit
 cd temp/portal/src/app/client
-increase-memory-limit
 npm run offline-prod 
 cd ../../../../../
 npm run build-copy-clean
