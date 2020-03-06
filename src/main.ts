@@ -280,13 +280,13 @@ const checkPluginsInitialized = () => {
 };
 // start loading all the dependencies
 const bootstrapDependencies = async () => {
+  await setDeviceId();
+  await startCrashReporter();
   await copyPluginsMetaData();
   await setAvailablePort();
   await Promise.all([framework(), checkPluginsInitialized()]);
   await containerAPI.bootstrap();
   await startApp();
-  await setDeviceId();
-  await startCrashReporter();
 
   //to handle the unexpected navigation to unknown route
 
