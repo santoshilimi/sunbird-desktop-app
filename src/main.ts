@@ -1,5 +1,5 @@
 import { containerAPI } from "OpenRAP/dist/api/index";
-import { app, BrowserWindow, dialog } from "electron";
+import { app, BrowserWindow, dialog, crashReporter } from "electron";
 import * as _ from "lodash";
 import * as path from "path";
 import * as fs from "fs";
@@ -22,10 +22,12 @@ const windowIcon = path.join(__dirname, "build", "icons", "png", "512x512.png");
 // be closed automatically when the JavaScript object is garbage collected.
 let win: any;
 let appBaseUrl;
+let deviceId: string;
 
 const expressApp = express();
 expressApp.use(bodyParser.json());
 let fileSDK = containerAPI.getFileSDKInstance("");
+let systemSDK = containerAPI.getSystemSDKInstance();
 
 const reloadUIOnFileChange = () => {
   const subject = new Subject<any>();
@@ -199,6 +201,21 @@ const initializeEnv = () => {
   }
 };
 
+// Crash reporter
+const startCrashReporter = async () => {
+  crashReporter.start({
+    productName: process.env.APP_NAME,
+    companyName: process.env.APP_NAME,
+    submitURL: `${process.env.APP_BASE_URL}/v1/desktop/upload-crash-logs?authToken=${process.env.APP_BASE_URL_TOKEN}`,
+    uploadToServer: true,
+    extra: { deviceId: deviceId }
+  });
+}
+
+const setDeviceId = async () => {
+  deviceId = await systemSDK.getDeviceId();
+}
+
 const copyPluginsMetaData = async () => {
   if (app.isPackaged) {
     for (const plugin of frameworkConfig.plugins) {
@@ -268,6 +285,8 @@ const bootstrapDependencies = async () => {
   await Promise.all([framework(), checkPluginsInitialized()]);
   await containerAPI.bootstrap();
   await startApp();
+  await setDeviceId();
+  await startCrashReporter();
 
   //to handle the unexpected navigation to unknown route
 
@@ -353,7 +372,7 @@ function createWindow() {
         checkForOpenFile();
 
         // Open the DevTools.
-        // win.webContents.openDevTools();
+        win.webContents.openDevTools();
       })
       .catch(err => {
         logger.error("unable to start the app ", err);
