@@ -1,5 +1,5 @@
 import { containerAPI } from "OpenRAP/dist/api/index";
-import { app, BrowserWindow, dialog } from "electron";
+import { app, BrowserWindow, dialog, crashReporter } from "electron";
 import * as _ from "lodash";
 import * as path from "path";
 import * as fs from "fs";
@@ -22,10 +22,12 @@ const windowIcon = path.join(__dirname, "build", "icons", "png", "512x512.png");
 // be closed automatically when the JavaScript object is garbage collected.
 let win: any;
 let appBaseUrl;
+let deviceId: string;
 
 const expressApp = express();
 expressApp.use(bodyParser.json());
 let fileSDK = containerAPI.getFileSDKInstance("");
+let systemSDK = containerAPI.getSystemSDKInstance();
 
 const reloadUIOnFileChange = () => {
   const subject = new Subject<any>();
@@ -199,6 +201,20 @@ const initializeEnv = () => {
   }
 };
 
+// Crash reporter
+const startCrashReporter = async () => {
+  crashReporter.start({
+    productName: process.env.APP_NAME,
+    companyName: process.env.APP_NAME,
+    submitURL: `${process.env.APP_BASE_URL}/api/desktop/v1/upload-crash-logs?authToken=${process.env.APP_BASE_URL_TOKEN}&deviceId=${deviceId}`,
+    uploadToServer: true
+  });
+}
+
+const setDeviceId = async () => {
+  deviceId = await systemSDK.getDeviceId();
+}
+
 const copyPluginsMetaData = async () => {
   if (app.isPackaged) {
     for (const plugin of frameworkConfig.plugins) {
@@ -263,6 +279,8 @@ const checkPluginsInitialized = () => {
 };
 // start loading all the dependencies
 const bootstrapDependencies = async () => {
+  await setDeviceId();
+  await startCrashReporter();
   await copyPluginsMetaData();
   await setAvailablePort();
   await Promise.all([framework(), checkPluginsInitialized()]);
