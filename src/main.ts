@@ -206,7 +206,7 @@ const startCrashReporter = async () => {
   crashReporter.start({
     productName: process.env.APP_NAME,
     companyName: process.env.APP_NAME,
-    submitURL: `${process.env.APP_BASE_URL}/api/desktop/v1/upload-crash-logs?Authorization=Bearer ${process.env.APP_BASE_URL_TOKEN}&deviceId=${deviceId}`,
+    submitURL: `${process.env.APP_BASE_URL}/api/desktop/v1/upload-crash-logs?desktop_auth_token=${process.env.APP_BASE_URL_TOKEN}&deviceId=${deviceId}`,
     uploadToServer: true
   });
 }
