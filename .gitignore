@@ -1,6 +1,7 @@
 build
 src/node_modules/
 src/log
+src/logs
 src/dist
 src/coverage
 src/.nyc_output
