@@ -297,7 +297,7 @@ async function initLogger() {
     logLevel = 'debug';
   }
   enableLogger({
-    logBasePath: path.join(__dirname, 'logs'),
+    logBasePath: path.join(getFilesPath(), 'logs'),
     logLevel: 'debug',
     context: {src: 'desktop', did: deviceId},
     adopterConfig: {
