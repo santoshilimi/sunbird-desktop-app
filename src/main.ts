@@ -1,12 +1,12 @@
 import { containerAPI } from "OpenRAP/dist/api/index";
 import { app, BrowserWindow, dialog, crashReporter } from "electron";
+import { logger, enableLogger } from '@project-sunbird/logger';
 import * as _ from "lodash";
 import * as path from "path";
 import * as fs from "fs";
 import * as fse from "fs-extra";
 import { frameworkAPI } from "@project-sunbird/ext-framework-server/api";
 import { EventManager } from "@project-sunbird/ext-framework-server/managers/EventManager";
-import { logger } from "@project-sunbird/ext-framework-server/logger";
 import { frameworkConfig } from "./framework.config";
 import express from "express";
 import portscanner from "portscanner";
@@ -279,7 +279,6 @@ const checkPluginsInitialized = () => {
 };
 // start loading all the dependencies
 const bootstrapDependencies = async () => {
-  await setDeviceId();
   await startCrashReporter();
   await copyPluginsMetaData();
   await setAvailablePort();
@@ -291,10 +290,25 @@ const bootstrapDependencies = async () => {
 
   expressApp.all("*", (req, res) => res.redirect("/"));
 };
-
-function createWindow() {
+async function initLogger() {
+  await setDeviceId();
+  let logLevel = 'error';
+  if(!app.isPackaged){
+    logLevel = 'debug';
+  }
+  enableLogger({
+    logBasePath: path.join(__dirname, 'logs'),
+    logLevel: 'debug',
+    context: {src: 'desktop', did: deviceId},
+    adopterConfig: {
+      adopter: 'winston'
+    }
+  });
+}
+async function createWindow() {
   //initialize the environment variables
   initializeEnv();
+  await initLogger();
   //splash screen
   let splash = new BrowserWindow({
     width: 300,
