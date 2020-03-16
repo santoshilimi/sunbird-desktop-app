@@ -1,6 +1,6 @@
 import { containerAPI } from "OpenRAP/dist/api/index";
 import { app, BrowserWindow, dialog, crashReporter } from "electron";
-import { logger, enableLogger } from '@project-sunbird/logger';
+import { logger,logLevels, enableLogger } from '@project-sunbird/logger';
 import * as _ from "lodash";
 import * as path from "path";
 import * as fs from "fs";
@@ -266,7 +266,6 @@ const startApp = async () => {
     });
   });
 };
-
 // this will check whether all the plugins are initialized using event from each plugin which should emit '<pluginId>:initialized' event
 
 const checkPluginsInitialized = () => {
@@ -292,13 +291,13 @@ const bootstrapDependencies = async () => {
 };
 async function initLogger() {
   await setDeviceId();
-  let logLevel = 'error';
+  let logLevel: logLevels = 'error';
   if(!app.isPackaged){
     logLevel = 'debug';
   }
   enableLogger({
     logBasePath: path.join(getFilesPath(), 'logs'),
-    logLevel: 'debug',
+    logLevel: logLevel,
     context: {src: 'desktop', did: deviceId},
     adopterConfig: {
       adopter: 'winston'
