@@ -52,9 +52,6 @@ const reloadUIOnFileChange = () => {
     .on("change", path => subject.next(path))
     .on("unlink", path => subject.next(path));
 };
-if (!app.isPackaged) {
-  reloadUIOnFileChange();
-}
 expressApp.use("/dialog/content/import", async (req, res) => {
   const filePaths = await importContent();
   res.send({ message: "SUCCESS", responseCode: "OK", filePaths });
@@ -352,6 +349,9 @@ async function createWindow() {
     });
     if(app.isPackaged){
       win.removeMenu();
+    }
+    if (!app.isPackaged) {
+      reloadUIOnFileChange();
     }
       win.webContents.on('new-window', (event, url, frameName, disposition, options, additionalFeatures) => {
         options.show = false;
