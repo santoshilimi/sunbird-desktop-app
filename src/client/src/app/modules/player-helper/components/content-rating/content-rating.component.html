@@ -1,0 +1,52 @@
+<sui-modal 
+  [mustScroll]="true" 
+  [isClosable]="false" 
+ [transitionDuration]="0"
+ [size]="'normal'" 
+ class="sb-modal"
+appBodyScroll 
+(dismissed)="dismissModal()" 
+#modal  *ngIf="showContentRatingModal"
+>
+  <!--Header-->
+  <i class="close icon" (click)="modal.deny()"></i>
+  <div class="sb-modal-header">
+    {{resourceService?.frmelmnts?.lbl?.enjoyedContent}}
+  </div>
+  <!--/Header-->
+
+  <!--Content-->
+  <div class="sb-modal-content d-flex flex-ai-center">
+    <div class="field">
+      <sui-rating (valueChange)="ratingChange($event)" [maximum]="5"  class="sb-rating ui huge star rating"></sui-rating>
+      <div class="fs-1 my-10"> {{startext}}</div>
+    </div>
+  </div>
+
+  <div class="content-bar" *ngIf="enableSubmitBtn">
+    <div>
+      {{feedbackObj[contentRating]['question']}}
+    </div>
+    <div class="options-box">
+      <label class="mt-16 mb-0 options-content" *ngFor="let feedback of feedbackObj[contentRating]['options']">
+        <div class="options-content-left">
+          <span [class.options-content-checked]="feedback.checked">{{feedback['value']}}</span>
+        </div>
+        <input type="checkbox" role="checkbox" [(ngModel)]="feedback.checked" (click)="changeOptions(feedback)" class="mr-10 cursor-pointer options-checkbox">
+      </label>
+      <div *ngIf="showTextarea" class="options-content">
+        <textarea rows="5" maxlength="1000"class="textarea" [(ngModel)]="feedbackText"></textarea>
+      </div>
+    </div>
+  </div>
+  <!--/Content-->
+
+  <!--Actions-->
+  <div class="sb-modal-actions">
+    <button [disabled]="!enableSubmitBtn" (click)="submit()"class="sb-btn sb-btn-normal sb-btn-primary">
+      {{resourceService?.frmelmnts.btn.submit}}
+    </button>
+  </div>
+  <!--/Actions-->
+
+</sui-modal>
