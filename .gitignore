@@ -1,5 +1,4 @@
 build
-src/node_modules/
 src/log
 src/logs
 src/dist
@@ -21,3 +20,4 @@ src/openrap-sunbirded-plugin/data/resourceBundles
 src/openrap-sunbirded-plugin/data/frameworks
 src/openrap-sunbirded-plugin/data
 src/telemetry_archived
+node_modules
