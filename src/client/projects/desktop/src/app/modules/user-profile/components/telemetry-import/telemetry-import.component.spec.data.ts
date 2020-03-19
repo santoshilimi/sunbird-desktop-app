@@ -25,6 +25,18 @@ export const telemetryData = {
                         progress: 100,
                         status: 'completed',
                         totalSize: 8260
+                    },
+                    
+                    {
+                        addedUsing: 'telemetry_import',
+                         createdOn: 1584612077262,
+                        failedCode: 'MANIFEST_MISSING',
+                        failedReason: 'manifest.json is missing in the zip',
+                        id: '65bda26a-f77b-4dab-8895-9f58fcecf2bd',
+                        name: 'openrap-sunbirded-plugin.zip',
+                        progress: 0,
+                        status: 'failed',
+                        totalSize: 153147
                     }
                 ]
             }
