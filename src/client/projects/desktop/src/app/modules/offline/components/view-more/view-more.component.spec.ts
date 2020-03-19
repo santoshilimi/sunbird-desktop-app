@@ -40,6 +40,7 @@ class MockActivatedRoute {
     params: { slug: 'ntp' },
     queryParams: { channel: '12345' }
   };
+  params = of ({pageNumber: '1'});
   queryParams = of({
     'key': 'test',
     'apiQuery': `{"filters":{"channel":"505c7c48ac6dc1edc9b08f21db5a571d",
@@ -68,7 +69,12 @@ describe('ViewMoreComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ViewMoreComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+    component.paginationDetails  = { currentPage: 5, endIndex: 19, endPage: 5, pageSize: 20, pages: [1, 2, 3, 4, 5], startIndex: 0,
+      startPage: 1,
+      totalItems: 100,
+      totalPages: 5
+    };
+    // fixture.detectChanges();
   });
 
   it('should create visits for view-more page', () => {
@@ -259,5 +265,13 @@ describe('ViewMoreComponent', () => {
     component.updateCardData(contentList);
     expect(utilService.addHoverData).toHaveBeenCalled();
     expect(publicPlayerService.updateDownloadStatus).toHaveBeenCalled();
+  });
+
+  it('should call fetchContents', () => {
+    spyOn(component, 'fetchContents');
+    fixture.detectChanges();
+    component.fetchContentOnParamChange();
+    expect(component.paginationDetails.currentPage).toEqual(1);
+    expect(component.fetchContents).toHaveBeenCalledWith(false);
   });
 });
