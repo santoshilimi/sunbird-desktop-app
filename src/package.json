@@ -76,7 +76,6 @@
         "lodash": "^4.17.15",
         "openrap-sunbirded-plugin": "0.0.73",
         "portscanner": "^2.2.0",
-        "properties": "^1.2.1",
         "request": "^2.88.0",
         "rxjs": "^6.2.1",
         "uuid": "^3.3.2"
@@ -85,7 +84,6 @@
         "@types/lodash": "^4.14.123",
         "cpy-cli": "^2.0.0",
         "devtron": "^1.4.0",
-        "download-git-repo": "^1.1.0",
         "electron": "7.1.7",
         "electron-builder": "^21.2.0",
         "electron-builder-squirrel-windows": "^22.2.0",
@@ -93,7 +91,8 @@
         "grunt": "^1.0.4",
         "gulp": "^4.0.2",
         "nodegit": "^0.26.3",
-        "typescript": "^3.7.3"
+        "typescript": "^3.7.3",
+        "properties": "^1.2.1"
     },
     "keywords": [],
     "license": "MIT",

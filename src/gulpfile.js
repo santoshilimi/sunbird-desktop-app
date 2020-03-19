@@ -1,21 +1,12 @@
 const gulp = require("gulp");
-const download = require("download-git-repo");
 const exec = require("child_process").exec;
 const fs = require("fs-extra");
 const NodeGit = require("nodegit");
 const path = require("path");
 
-gulp.task("download:portal", cb => {
-  download(
-    "Sunbird-Ed/SunbirdEd-portal#release-2.9.0",
-    "temp/portal",
-    cb
-  );
-});
-
 gulp.task("client:install", cb => {
   exec(
-    "npm install  --prefix ./temp/portal/src/app/client",
+    "npm install  --prefix ./client",
     { maxBuffer: Infinity },
     function(err, stdout, stderr) {
       console.log(stdout);
@@ -27,7 +18,7 @@ gulp.task("client:install", cb => {
 
 gulp.task("offline-client:dist", cb => {
   exec(
-    'npm run offline-prod --prefix ./temp/portal/src/app/client',
+    'npm run offline-prod --prefix ./client',
     { maxBuffer: Infinity },
     function(err, stdout, stderr) {
       console.log(stdout);
@@ -37,33 +28,15 @@ gulp.task("offline-client:dist", cb => {
   );
 });
 
-gulp.task("copy:plugins", cb => {
-  fs.move(
-    "./temp/portal/src/app/sunbird-plugins/",
-    "./public/sunbird-plugins/",
-    { overwrite: true },
-    err => {
+gulp.task('build:resource:bundles', function (cb) {
+  exec(
+    'npm run build-resource-bundles',
+    { maxBuffer: Infinity },
+    function(err, stdout, stderr) {
+      console.log(stdout);
+      console.log(stderr);
       cb(err);
     }
-  );
-});
-
-gulp.task("copy:portal", cb => {
-  fs.move(
-    "./temp/portal/src/app/dist/",
-    "./public/portal/",
-    { overwrite: true },
-    err => {
-      cb(err);
-    }
-  );
-});
-
-gulp.task("copy:resource:bundles", cb => {
-  fs.copy(
-    "./temp/portal/src/app/resourcebundles/json",
-    "./openrap-sunbirded-plugin/data/resourceBundles",
-    cb
   );
 });
 
@@ -74,17 +47,9 @@ gulp.task("clean", cb => {
 gulp.task(
   "default",
   gulp.series(
-    "download:portal",
     "client:install"
   )
 );
-
-gulp.task('copy:portal:dist', gulp.parallel("copy:portal", "copy:plugins", "copy:resource:bundles"));
-
-// TODO: take data from command prompt for now read from env
-// gulp.task("read-build-data", cb => {
-
-// });
 
 gulp.task("download:static-data", cb => {
   const cloneURL = `https://${process.env.GITHUB_ACCESS_TOKEN}:x-oauth-basic@github.com/${process.env.GITHUB_PRIVATE_REPO}`;
@@ -209,7 +174,7 @@ gulp.task("build",  gulp.series(
    "default",
  ))
 
- gulp.task("build:copy-clean", gulp.series("copy:portal:dist", "clean:build"))
+ gulp.task("build:copy-clean", gulp.series("build:resource:bundles", "clean:build"))
 
 gulp.task(
   "dist",

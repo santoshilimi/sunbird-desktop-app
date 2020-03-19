@@ -8,12 +8,7 @@ const resBundlesArr = [
   {
     name: "consumption",
     path: path.join(__dirname, "/./data/consumption/"),
-    dest: path.join(__dirname, "/./json/")
-  },
-  {
-    name: "creation",
-    path: path.join(__dirname, "/./data/creation/"),
-    dest: path.join(__dirname, "/./json/")
+    dest: path.join(__dirname, "/./../openrap-sunbirded-plugin/data/resourceBundles/")
   }
 ];
 const readFiles = function(dirname) {
