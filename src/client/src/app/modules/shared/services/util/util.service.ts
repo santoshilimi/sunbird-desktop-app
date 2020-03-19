@@ -54,7 +54,7 @@ export class UtilService {
       hoverData: data.hoverData,
       board: data.board || '',
       identifier: data.identifier,
-
+      mimeType: data.mimeType
     };
     if (data.desktopAppMetadata) {
       content['desktopAppMetadata'] = data.desktopAppMetadata;
