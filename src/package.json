@@ -22,7 +22,8 @@
         "publish-linux": "npm run build-icons && electron-builder -l --x64 -p always",
         "public": "gulp",
         "postinstall": "electron-builder install-app-deps",
-        "build-icons": "electron-icon-maker --input=logo.png --output=./build"
+        "build-icons": "electron-icon-maker --input=logo.png --output=./build",
+        "resource-bundles": "node resourceBundles/build.js"
     },
     "build": {
         "appId": "local.sunbird.desktop",
@@ -75,6 +76,7 @@
         "lodash": "^4.17.15",
         "openrap-sunbirded-plugin": "0.0.68",
         "portscanner": "^2.2.0",
+        "properties": "^1.2.1",
         "request": "^2.88.0",
         "rxjs": "^6.2.1",
         "uuid": "^3.3.2"
