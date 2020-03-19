@@ -56,7 +56,7 @@ export class TelemetryImportComponent implements OnInit, OnDestroy {
   getTotalSizeImportedFiles() {
     this.importedFilesSize = 0;
     this.importedFilesSize =  _.reduce(this.importFilesList, (sum, data) => {
-      return data.status === 'completed' ? sum + data.totalSize : 0; }, 0);
+      return data.status === 'completed' ? sum + data.totalSize : sum + 0; 0; }, 0);
   }
   setImportTelemetry() {
     const interactData = {
