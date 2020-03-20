@@ -184,7 +184,7 @@ const initializeEnv = () => {
     rootOrgId = _.get(rootOrgObj, "result.response.content[0].rootOrgId");
     hashTagId = _.get(rootOrgObj, "result.response.content[0].hashTagId");
   }
-  deviceSDK.initialize(envs.APP_BASE_URL_TOKEN);
+  deviceSDK.initialize({key: envs.APP_BASE_URL_TOKEN});
   process.env.ROOT_ORG_ID = rootOrgId || hashTagId;
   process.env.ROOT_ORG_HASH_TAG_ID = hashTagId;
   process.env.TELEMETRY_VALIDATION = app.isPackaged ? "false" : "true";
@@ -387,7 +387,7 @@ async function createWindow() {
         checkForOpenFile();
 
         // Open the DevTools.
-        // win.webContents.openDevTools();
+        win.webContents.openDevTools();
       })
       .catch(err => {
         logger.error("unable to start the app ", err);
