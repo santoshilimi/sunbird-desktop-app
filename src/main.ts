@@ -387,7 +387,7 @@ async function createWindow() {
         checkForOpenFile();
 
         // Open the DevTools.
-        win.webContents.openDevTools();
+        // win.webContents.openDevTools();
       })
       .catch(err => {
         logger.error("unable to start the app ", err);
