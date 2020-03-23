@@ -16,7 +16,7 @@ import { debounceTime } from "rxjs/operators";
 import { HTTPService } from "@project-sunbird/ext-framework-server/services";
 import * as os from "os";
 const startTime = Date.now();
-let envs = {};
+let envs: any = {};
 const windowIcon = path.join(__dirname, "build", "icons", "png", "512x512.png");
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -28,6 +28,7 @@ const expressApp = express();
 expressApp.use(bodyParser.json());
 let fileSDK = containerAPI.getFileSDKInstance("");
 let systemSDK = containerAPI.getSystemSDKInstance();
+let deviceSDK = containerAPI.getDeviceSdkInstance();
 
 const reloadUIOnFileChange = () => {
   const subject = new Subject<any>();
@@ -183,6 +184,7 @@ const initializeEnv = () => {
     rootOrgId = _.get(rootOrgObj, "result.response.content[0].rootOrgId");
     hashTagId = _.get(rootOrgObj, "result.response.content[0].hashTagId");
   }
+  deviceSDK.initialize({key: envs.APP_BASE_URL_TOKEN});
   process.env.ROOT_ORG_ID = rootOrgId || hashTagId;
   process.env.ROOT_ORG_HASH_TAG_ID = hashTagId;
   process.env.TELEMETRY_VALIDATION = app.isPackaged ? "false" : "true";
@@ -200,10 +202,11 @@ const initializeEnv = () => {
 
 // Crash reporter
 const startCrashReporter = async () => {
+  let apiKey = await deviceSDK.getToken(deviceId);
   crashReporter.start({
     productName: process.env.APP_NAME,
     companyName: process.env.APP_NAME,
-    submitURL: `${process.env.APP_BASE_URL}/api/desktop/v1/upload-crash-logs?eHVyhwSdt=${process.env.APP_BASE_URL_TOKEN}&deviceId=${deviceId}`,
+    submitURL: `${process.env.APP_BASE_URL}/api/desktop/v1/upload-crash-logs?eHVyhwSdt=${apiKey}&deviceId=${deviceId}`,
     uploadToServer: true
   });
 }
