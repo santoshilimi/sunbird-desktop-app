@@ -1,13 +1,63 @@
-import { containerAPI } from "OpenRAP/dist/api/index";
 import { app, BrowserWindow, dialog, crashReporter } from "electron";
-import { logger,logLevels, enableLogger } from '@project-sunbird/logger';
 import * as _ from "lodash";
 import * as path from "path";
 import * as fs from "fs";
 import * as fse from "fs-extra";
+import { frameworkConfig } from "./framework.config";
+const startTime = Date.now();
+let envs: any = {};
+//initialize the environment variables
+console.log('===============> initialize env called', process.env.DATABASE_PATH);
+const getFilesPath = () => {
+  return app.isPackaged
+    ? path.join(app.getPath("userData"), "." + envs["APP_NAME"])
+    : __dirname;
+};
+// set the env
+const initializeEnv = () => {
+  let rootOrgId, hashTagId;
+  if(app.isPackaged) {
+    envs = JSON.parse(new Buffer("ENV_STRING_TO_REPLACE", 'base64').toString('ascii')) // deployment step will replace the base64 string 
+    rootOrgId = "ROOT_ORG_ID";
+    hashTagId = "HASH_TAG_ID";
+  } else {
+    envs = JSON.parse(
+      fs.readFileSync(path.join(__dirname, "env.json"), { encoding: "utf-8" })
+    );
+    let rootOrgObj = JSON.parse(
+      fs.readFileSync(
+        path.join(
+          __dirname,
+          frameworkConfig.plugins[0].id,
+          "data",
+          "organizations",
+          `${envs["CHANNEL"]}.json`
+        ),
+        { encoding: "utf-8" }
+      )
+    );
+    
+    rootOrgId = _.get(rootOrgObj, "result.response.content[0].rootOrgId");
+    hashTagId = _.get(rootOrgObj, "result.response.content[0].hashTagId");
+  }
+  process.env.ROOT_ORG_ID = rootOrgId || hashTagId;
+  process.env.ROOT_ORG_HASH_TAG_ID = hashTagId;
+  process.env.TELEMETRY_VALIDATION = app.isPackaged ? "false" : "true";
+  process.env.APP_VERSION = app.getVersion();
+  _.forEach(envs, (value, key) => {
+    process.env[key] = value;
+  });
+  process.env.DATABASE_PATH = path.join(getFilesPath(), "database");
+  process.env.FILES_PATH = getFilesPath();
+  if (!fs.existsSync(process.env.DATABASE_PATH)) {
+    fse.ensureDirSync(process.env.DATABASE_PATH);
+  }
+};
+initializeEnv();
+import { containerAPI } from "OpenRAP/dist/api/index";
+import { logger,logLevels, enableLogger } from '@project-sunbird/logger';
 import { frameworkAPI } from "@project-sunbird/ext-framework-server/api";
 import { EventManager } from "@project-sunbird/ext-framework-server/managers/EventManager";
-import { frameworkConfig } from "./framework.config";
 import express from "express";
 import portscanner from "portscanner";
 import * as bodyParser from "body-parser";
@@ -15,21 +65,18 @@ import { Subject } from "rxjs";
 import { debounceTime } from "rxjs/operators";
 import { HTTPService } from "@project-sunbird/ext-framework-server/services";
 import * as os from "os";
-const startTime = Date.now();
-let envs: any = {};
 const windowIcon = path.join(__dirname, "build", "icons", "png", "512x512.png");
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let win: any;
 let appBaseUrl;
 let deviceId: string;
-
 const expressApp = express();
 expressApp.use(bodyParser.json());
 let fileSDK = containerAPI.getFileSDKInstance("");
 let systemSDK = containerAPI.getSystemSDKInstance();
 let deviceSDK = containerAPI.getDeviceSdkInstance();
-
+deviceSDK.initialize({key: envs.APP_BASE_URL_TOKEN});
 const reloadUIOnFileChange = () => {
   const subject = new Subject<any>();
   subject.pipe(debounceTime(2500)).subscribe(data => {
@@ -57,12 +104,10 @@ expressApp.use("/dialog/content/import", async (req, res) => {
   const filePaths = await importContent();
   res.send({ message: "SUCCESS", responseCode: "OK", filePaths });
 });
-
 expressApp.use("/dialog/telemetry/import", async (req, res) => {
   const filePaths = await importTelemetryFiles();
   res.send({ message: "SUCCESS", responseCode: "OK", filePaths });
 });
-
 const importTelemetryFiles = async () => {
   const {filePaths} = await dialog.showOpenDialog({
     properties: ["openFile", "multiSelections"],
@@ -73,7 +118,6 @@ const importTelemetryFiles = async () => {
   }
   return filePaths;
 };
-
 const makeTelemetryImportApiCall = async (telemetryFiles: Array<string>) => {
   if(_.isEmpty(telemetryFiles)){
     logger.error('Telemetry import api call error', 'Reason: makeTelemetryImportApiCall called with empty array');
@@ -97,7 +141,6 @@ const makeTelemetryImportApiCall = async (telemetryFiles: Array<string>) => {
       )
     );
 };
-
 const importContent = async () => {
   const {filePaths} = await dialog.showOpenDialog({
     properties: ["openFile", "multiSelections"],
@@ -108,7 +151,6 @@ const importContent = async () => {
   }
   return filePaths;
 };
-
 expressApp.use("/dialog/content/export", async (req, res) => {
   let destFolder = await showFileExplorer();
   if (destFolder && destFolder[0]) {
@@ -126,7 +168,6 @@ expressApp.use("/dialog/content/export", async (req, res) => {
       });
   }
 });
-
 expressApp.use("/dialog/telemetry/export", async (req, res) => {
   let destFolder = await showFileExplorer();
   if (destFolder && destFolder[0]) {
@@ -144,62 +185,12 @@ expressApp.use("/dialog/telemetry/export", async (req, res) => {
       });
   }
 });
-
 const showFileExplorer = async () => {
   const {filePaths} = await dialog.showOpenDialog({
     properties: ["openDirectory", "createDirectory"]
   });
   return filePaths;
 };
-
-const getFilesPath = () => {
-  return app.isPackaged
-    ? path.join(app.getPath("userData"), "." + envs["APP_NAME"])
-    : __dirname;
-};
-
-// set the env
-const initializeEnv = () => {
-  let rootOrgId, hashTagId;
-  if(app.isPackaged) {
-    envs = JSON.parse(new Buffer("ENV_STRING_TO_REPLACE", 'base64').toString('ascii')) // deployment step will replace the base64 string 
-    rootOrgId = "ROOT_ORG_ID";
-    hashTagId = "HASH_TAG_ID";
-  } else {
-    envs = JSON.parse(
-      fs.readFileSync(path.join(__dirname, "env.json"), { encoding: "utf-8" })
-    );
-    let rootOrgObj = JSON.parse(
-      fs.readFileSync(
-        path.join(
-          __dirname,
-          frameworkConfig.plugins[0].id,
-          "data",
-          "organizations",
-          `${envs["CHANNEL"]}.json`
-        ),
-        { encoding: "utf-8" }
-      )
-    );
-    rootOrgId = _.get(rootOrgObj, "result.response.content[0].rootOrgId");
-    hashTagId = _.get(rootOrgObj, "result.response.content[0].hashTagId");
-  }
-  deviceSDK.initialize({key: envs.APP_BASE_URL_TOKEN});
-  process.env.ROOT_ORG_ID = rootOrgId || hashTagId;
-  process.env.ROOT_ORG_HASH_TAG_ID = hashTagId;
-  process.env.TELEMETRY_VALIDATION = app.isPackaged ? "false" : "true";
-  process.env.APP_VERSION = app.getVersion();
-
-  _.forEach(envs, (value, key) => {
-    process.env[key] = value;
-  });
-  process.env.DATABASE_PATH = path.join(getFilesPath(), "database");
-  process.env.FILES_PATH = getFilesPath();
-  if (!fs.existsSync(process.env.DATABASE_PATH)) {
-    fse.ensureDirSync(process.env.DATABASE_PATH);
-  }
-};
-
 // Crash reporter
 const startCrashReporter = async () => {
   let apiKey = await deviceSDK.getToken(deviceId);
@@ -210,11 +201,9 @@ const startCrashReporter = async () => {
     uploadToServer: true
   });
 }
-
 const setDeviceId = async () => {
   deviceId = await systemSDK.getDeviceId();
 }
-
 const copyPluginsMetaData = async () => {
   if (app.isPackaged) {
     for (const plugin of frameworkConfig.plugins) {
@@ -225,13 +214,11 @@ const copyPluginsMetaData = async () => {
     }
   }
 };
-
 // get available port from range(9000-9100) and sets it to run th app
 const setAvailablePort = async () => {
   let port = await portscanner.findAPortNotInUse(9000, 9100);
   process.env.APPLICATION_PORT = port;
 };
-
 // Initialize ext framework
 const framework = async () => {
   const subApp = express();
@@ -251,7 +238,6 @@ const framework = async () => {
       });
   });
 };
-
 // start the express app to load in the main window
 const startApp = async () => {
   return new Promise((resolve, reject) => {
@@ -267,7 +253,6 @@ const startApp = async () => {
   });
 };
 // this will check whether all the plugins are initialized using event from each plugin which should emit '<pluginId>:initialized' event
-
 const checkPluginsInitialized = () => {
   //TODO: for now we are checking one plugin need to change once plugin count increases
   return new Promise(resolve => {
@@ -278,15 +263,18 @@ const checkPluginsInitialized = () => {
 };
 // start loading all the dependencies
 const bootstrapDependencies = async () => {
+  console.log("============> bootstrap started");
   await startCrashReporter();
   await copyPluginsMetaData();
+  console.log("============> copy plugin done");
   await setAvailablePort();
+  console.log("============> set avail port");
   await Promise.all([framework(), checkPluginsInitialized()]);
+  console.log("============> framework done");
   await containerAPI.bootstrap();
+  console.log("============> containerAPI bootstrap done");
   await startApp();
-
   //to handle the unexpected navigation to unknown route
-
   expressApp.all("*", (req, res) => res.redirect("/"));
 };
 async function initLogger() {
@@ -300,14 +288,13 @@ async function initLogger() {
     logLevel: logLevel,
     context: {src: 'desktop', did: deviceId},
     adopterConfig: {
-      adopter: 'winston'
+      adopter: 'console'
     }
   });
 }
 async function createWindow() {
-  //initialize the environment variables
-  initializeEnv();
   await initLogger();
+  console.log('=================> initLogger env done', process.env.DATABASE_PATH);
   //splash screen
   let splash = new BrowserWindow({
     width: 300,
@@ -321,11 +308,12 @@ async function createWindow() {
       enableRemoteModule: false
     },
   });
-
   splash.once("show", () => {
+    console.log('==========> splash screen shown env done', process.env.DATABASE_PATH);
     let telemetryInstance = containerAPI
       .getTelemetrySDKInstance()
       .getInstance();
+      console.log('==========> telemetry init');
     telemetryInstance.impression({
       context: {
         env: "home"
@@ -337,7 +325,6 @@ async function createWindow() {
         duration: (Date.now() - startTime) / 1000
       }
     });
-
     // Create the main window.
     win = new BrowserWindow({
       titleBarStyle: "hidden",
@@ -377,15 +364,14 @@ async function createWindow() {
       win.maximize();
       EventManager.emit("app:initialized", {})
     });
-
     // create admin for the database
     bootstrapDependencies()
       .then(() => {
+        console.log('=============> bootstrapDependencies done', process.env.DATABASE_PATH);
         appBaseUrl = `http://localhost:${process.env.APPLICATION_PORT}`;
         win.loadURL(appBaseUrl);
         win.focus();
         checkForOpenFile();
-
         // Open the DevTools.
         // win.webContents.openDevTools();
       })
@@ -404,7 +390,6 @@ async function createWindow() {
   splash.show();
   
 }
-
 let gotTheLock = app.requestSingleInstanceLock();
 if (!gotTheLock) {
   app.quit();
@@ -427,12 +412,10 @@ if (!gotTheLock) {
     }
   });
 }
-
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on("ready", createWindow);
-
 // Quit when all windows are closed.
 app.on("window-all-closed", () => {
   // On macOS it is common for applications and their menu bar
@@ -441,7 +424,6 @@ app.on("window-all-closed", () => {
     app.quit();
   }
 });
-
 app.on("activate", () => {
   // On macOS it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
@@ -449,16 +431,13 @@ app.on("activate", () => {
     createWindow();
   }
 });
-
 // below code is to handle the ecar file open event from different os's
-
 // to handle ecar file open in MAC OS
 app.on("open-file", (e, path) => {
   e.preventDefault();
   logger.info(`trying to open content with path ${path}`);
   checkForOpenFile([path]);
 });
-
 const makeImportApiCall = async (contents: Array<string>) => {
   if(_.isEmpty(contents)){
     logger.error('Content import api call error', 'Reason: makeImportApiCall called with empty array');
@@ -482,7 +461,6 @@ const makeImportApiCall = async (contents: Array<string>) => {
       )
     );
 };
-
 // to handle ecar file open in windows and linux
 const checkForOpenFile = (files?: string[]) => {
   let contents = files || process.argv;
