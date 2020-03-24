@@ -84,10 +84,6 @@
     "module": "es2015",
     "types": []
   },
-  // "include": [
-  //   "**/*.ts",
-  //   "app/modules/**/*.ts",
-  // ],
   "exclude": [
     "test.ts",
     "**/*.spec.ts",
