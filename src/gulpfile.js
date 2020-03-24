@@ -170,8 +170,7 @@ gulp.task('clean:build',  gulp.parallel("clean", "clean:node_modules"));
 
 gulp.task("build",  gulp.series(
   gulp.parallel("clean", "clean:portal"),
-   "app:dist",
-   "default",
+   "app:dist"
  ))
 
  gulp.task("build:copy-clean", gulp.series("build:resource:bundles", "clean:build"))
