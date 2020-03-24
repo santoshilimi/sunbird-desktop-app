@@ -12,7 +12,7 @@ import * as TreeModel from 'tree-model';
 import { environment } from '@sunbird/environment';
 import {
   ContentManagerService
-} from './../../../../../../projects/desktop/src/app/modules/offline/services/content-manager/content-manager.service';
+} from './../../../../../../src/app/modules/offline/services/content-manager/content-manager.service';
 import { DialCodeService } from '../../services/dial-code/dial-code.service';
 const treeModel = new TreeModel();
 
