@@ -9,9 +9,8 @@ cd client
 npm install
 npm run offline-prod 
 cd ..
-npm run build-copy-clean
-rm -rf client
-rm -rf resourcebundles
+npm run build-resource-bundles
+rm -rf temp client resourcebundles node_modules
 cd ..
 tar -czvf src.tar.gz src
 
