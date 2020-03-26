@@ -167,6 +167,7 @@ describe('LibraryComponent', () => {
   });
 
   it('should call fetchContents and return value', () => {
+    component.isBrowse = true;
     component.sections = [];
     spyOn(component, 'searchContent').and.returnValue(observableOf(response.searchResult1));
     component.fetchContents();
