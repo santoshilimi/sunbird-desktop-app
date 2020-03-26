@@ -5,7 +5,7 @@ import { IInteractEventEdata, IInteractEventObject } from '@sunbird/telemetry';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
 import { ConnectionService
-} from './../../../../../../projects/desktop/src/app/modules/offline/services/connection-service/connection.service';
+} from './../../../../../../src/app/modules/offline/services/connection-service/connection.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 

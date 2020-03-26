@@ -15,7 +15,7 @@ import { CacheService } from 'ng2-cache-service';
 import { environment } from '@sunbird/environment';
 import {
   ContentManagerService
-} from './../../../../../../../../projects/desktop/src/app/modules/offline/services/content-manager/content-manager.service';
+} from './../../../../../../../../src/app/modules/offline/services/content-manager/content-manager.service';
 
 @Component({
   templateUrl: './explore-content.component.html',

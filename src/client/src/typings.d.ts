@@ -17,7 +17,9 @@ declare module '*.json' {
 declare const EkTelemetry: any;
 declare const Fingerprint2: any;
 declare const iziToast: any;
-
+// declare const Fancytree: any;
+// declare const jQuery: any;
+// declare const $: any;
 
 interface JQuery {
   treePicker(options?: any);

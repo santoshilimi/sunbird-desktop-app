@@ -156,7 +156,7 @@
       }
     },
     "desktop": {
-      "root": "projects/desktop/",
+      "root": "",
       "sourceRoot": "",
       "projectType": "application",
       "prefix": "app",
@@ -166,10 +166,10 @@
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "outputPath": "../dist",
-            "index": "projects/desktop/src/index.html",
-            "main": "projects/desktop/src/main.ts",
-            "polyfills": "projects/desktop/src/polyfills.ts",
-            "tsConfig": "projects/desktop/tsconfig.app.json",
+            "index": "src/index.html",
+            "main": "src/main.ts",
+            "polyfills": "src/polyfills.ts",
+            "tsConfig": "src/tsconfig.app.json",
             "assets": [
               { "glob": "**/*", "input": "./src/assets", "output": "./assets" },
               {
@@ -204,8 +204,8 @@
             "production": {
               "fileReplacements": [
                 {
-                  "replace": "projects/desktop/src/environments/environment.ts",
-                  "with": "projects/desktop/src/environments/environment.prod.ts"
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
                 }
               ],
               "optimization": true,
@@ -247,10 +247,10 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "projects/desktop/src/test.ts",
-            "polyfills": "projects/desktop/src/polyfills.ts",
-            "tsConfig": "projects/desktop/tsconfig.spec.json",
-            "karmaConfig": "projects/desktop/karma.conf.js",
+            "main": "src/test.ts",
+            "polyfills": "src/polyfills.ts",
+            "tsConfig": "tsconfig.spec.json",
+            "karmaConfig": "karma.conf.js",
             "assets": [
               { "glob": "**/*", "input": "./src/assets", "output": "./assets" }
             ],
@@ -280,37 +280,9 @@
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "projects/desktop/tsconfig.app.json",
-              "projects/desktop/tsconfig.spec.json"
+              "tsconfig.app.json",
+              "tsconfig.spec.json"
             ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
-          }
-        }
-      }
-    },
-    "desktop-e2e": {
-      "root": "projects/desktop-e2e/",
-      "projectType": "application",
-      "prefix": "",
-      "architect": {
-        "e2e": {
-          "builder": "@angular-devkit/build-angular:protractor",
-          "options": {
-            "protractorConfig": "projects/desktop-e2e/protractor.conf.js",
-            "devServerTarget": "desktop:serve"
-          },
-          "configurations": {
-            "production": {
-              "devServerTarget": "desktop:serve:production"
-            }
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": "projects/desktop-e2e/tsconfig.e2e.json",
             "exclude": [
               "**/node_modules/**"
             ]
