@@ -185,6 +185,25 @@ expressApp.use("/dialog/telemetry/export", async (req, res) => {
       });
   }
 });
+
+expressApp.use("/dialog/content/location", async (req, res) => {
+  let destFolder = await showFileExplorer();
+  if (destFolder && destFolder[0]) {
+    res.send({
+      message: "SUCCESS",
+      responseCode: "OK",
+      destFolder: destFolder[0]
+    });
+  } else {
+    res
+      .status(400)
+      .send({
+        message: "Dest folder not selected",
+        responseCode: "NO_DEST_FOLDER"
+      });
+  }
+});
+
 const showFileExplorer = async () => {
   const {filePaths} = await dialog.showOpenDialog({
     properties: ["openDirectory", "createDirectory"]

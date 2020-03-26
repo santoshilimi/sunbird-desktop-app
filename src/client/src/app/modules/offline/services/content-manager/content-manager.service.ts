@@ -14,7 +14,7 @@ export class ContentManagerService {
   downloadContentId: string;
   failedContentName: string;
   downloadEvent = new EventEmitter();
-  downloadFailEvent = new EventEmitter();
+  downloadFailEvent = new EventEmitter<any>();
   downloadListEvent = new EventEmitter();
   completeEvent = new EventEmitter();
   deletedContent = new EventEmitter();
@@ -83,8 +83,17 @@ export class ContentManagerService {
         this.downloadEvent.emit('Download started');
       }),
       catchError((err) => {
-        if (err.error.params.err === 'LOW_DISK_SPACE') {
-          this.downloadFailEvent.emit(this.failedContentName);
+        if (err.params.err === 'LOW_DISK_SPACE') {
+          const popupInfo: any = {
+            failedContentName: this.failedContentName,
+          };
+
+          if (err.result.isWindows) {
+            popupInfo.isWindows = true;
+            popupInfo.suggestedDrive = err.result.suggestedDrive;
+          }
+
+          this.downloadFailEvent.emit(popupInfo);
         }
         return observableThrowError(err);
       }));

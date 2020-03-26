@@ -5,8 +5,11 @@
   </div>
 
   <div class="sb-modal-content flex-dc">
-    <p class="text-center fmedium import-content">
+    <p class="text-center fmedium import-content" *ngIf="!isChangeLocation">
       {{resourceService?.frmelmnts?.lbl?.desktop?.failedListLabel}}
+    </p>
+    <p class="text-center fmedium import-content" *ngIf="isChangeLocation">
+      Could not download or import file(s). Try changing the default content import/download location, suggesting {{suggestedDrive}} Drive.
     </p>
     <div class="custom-height">
     <div class="p-8 warning-ecar-list" *ngFor="let items of failedList">

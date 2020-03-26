@@ -33,4 +33,16 @@ export class ElectronDialogService extends DataService {
       console.log('error while telemetry import dialog box ', error);
     });
   }
+
+  showContentLocationChangePopup() {
+    const option = {
+      url: 'content/location'
+    };
+
+    this.post(option).subscribe(response => {
+      console.log('import dialog box opened', response);
+    }, error => {
+      console.log('error while showing import dialog box');
+    });
+  }
 }

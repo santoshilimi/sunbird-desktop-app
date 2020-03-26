@@ -28,6 +28,9 @@ export class ContentManagerComponent implements OnInit, OnDestroy {
   handledFailedList = [];
   unHandledFailedList = [];
   deletedContents: string [] = [];
+  isWindows: boolean;
+  suggestedDrive: string;
+
   constructor(public contentManagerService: ContentManagerService,
     public resourceService: ResourceService, public toasterService: ToasterService,
     public electronDialogService: ElectronDialogService,
@@ -60,8 +63,10 @@ export class ContentManagerComponent implements OnInit, OnDestroy {
 
       this.contentManagerService.downloadFailEvent
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(failedContentName => {
-        this.unHandledFailedList.push({name: failedContentName});
+      .subscribe(popupInfo => {
+        this.unHandledFailedList.push({name: popupInfo.failedContentName});
+        this.isWindows = popupInfo.isWindows;
+        this.suggestedDrive = popupInfo.suggestedDrive;
       });
   }
 
@@ -122,6 +127,10 @@ export class ContentManagerComponent implements OnInit, OnDestroy {
   closeModal() {
     this.handledFailedList.push(...this.unHandledFailedList);
     this.unHandledFailedList = [];
+
+    if (this.isWindows) {
+      this.electronDialogService.showContentLocationChangePopup();
+    }
   }
   contentManagerActions(type: string, action: string, id: string) {
     // Unique download/import Id
