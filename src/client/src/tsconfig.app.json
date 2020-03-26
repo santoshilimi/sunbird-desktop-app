@@ -69,7 +69,13 @@
         "app/modules/player-helper"
       ],
       "@sunbird/offline" : [
-        "./../projects/desktop/src/app/modules/offline"
+        "app/modules/offline"
+      ],
+      "@sunbird/user-profile": [
+        "app/modules/user-profile"
+      ],
+      "@sunbird/content-consumption": [
+        "app/modules/content-consumption"
       ],
       "@sunbird/content-search": [
         "app/modules/content-search"

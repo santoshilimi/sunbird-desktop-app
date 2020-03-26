@@ -1,60 +1,26 @@
 import { NgModule } from '@angular/core';
-import { ErrorPageComponent, AuthGuard } from '@sunbird/core';
+import { ErrorPageComponent } from '@sunbird/core';
 import { RouterModule, Routes } from '@angular/router';
+import { LibraryComponent } from './modules/offline';
+
 const appRoutes: Routes = [
   {
-    path: 'learn', loadChildren: 'app/modules/learn/learn.module#LearnModule'
+    path: '',
+    component: LibraryComponent
   },
   {
-    path: 'resources', loadChildren: 'app/modules/resource/resource.module#ResourceModule'
+      path: 'play', loadChildren: './modules/content-consumption/content-consumption.module#ContentConsumptionModule'
   },
   {
-    path: 'search', loadChildren: 'app/modules/search/search.module#SearchModule'
+      path: 'browse/play', loadChildren: './modules/content-consumption/content-consumption.module#ContentConsumptionModule'
   },
   {
-    path: 'workspace', loadChildren: 'app/modules/workspace/workspace.module#WorkspaceModule'
+    path: 'error',
+    component: ErrorPageComponent
   },
   {
-    path: 'contribute', loadChildren: 'app/modules/program/program.module#ProgramModule'
-  },
-  // {
-  //   path: 'home', loadChildren: 'app/modules/home/home.module#HomeModule'
-  // },
-  {
-    path: 'announcement', loadChildren: 'app/modules/announcement/announcement.module#AnnouncementModule'
-  },
-  {
-    path: 'org', loadChildren: 'app/modules/org-management/org-management.module#OrgManagementModule'
-  },
-  {
-    path: 'dashBoard', loadChildren: 'app/modules/dashboard/dashboard.module#DashboardModule'
-  },
-  {
-    path: 'profile', loadChildren: 'app/plugins/profile/profile.module#ProfileModule'
-  },
-  {
-    path: 'certs', loadChildren: 'app/modules/certificate/certificate.module#CertificateModule'
-  },
-  {
-    path: 'recover', loadChildren: 'app/modules/recover-account/recover-account.module#RecoverAccountModule'
-  },
-  {
-    path: 'accountMerge', loadChildren: 'app/modules/merge-account/merge-account.module#MergeAccountModule'
-  },
-  {
-    path: ':slug/get', loadChildren: 'app/modules/dial-code-search/dial-code-search.module#DialCodeSearchModule'
-  },
-  {
-    path: 'get', loadChildren: 'app/modules/dial-code-search/dial-code-search.module#DialCodeSearchModule'
-  },
-  {
-    path: '', loadChildren: 'app/modules/public/public.module#PublicModule'
-  },
-  {
-    path: 'error', component: ErrorPageComponent
-  },
-  {
-    path: '**', redirectTo: ''
+    path: '**',
+    redirectTo: ''
   }
 ];
 
