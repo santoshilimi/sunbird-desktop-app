@@ -215,6 +215,9 @@ export class LibraryComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.unsubscribe$))
             .subscribe(
                 ([searchRes, allDownloadsRes]) => {
+                    console.log(searchRes, 'searchRes');
+                    console.log(allDownloadsRes, 'allDownloadsRes');
+
                     if (searchRes) {
                         const filteredContents = _.omit(_.groupBy(searchRes['result'].content, 'subject'), ['undefined']);
                         // Check for multiple subjects
@@ -248,13 +251,13 @@ export class LibraryComponent implements OnInit, OnDestroy {
 
                         for (const section in filteredContents) {
                             if (section) {
-                                filteredContents[section].sort((a, b) => a.name.localeCompare(b.name));
                                 this.sections.push({
                                     name: section,
-                                    contents: filteredContents[section]
+                                    contents: filteredContents[section].sort((a, b) => a.name.localeCompare(b.name))
                                 });
                             }
                         }
+                        console.log( this.sections, ' this.sections');
 
                         this.carouselMasterData = this.prepareCarouselData(this.sections);
 
