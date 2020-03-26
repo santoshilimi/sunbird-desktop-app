@@ -248,6 +248,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
 
                         for (const section in filteredContents) {
                             if (section) {
+                                filteredContents[section].sort((a, b) => a.name.localeCompare(b.name));
                                 this.sections.push({
                                     name: section,
                                     contents: filteredContents[section]
