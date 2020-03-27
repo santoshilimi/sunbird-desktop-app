@@ -166,12 +166,9 @@ describe('LibraryComponent', () => {
   });
 
   it('should call fetchContents and return value', () => {
-    component.isBrowse = true;
-    component.sections = [];
-    spyOn(component, 'searchContent').and.returnValue(observableOf(response.searchResult1));
+    spyOn(component, 'searchContent').and.returnValue(observableOf(response.searchResult));
     component.fetchContents();
     expect(component.showLoader).toBeFalsy();
-    expect(component.sections).toEqual(response.sectionData);
   });
 
   it('should call fetchContents and return undefined', () => {
