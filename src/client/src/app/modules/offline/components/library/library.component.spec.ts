@@ -19,7 +19,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { of as observableOf, throwError } from 'rxjs';
 import { SharedModule } from '@sunbird/shared';
 import { ConnectionService } from '../../services';
-import { By } from '@angular/platform-browser';
 describe('LibraryComponent', () => {
   let component: LibraryComponent;
   let fixture: ComponentFixture<LibraryComponent>;
