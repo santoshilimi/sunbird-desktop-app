@@ -196,6 +196,15 @@ describe('LibraryComponent', () => {
     expect(component.constructSearchRequest).toHaveBeenCalledWith(false, true);
   });
 
+  it('should call fetchContents and and all downloads should be at the top(At the zero index)', () => {
+    fixture.detectChanges();
+   spyOn(component, 'searchContent').and.returnValue(observableOf(response.searchResult2));
+   fixture.whenStable().then(() => {
+    component.fetchContents();
+    expect(component.sections[0].name).toEqual(response.testSectionName[0].name);
+    });
+  });
+
   it('should call fetchContents and and sort the sections list', () => {
     fixture.detectChanges();
    spyOn(component, 'searchContent').and.returnValue(observableOf(response.searchResult2));
