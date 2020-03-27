@@ -9,7 +9,7 @@
       {{resourceService?.frmelmnts?.lbl?.desktop?.failedListLabel}}
     </p>
     <p class="text-center fmedium import-content" *ngIf="isChangeLocation">
-      Could not download or import file(s). Try changing the default content import/download location, suggesting {{suggestedDrive}} Drive.
+    {{resourceService?.frmelmnts?.messages?.etmsg?.changeContentLocationWarning | interpolate:'{suggestedDrive}': suggestedDrive }}
     </p>
     <div class="custom-height">
     <div class="p-8 warning-ecar-list" *ngFor="let items of failedList">

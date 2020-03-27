@@ -6,14 +6,14 @@ import { TestBed } from '@angular/core/testing';
 import { ConfigService, ToasterService, ResourceService, BrowserCacheTtlService } from '@sunbird/shared';
 import { PublicDataService } from '@sunbird/core';
 import { ContentManagerService } from './content-manager.service';
-import {  of as observableOf } from 'rxjs';
+import { of as observableOf, throwError } from 'rxjs';
 
 
 describe('ContentManagerService', () => {
   beforeEach(() => TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [ConfigService, ToasterService, ResourceService, ContentManagerService,
-        PublicDataService, CacheService, BrowserCacheTtlService]
+    imports: [HttpClientTestingModule],
+    providers: [ConfigService, ToasterService, ResourceService, ContentManagerService,
+      PublicDataService, CacheService, BrowserCacheTtlService]
   }));
 
   it('should make getalldownloads API call', () => {
@@ -33,7 +33,7 @@ describe('ContentManagerService', () => {
     expect(service).toBeTruthy();
     const params = {
       downloadContentId: '/do_312522408518803456214665',
-      request : {}
+      request: {}
     };
     spyOn(publicDataService, 'post').and.callFake(() => observableOf(response.downloadSuccess));
     const apiRes = service.startDownload(params);
@@ -54,7 +54,7 @@ describe('ContentManagerService', () => {
     const publicDataService = TestBed.get(PublicDataService);
     const params = {
       downloadContentId: '/do_312522408518803456214665',
-      request : {}
+      request: {}
     };
     spyOn(publicDataService, 'post').and.callFake(() => observableOf(response.downloadSuccess));
     const apiRes = service.startDownload(params);
@@ -63,12 +63,35 @@ describe('ContentManagerService', () => {
     });
   });
 
+  it('should show popup message on failure of download', () => {
+    const service: ContentManagerService = TestBed.get(ContentManagerService);
+    const publicDataService = TestBed.get(PublicDataService);
+    service.failedContentName = 'testContent';
+
+    const error = {
+      contentSize: 100,
+      currentDrive: "C",
+      suggestedDrive: "D",
+      isWindows: true,
+    };
+    spyOn(publicDataService, 'post').and.callFake(() => observableOf(throwError(error)));
+    service.startDownload({}).subscribe(res => {}, err => {
+      const popInfo = {
+        failedContentName: 'testContent',
+        isWindows: true,
+        suggestedDrive: 'D'
+      };
+      expect(err.params.err).toEqual('LOW_DISK_SPACE');
+      expect(service.downloadFailEvent.emit).toHaveBeenCalledWith(popInfo);
+    });
+  });
+
   it('Updating data should be successful', () => {
     const service: ContentManagerService = TestBed.get(ContentManagerService);
     const publicDataService = TestBed.get(PublicDataService);
     const params = {
       updateContentId: '/domain_66675',
-      request : {}
+      request: {}
     };
     spyOn(publicDataService, 'post').and.callFake(() => observableOf(response.content_update_success));
     const apiRes = service.updateContent(params);

@@ -1,7 +1,7 @@
 import { of as observableOf, throwError } from 'rxjs';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ContentManagerComponent } from './content-manager.component';
-import { ContentManagerService, ConnectionService } from '../../services';
+import { ContentManagerService, ConnectionService, ElectronDialogService } from '../../services';
 import { SuiModalModule, SuiProgressModule, SuiAccordionModule } from 'ng2-semantic-ui';
 import { SharedModule, ResourceService, ToasterService } from '@sunbird/shared';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -19,6 +19,7 @@ describe('ContentManagerComponent', () => {
   let fixture: ComponentFixture<ContentManagerComponent>;
   let connectionService: ConnectionService;
   let contentManagerService: ContentManagerService;
+  let electronDialogService: ElectronDialogService;
 
   const resourceMockData = {
     frmelmnts: {
@@ -35,7 +36,7 @@ describe('ContentManagerComponent', () => {
       imports: [SuiModalModule, SharedModule.forRoot(), SuiProgressModule, SuiAccordionModule, HttpClientTestingModule,
         RouterTestingModule, FileSizeModule, OrderModule, TelemetryModule],
       declarations: [ContentManagerComponent],
-      providers: [ContentManagerService, ConnectionService, TelemetryService, ToasterService,
+      providers: [ContentManagerService, ConnectionService, TelemetryService, ToasterService, ElectronDialogService,
         { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry }, { provide: ResourceService, useValue: resourceMockData }],
         schemas: [NO_ERRORS_SCHEMA]
     })
@@ -287,8 +288,12 @@ describe('ContentManagerComponent', () => {
   });
   it('should call close modal ', () => {
     component.handledFailedList = response.failedList;
-    spyOn(component, 'closeModal');
+    electronDialogService = TestBed.get(ElectronDialogService);
+    component.isWindows = true;
+    spyOn(electronDialogService, 'showContentLocationChangePopup');
+    component.closeModal();
     expect(component.unHandledFailedList).toEqual([]);
+    expect(electronDialogService.showContentLocationChangePopup).toHaveBeenCalled();
   });
 
   it('getContentStatus should return extract', () => {
