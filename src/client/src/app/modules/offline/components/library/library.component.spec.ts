@@ -19,7 +19,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { of as observableOf, throwError } from 'rxjs';
 import { SharedModule } from '@sunbird/shared';
 import { ConnectionService } from '../../services';
-
 describe('LibraryComponent', () => {
   let component: LibraryComponent;
   let fixture: ComponentFixture<LibraryComponent>;
@@ -195,5 +194,31 @@ describe('LibraryComponent', () => {
     component.onViewAllClick({});
     expect(router.navigate).toHaveBeenCalledWith(['view-all'], { queryParams });
     expect(component.constructSearchRequest).toHaveBeenCalledWith(false, true);
+  });
+
+  it('should call fetchContents and all downloads should be at the top(At the zero index)', () => {
+    fixture.detectChanges();
+   spyOn(component, 'searchContent').and.returnValue(observableOf(response.searchResult2));
+   fixture.whenStable().then(() => {
+    component.fetchContents();
+    expect(component.sections[0].name).toEqual(response.testSectionName[0].name);
+    });
+  });
+
+  it('should call fetchContents and sort the sections list', () => {
+    fixture.detectChanges();
+   spyOn(component, 'searchContent').and.returnValue(observableOf(response.searchResult2));
+   fixture.whenStable().then(() => {
+    component.fetchContents();
+    expect(component.sections[1].name).toEqual(response.testSectionName[1].name);
+    });
+  });
+  it('should call fetchContents and sort the sections Contents list', () => {
+    fixture.detectChanges();
+   spyOn(component, 'searchContent').and.returnValue(observableOf(response.searchResult2));
+   fixture.whenStable().then(() => {
+    component.fetchContents();
+    expect(component.sections[1].contents[0].name).toEqual(response.testSectionName[1].contents[0].name);
+    });
   });
 });

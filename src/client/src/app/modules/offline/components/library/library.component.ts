@@ -215,6 +215,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.unsubscribe$))
             .subscribe(
                 ([searchRes, allDownloadsRes]) => {
+
                     if (searchRes) {
                         const filteredContents = _.omit(_.groupBy(searchRes['result'].content, 'subject'), ['undefined']);
                         // Check for multiple subjects
@@ -238,7 +239,6 @@ export class LibraryComponent implements OnInit, OnDestroy {
                         } else {
                             this.sections = [];
                         }
-
                         if (allDownloadsRes) {
                             this.sections.push({
                                 contents: _.orderBy(_.get(allDownloadsRes, 'result.content'), ['desktopAppMetadata.updatedOn'], ['desc']),
@@ -246,17 +246,19 @@ export class LibraryComponent implements OnInit, OnDestroy {
                             });
                         }
 
+                        const contents = []; // to sort the contents/textbooks other than downloads
                         for (const section in filteredContents) {
                             if (section) {
-                                this.sections.push({
+                                contents.push({
                                     name: section,
-                                    contents: filteredContents[section]
+                                    contents: filteredContents[section].sort((a, b) => a.name.localeCompare(b.name))
                                 });
                             }
                         }
+                        // should not affect the download contents order(should be top)
+                        this.sections.push(...contents.sort((a, b) => a.name.localeCompare(b.name)));
 
                         this.carouselMasterData = this.prepareCarouselData(this.sections);
-
                         this.hideLoader();
                         if (!this.carouselMasterData.length) {
                             return; // no page section
