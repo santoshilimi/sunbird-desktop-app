@@ -239,7 +239,6 @@ export class LibraryComponent implements OnInit, OnDestroy {
                         } else {
                             this.sections = [];
                         }
-
                         if (allDownloadsRes) {
                             this.sections.push({
                                 contents: _.orderBy(_.get(allDownloadsRes, 'result.content'), ['desktopAppMetadata.updatedOn'], ['desc']),
@@ -247,15 +246,19 @@ export class LibraryComponent implements OnInit, OnDestroy {
                             });
                         }
 
+                        const array = []; // to sort the contents/textbooks other than downloads
                         for (const section in filteredContents) {
                             if (section) {
-                                this.sections.push({
+                                array.push({
                                     name: section,
                                     contents: filteredContents[section].sort((a, b) => a.name.localeCompare(b.name))
                                 });
                             }
                         }
-                        this.carouselMasterData = this.prepareCarouselData(_.orderBy(this.sections, ['name'], ['asc']));
+                        // should not affect the download contents order(should be top)
+                        this.sections.push(...array.sort((a, b) => a.name.localeCompare(b.name)));
+
+                        this.carouselMasterData = this.prepareCarouselData(this.sections);
                         this.hideLoader();
                         if (!this.carouselMasterData.length) {
                             return; // no page section

@@ -201,7 +201,7 @@ describe('LibraryComponent', () => {
    spyOn(component, 'searchContent').and.returnValue(observableOf(response.searchResult2));
    fixture.whenStable().then(() => {
     component.fetchContents();
-    expect(component.pageSections[0].name).toEqual(response.testSectionName[1].name);
+    expect(component.sections[1].name).toEqual(response.testSectionName[1].name);
     });
   });
   it('should call fetchContents and and sort the sections Contents list', () => {
@@ -209,7 +209,7 @@ describe('LibraryComponent', () => {
    spyOn(component, 'searchContent').and.returnValue(observableOf(response.searchResult2));
    fixture.whenStable().then(() => {
     component.fetchContents();
-    expect(component.pageSections[0].contents[0]['name']).toEqual(response.testSectionName[1].contents[0].name);
+    expect(component.sections[1].contents[0].name).toEqual(response.testSectionName[1].contents[0].name);
     });
   });
 });
