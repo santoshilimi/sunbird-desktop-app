@@ -196,7 +196,7 @@ describe('LibraryComponent', () => {
     expect(component.constructSearchRequest).toHaveBeenCalledWith(false, true);
   });
 
-  it('should call fetchContents and and all downloads should be at the top(At the zero index)', () => {
+  it('should call fetchContents and all downloads should be at the top(At the zero index)', () => {
     fixture.detectChanges();
    spyOn(component, 'searchContent').and.returnValue(observableOf(response.searchResult2));
    fixture.whenStable().then(() => {
@@ -205,7 +205,7 @@ describe('LibraryComponent', () => {
     });
   });
 
-  it('should call fetchContents and and sort the sections list', () => {
+  it('should call fetchContents and sort the sections list', () => {
     fixture.detectChanges();
    spyOn(component, 'searchContent').and.returnValue(observableOf(response.searchResult2));
    fixture.whenStable().then(() => {
@@ -213,7 +213,7 @@ describe('LibraryComponent', () => {
     expect(component.sections[1].name).toEqual(response.testSectionName[1].name);
     });
   });
-  it('should call fetchContents and and sort the sections Contents list', () => {
+  it('should call fetchContents and sort the sections Contents list', () => {
     fixture.detectChanges();
    spyOn(component, 'searchContent').and.returnValue(observableOf(response.searchResult2));
    fixture.whenStable().then(() => {
