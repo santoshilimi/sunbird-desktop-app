@@ -215,7 +215,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.unsubscribe$))
             .subscribe(
                 ([searchRes, allDownloadsRes]) => {
-                    
+
                     if (searchRes) {
                         const filteredContents = _.omit(_.groupBy(searchRes['result'].content, 'subject'), ['undefined']);
                         // Check for multiple subjects
@@ -255,9 +255,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
                                 });
                             }
                         }
-
-                        this.carouselMasterData = this.prepareCarouselData(this.sections);
-
+                        this.carouselMasterData = this.prepareCarouselData(_.orderBy(this.sections, ['name'], ['asc']));
                         this.hideLoader();
                         if (!this.carouselMasterData.length) {
                             return; // no page section

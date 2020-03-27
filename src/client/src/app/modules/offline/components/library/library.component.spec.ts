@@ -19,7 +19,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { of as observableOf, throwError } from 'rxjs';
 import { SharedModule } from '@sunbird/shared';
 import { ConnectionService } from '../../services';
-
+import { By } from '@angular/platform-browser';
 describe('LibraryComponent', () => {
   let component: LibraryComponent;
   let fixture: ComponentFixture<LibraryComponent>;
@@ -198,5 +198,22 @@ describe('LibraryComponent', () => {
     component.onViewAllClick({});
     expect(router.navigate).toHaveBeenCalledWith(['view-all'], { queryParams });
     expect(component.constructSearchRequest).toHaveBeenCalledWith(false, true);
+  });
+
+  it('should call fetchContents and and sort the sections list', () => {
+    fixture.detectChanges();
+   spyOn(component, 'searchContent').and.returnValue(observableOf(response.searchResult2));
+   fixture.whenStable().then(() => {
+    component.fetchContents();
+    expect(component.pageSections[0].name).toEqual(response.testSectionName[1].name);
+    });
+  });
+  it('should call fetchContents and and sort the sections Contents list', () => {
+    fixture.detectChanges();
+   spyOn(component, 'searchContent').and.returnValue(observableOf(response.searchResult2));
+   fixture.whenStable().then(() => {
+    component.fetchContents();
+    expect(component.pageSections[0].contents[0]['name']).toEqual(response.testSectionName[1].contents[0].name);
+    });
   });
 });
