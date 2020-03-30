@@ -36,7 +36,7 @@ export class ElectronDialogService extends DataService {
 
   showContentLocationChangePopup() {
     const option = {
-      url: 'content/location'
+      url: this.configService.urlConFig.URLS.ELECTRON_DIALOG.CONTENT_SUGGEST_LOCATION
     };
 
     this.post(option).subscribe(response => {

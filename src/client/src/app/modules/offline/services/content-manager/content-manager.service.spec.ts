@@ -63,29 +63,6 @@ describe('ContentManagerService', () => {
     });
   });
 
-  it('should show popup message on failure of download', () => {
-    const service: ContentManagerService = TestBed.get(ContentManagerService);
-    const publicDataService = TestBed.get(PublicDataService);
-    service.failedContentName = 'testContent';
-
-    const error = {
-      contentSize: 100,
-      currentDrive: "C",
-      suggestedDrive: "D",
-      isWindows: true,
-    };
-    spyOn(publicDataService, 'post').and.callFake(() => observableOf(throwError(error)));
-    service.startDownload({}).subscribe(res => {}, err => {
-      const popInfo = {
-        failedContentName: 'testContent',
-        isWindows: true,
-        suggestedDrive: 'D'
-      };
-      expect(err.params.err).toEqual('LOW_DISK_SPACE');
-      expect(service.downloadFailEvent.emit).toHaveBeenCalledWith(popInfo);
-    });
-  });
-
   it('Updating data should be successful', () => {
     const service: ContentManagerService = TestBed.get(ContentManagerService);
     const publicDataService = TestBed.get(PublicDataService);
@@ -106,6 +83,9 @@ describe('ContentManagerService', () => {
     spyOn(publicDataService, 'post').and.callFake(() => observableOf({}));
     const apiRes = service.resumeImportContent('do_312522408518803456214665');
     expect(publicDataService.post).toHaveBeenCalled();
+    publicDataService.post({}).subscribe(responseData => {
+      expect(responseData).toBeTruthy();
+    });
   });
 
   it('should call cancelImportContent', () => {
@@ -162,5 +142,28 @@ describe('ContentManagerService', () => {
     spyOn(publicDataService, 'post').and.callFake(() => observableOf({}));
     const apiRes = service.retryDownloadContent('do_312522408518803456214665');
     expect(publicDataService.post).toHaveBeenCalled();
+  });
+
+  it('should show popup message on failure of download', () => {
+    const service: ContentManagerService = TestBed.get(ContentManagerService);
+    const publicDataService = TestBed.get(PublicDataService);
+    service.failedContentName = 'testContent';
+
+    const error = {
+      contentSize: 100,
+      currentDrive: "C",
+      suggestedDrive: "D",
+      isWindows: true,
+    };
+    spyOn(publicDataService, 'post').and.callFake(() => observableOf(throwError(error)));
+    service.startDownload({}).subscribe(res => {}, (err: any) => {
+      const popInfo = {
+        failedContentName: 'testContent',
+        isWindows: true,
+        suggestedDrive: 'D'
+      };
+      expect(err.params.err).toEqual('LOW_DISK_SPACE');
+      expect(service.downloadFailEvent.emit).toHaveBeenCalledWith(popInfo);
+    });
   });
 });

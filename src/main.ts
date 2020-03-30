@@ -186,7 +186,7 @@ expressApp.use("/dialog/telemetry/export", async (req, res) => {
   }
 });
 
-expressApp.use("/dialog/content/location", async (req, res) => {
+expressApp.use("/dialog/content/suggestLocation", async (req, res) => {
   let destFolder = await showFileExplorer();
   if (destFolder && destFolder[0]) {
     res.send({

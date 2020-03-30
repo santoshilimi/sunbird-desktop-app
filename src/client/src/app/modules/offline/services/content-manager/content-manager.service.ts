@@ -5,6 +5,7 @@ import { PublicDataService } from '@sunbird/core';
 import { throwError as observableThrowError, BehaviorSubject } from 'rxjs';
 import { catchError, map, mergeMap, tap } from 'rxjs/operators';
 import * as _ from 'lodash-es';
+import { SystemInfoService } from '../system-info/system-info.service';
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +25,9 @@ export class ContentManagerService {
 
   constructor(private configService: ConfigService, private publicDataService: PublicDataService,
     public toasterService: ToasterService, public resourceService: ResourceService,
-    private electronDialogService: ElectronDialogService) { }
+    private electronDialogService: ElectronDialogService,
+    private systemInfoService: SystemInfoService
+  ) { }
 
   updateContentDownloadStatus(contentDownloadList) {
     this.contentDownloadStatus = {};
@@ -82,16 +85,29 @@ export class ContentManagerService {
         this.toasterService.info(this.resourceService.messages.smsg.m0053);
         this.downloadEvent.emit('Download started');
       }),
-      catchError((err) => {
+      catchError((err: any) => {
         if (err.params.err === 'LOW_DISK_SPACE') {
           const popupInfo: any = {
             failedContentName: this.failedContentName,
           };
 
-          if (err.result.isWindows) {
-            popupInfo.isWindows = true;
-            popupInfo.suggestedDrive = err.result.suggestedDrive;
-          }
+          this.systemInfoService.getSystemInfo().subscribe((info: any) => {
+
+            // Check if the system is Windows
+            if (info.platform === 'win32') {
+              popupInfo.isWindows = true;
+              const getAvailableSpace = (drive: any) => drive.size - drive.used;
+              const suggestedDrive = data.reduce((prev, current) => {
+                return (getAvailableSpace(prev) > getAvailableSpace(current)) ? prev : current;
+              });
+
+              if (suggestedDrive) {
+                popupInfo.suggestedDrive = suggestedDrive;
+              }
+            }
+          }, error => {
+            console.error('Error while fetching system Info');
+          });
 
           this.downloadFailEvent.emit(popupInfo);
         }

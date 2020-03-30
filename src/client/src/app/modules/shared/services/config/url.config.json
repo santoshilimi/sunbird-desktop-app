@@ -227,7 +227,8 @@
       "CONTENT_IMPORT": "content/import",
       "CONTENT_EXPORT": "content/export",
       "TELEMETRY_EXPORT": "telemetry/export",
-      "TELEMETRY_IMPORT": "telemetry/import"
+      "TELEMETRY_IMPORT": "telemetry/import",
+      "CONTENT_SUGGEST_LOCATION":"content/suggestLocation"
     },
     "CONTRIBUTION_PROGRAMS":{
       "SEARCH": "program/v1/search"
