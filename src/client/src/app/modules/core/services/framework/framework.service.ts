@@ -118,4 +118,16 @@ export class FrameworkService {
     return _.get(this._channelData, 'defaultLicense');
   }
 
+  getSortedFilters(filters, type) {
+    let sortedFilters;
+    if (type === 'gradeLevel' || _.lowerCase(type) === 'class') {
+      const isIndexPresent = _.find(filters, 'index');
+      // tslint:disable-next-line:radix
+      sortedFilters = isIndexPresent ? _.sortBy(filters, 'index') : _.sortBy(filters, (o) => parseInt((o.name).split(' ')[1]));
+    } else {
+      sortedFilters = _.sortBy(filters, 'name');
+    }
+    return sortedFilters;
+  }
+
 }
