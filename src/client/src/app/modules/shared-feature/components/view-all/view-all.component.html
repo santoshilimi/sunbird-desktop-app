@@ -91,7 +91,6 @@
     </div>
     <!--/Actions-->
 </sui-modal>
-<app-batch-info *ngIf="showBatchInfo" [enrolledBatchInfo]="selectedCourseBatches" (modelClose)="showBatchInfo = false"></app-batch-info>
 
 <sui-dimmer *ngIf="isOffline" class="page offline content" [isDimmed]="showExportLoader" [isClickable]="false">
     <div class="ui active centered inline loader"></div>

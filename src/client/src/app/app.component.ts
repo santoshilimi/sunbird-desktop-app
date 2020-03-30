@@ -9,7 +9,6 @@ import { Component, HostListener, OnInit, Inject, OnDestroy } from '@angular/cor
 import { UserService, PermissionService, CoursesService, TenantService, OrgDetailsService, DeviceRegisterService,
   SessionExpiryInterceptor } from '@sunbird/core';
 import * as _ from 'lodash-es';
-import { ProfileService } from '@sunbird/profile';
 import { Observable, of, combineLatest, BehaviorSubject } from 'rxjs';
 import { first, filter, mergeMap, tap, map, skipWhile, startWith, catchError } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
@@ -82,7 +81,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private telemetryService: TelemetryService, public router: Router, private configService: ConfigService,
     private orgDetailsService: OrgDetailsService, private activatedRoute: ActivatedRoute,
     private connectionService: ConnectionService,
-    private profileService: ProfileService, private toasterService: ToasterService, public utilService: UtilService,
+     private toasterService: ToasterService, public utilService: UtilService,
     @Inject(DOCUMENT) private _document: any, public sessionExpiryInterceptor: SessionExpiryInterceptor,
     private shepherdService: ShepherdService, public onboardingService: OnboardingService) {
       this.instance = (<HTMLInputElement>document.getElementById('instance'))

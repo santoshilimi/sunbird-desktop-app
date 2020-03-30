@@ -13,7 +13,6 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import * as _ from 'lodash-es';
-import { ProfileService } from '@sunbird/profile';
 import { CacheService } from 'ng2-cache-service';
 import { animate, AnimationBuilder, AnimationMetadata, AnimationPlayer, style } from '@angular/animations';
 
@@ -57,7 +56,7 @@ describe('AppComponent', () => {
         { provide: ActivatedRoute, useValue: fakeActivatedRoute },
         ToasterService, TenantService, CacheService, AnimationBuilder,
         UserService, ConfigService, LearnerService, BrowserCacheTtlService,
-        PermissionService,  CoursesService, OrgDetailsService, ProfileService,
+        PermissionService,  CoursesService, OrgDetailsService,
         TelemetryService, { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry }, SearchService, ConnectionService,
          ContentService, OnboardingService],
       schemas: [NO_ERRORS_SCHEMA]
