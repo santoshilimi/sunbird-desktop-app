@@ -6,8 +6,7 @@ import {
   NavigationHelperService, ConfigService, BrowserCacheTtlService
 } from '@sunbird/shared';
 import { Component, HostListener, OnInit, Inject, OnDestroy } from '@angular/core';
-import { UserService, PermissionService, CoursesService, TenantService, OrgDetailsService, DeviceRegisterService,
-  SessionExpiryInterceptor } from '@sunbird/core';
+import { UserService, PermissionService, CoursesService, TenantService, OrgDetailsService, DeviceRegisterService } from '@sunbird/core';
 import * as _ from 'lodash-es';
 import { Observable, of, combineLatest, BehaviorSubject } from 'rxjs';
 import { first, filter, mergeMap, tap, map, skipWhile, startWith, catchError } from 'rxjs/operators';
@@ -82,7 +81,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private orgDetailsService: OrgDetailsService, private activatedRoute: ActivatedRoute,
     private connectionService: ConnectionService,
      private toasterService: ToasterService, public utilService: UtilService,
-    @Inject(DOCUMENT) private _document: any, public sessionExpiryInterceptor: SessionExpiryInterceptor,
+    @Inject(DOCUMENT) private _document: any,
     private shepherdService: ShepherdService, public onboardingService: OnboardingService) {
       this.instance = (<HTMLInputElement>document.getElementById('instance'))
         ? (<HTMLInputElement>document.getElementById('instance')).value : 'sunbird';

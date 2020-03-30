@@ -10,7 +10,6 @@ import { environment } from '@sunbird/environment';
   templateUrl: './qr-code-modal.component.html'
 })
 export class QrCodeModalComponent implements OnInit {
-  isOffline: boolean = environment.isOffline;
   @ViewChild('modal') modal;
   @Output() closeQrModal = new EventEmitter<any>();
   instance: string;
@@ -27,7 +26,7 @@ export class QrCodeModalComponent implements OnInit {
     this.closeDialCodeInteractEdata = {
       id: 'close-dial-code',
       type: 'click',
-      pageid: this.isOffline ? 'dial-code' : 'explore'
+      pageid: 'dial-code'
     };
   }
 

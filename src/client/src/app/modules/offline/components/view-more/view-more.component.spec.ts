@@ -1,3 +1,4 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ViewMoreComponent } from './view-more.component';
@@ -10,7 +11,6 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { of, throwError } from 'rxjs';
 import { ConnectionService } from '../../services';
 import { visitsEvent, contentList, appConfigViewAll } from './view-more.component.data.spec';
-import { Location } from '@angular/common';
 import { filters } from '../search/search.component.data.spec';
 import { PublicPlayerService } from '@sunbird/public';
 
@@ -56,7 +56,8 @@ describe('ViewMoreComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ViewMoreComponent],
-      imports: [RouterModule.forRoot([]), CommonConsumptionModule, TelemetryModule.forRoot(), SharedModule.forRoot(), CoreModule],
+      imports: [RouterModule.forRoot([]), CommonConsumptionModule, TelemetryModule.forRoot(), SharedModule.forRoot(), CoreModule,
+      HttpClientTestingModule],
       providers: [OrgDetailsService, SearchService, UtilService, ConnectionService, NavigationHelperService,
         { provide: ResourceService, useValue: resourceBundle },
         { provide: ActivatedRoute, useClass: MockActivatedRoute }],
