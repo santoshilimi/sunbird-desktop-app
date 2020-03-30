@@ -1,9 +1,10 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { formatedFilterDetails, frameworkDetails } from './search-prominent-filter.component.spec.data';
 import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 
 import { SearchProminentFilterComponent } from './search-prominent-filter.component';
 import { CoreModule, FrameworkService, PublicDataService, FormService, OrgDetailsService } from '@sunbird/core';
-import { SharedModule, ConfigService, ResourceService, BrowserCacheTtlService, UtilService } from '@sunbird/shared';
+import { SharedModule, ConfigService, ResourceService, BrowserCacheTtlService, UtilService, ToasterService } from '@sunbird/shared';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { RouterModule, ActivatedRoute } from '@angular/router';
 import { SuiModule } from 'ng2-semantic-ui';
@@ -38,7 +39,9 @@ describe('SearchProminentFilterComponent', () => {
                 TelemetryModule,
                 RouterModule.forRoot([]),
                 SuiModule,
-                TelemetryModule.forRoot()],
+                TelemetryModule.forRoot(),
+                HttpClientTestingModule
+            ],
             providers: [
                 ResourceService,
                 BrowserCacheTtlService,
@@ -48,6 +51,7 @@ describe('SearchProminentFilterComponent', () => {
                 PublicDataService,
                 FormService,
                 OrgDetailsService,
+                ToasterService,
                 { provide: ActivatedRoute, useValue: fakeActivatedRoute },
             ]
         })

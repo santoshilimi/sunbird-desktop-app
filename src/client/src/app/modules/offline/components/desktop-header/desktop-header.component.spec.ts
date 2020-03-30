@@ -1,3 +1,4 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { DesktopHeaderComponent } from './desktop-header.component';
 import { FormService, TenantService, CoreModule, OrgDetailsService } from '@sunbird/core';
@@ -16,7 +17,8 @@ describe('DesktopHeaderComponent', () => {
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             declarations: [DesktopHeaderComponent],
-            imports: [SharedModule.forRoot(), CommonConsumptionModule, FormsModule, RouterModule.forRoot([]), CoreModule],
+            imports: [SharedModule.forRoot(), CommonConsumptionModule, FormsModule, RouterModule.forRoot([]), CoreModule,
+             HttpClientTestingModule],
             providers: [ConfigService, ResourceService, TenantService, FormService, OrgDetailsService,
                 BrowserCacheTtlService, TelemetryService, UtilService],
             schemas: [CUSTOM_ELEMENTS_SCHEMA]
