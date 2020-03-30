@@ -42,7 +42,7 @@ import { HighlightTextDirective } from './directives/highlight-text/highlight-te
   exports: [AppLoaderComponent, AnnouncementInboxCardComponent, DateFormatPipe, DateFilterXtimeAgoPipe,
     PageSectionComponent, BatchCardComponent, NoResultComponent, CardComponent, OfflineCardComponent, CardCreationComponent, FilterPipe,
     ShareLinkComponent, BrowserCompatibilityComponent, QrCodeModalComponent, CdnprefixPipe, InterpolatePipe, RedirectComponent,
-    CustomMultiSelectComponent, InstallAppComponent, LockInfoPopupComponent, ContentDirectionDirective, HighlightTextDirective, 
+    CustomMultiSelectComponent, InstallAppComponent, LockInfoPopupComponent, ContentDirectionDirective, HighlightTextDirective,
     FullPageModalComponent, AccountMergeModalComponent]
 })
 export class SharedModule {
