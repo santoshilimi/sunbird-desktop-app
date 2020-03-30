@@ -1,8 +1,16 @@
 <div class="content-video">
+           <div class="video-close-btn" (click)="handleFullScreen()" *ngIf="isFullScreenMode">
+        <i class="icon-svg icon-svg--xxs icon-close">
+          <svg class="icon icon-svg--primary">
+            <use xlink:href="assets/images/sprite.svg#close-button"></use>
+          </svg>
+        </i>
+      </div>
+      
   <section class="content-video__player" id="player-area-height">
     <div class="aspectratio" data-ratio="16:9" id="help-video-aspect-ratio" #aspectRatio>
       <div>
-        <iframe #contentIframe id="contentPlayer" class="contentViewerIframeShadow br-4" name="contentPlayer"></iframe>
+        <iframe #contentIframe id="contentPlayer" [ngClass]="{'player-fullscreen': isFullScreenMode === true}" class="contentViewerIframeShadow br-4" name="contentPlayer"></iframe>
       </div>
  
       <!--If Content is deleted-->
@@ -42,7 +50,7 @@
   
     </div>
   
-      <app-content-actions *ngIf="contentData" [contentData]="contentData" (contentDownloaded)="checkContentDownloading($event)" [objectRollUp]="objectRollUp"></app-content-actions>
+      <app-content-actions *ngIf="contentData" (contentFullScreen)="handleFullScreen()" [contentData]="contentData" (contentDownloaded)="checkContentDownloading($event)" [objectRollUp]="objectRollUp"></app-content-actions>
   
     </section>
   </div>

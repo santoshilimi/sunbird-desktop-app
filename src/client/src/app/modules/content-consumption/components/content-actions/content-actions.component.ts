@@ -18,7 +18,8 @@ export class ContentActionsComponent implements OnInit, OnChanges {
   @Input() contentData;
   @Input() showUpdate;
   @Output() contentDownloaded = new EventEmitter();
-  actionButtons = actionButtons;
+  @Output() contentFullScreen = new EventEmitter();
+  actionButtons;
   contentRatingModal = false;
   contentId;
   collectionId;
@@ -45,6 +46,7 @@ export class ContentActionsComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnInit() {
+    this.actionButtons = _.cloneDeep(actionButtons);
     this.collectionId = _.get(this.activatedRoute.snapshot.params, 'collectionId');
     this.checkOnlineStatus();
     this.contentManagerService.contentDownloadStatus$.pipe(takeUntil(this.unsubscribe$)).subscribe( contentDownloadStatus => {
@@ -90,6 +92,9 @@ export class ContentActionsComponent implements OnInit, OnChanges {
     };
 
     _.forEach(this.actionButtons, data => {
+      console.log('data.name', data.name);
+      console.log('data.label', data.label);
+
       const disableButton = ['Download', 'Failed', 'Canceled', 'Cancel'];
       if (data.name === 'download') {
         const contentStatus = status[this.contentDownloadStatus[this.contentData.identifier]];
@@ -103,6 +108,9 @@ export class ContentActionsComponent implements OnInit, OnChanges {
         data.label = _.capitalize(data.name);
         data.disabled =
         !(_.has(this.contentData, 'desktopAppMetadata') && _.get(this.contentData, 'desktopAppMetadata.updateAvailable'));
+      } else if ( data.name === 'fullscreen') {
+        data.disabled = false;
+        data.label = 'Full screen';
       } else if (data.name !== 'rate') {
         const downloaded = _.find(this.actionButtons, {name: 'download'});
         data.label = _.capitalize(data.name);
@@ -146,6 +154,10 @@ export class ContentActionsComponent implements OnInit, OnChanges {
         this.exportContent(content);
         this.logTelemetry('share-content', content);
         break;
+        case 'FULLSCREEN':
+            this.contentFullScreen.emit('fullscreen');
+          this.logTelemetry('fullscreen-content', content);
+          break;
     }
   }
 
