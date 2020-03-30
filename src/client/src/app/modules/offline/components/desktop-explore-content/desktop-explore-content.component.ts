@@ -6,12 +6,11 @@ import { takeUntil } from 'rxjs/operators';
 
 import {
   ResourceService, ConfigService, ToasterService, INoResultMessage,
-  ILoaderMessage, UtilService, PaginationService, NavigationHelperService, OfflineCardService
+  ILoaderMessage, UtilService, PaginationService, NavigationHelperService, OfflineCardService, IPagination
 } from '@sunbird/shared';
 import { PublicPlayerService } from '@sunbird/public';
 import { Location } from '@angular/common';
 import { SearchService, OrgDetailsService, FrameworkService } from '@sunbird/core';
-import { IPagination } from '@sunbird/announcement';
 import { ConnectionService, ContentManagerService } from '../../services';
 import { IInteractEventEdata, IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 
