@@ -70,10 +70,6 @@ describe('UpdateContentPreferenceComponent', () => {
     // fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should call createContentPreferenceForm method', () => {
     spyOn(component, 'createContentPreferenceForm');
     spyOn(component, 'getCustodianOrg');
