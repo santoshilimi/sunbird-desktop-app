@@ -463,7 +463,36 @@ export const user_content_preferences_Data = {
 
             'identifier': '9783dc11-206c-4a3e-917a-cf4853ce23a2'
         }
-    }
+    },
+    sortedBoard: [
+        {
+          'identifier': 'as_k-12',
+          'name': 'State (Test)',
+          'objectType': 'Framework',
+          'relation': 'hasSequenceMember',
+          'description': 'as_k-12 Test',
+          'index': 3,
+          'status': 'Live'
+        },
+        {
+          'identifier': 'ka_k-12',
+          'name': 'State (Test 1)',
+          'objectType': 'Framework',
+          'relation': 'hasSequenceMember',
+          'description': 'State (Test 1)',
+          'index': 13,
+          'status': 'Live'
+        },
+        {
+          'identifier': 'ch_k-12',
+          'name': 'State (Test 2)',
+          'objectType': 'Framework',
+          'relation': 'hasSequenceMember',
+          'description': 'State (Test 2)',
+          'index': 5,
+          'status': 'Live'
+        }
+      ]
 
 };
 
