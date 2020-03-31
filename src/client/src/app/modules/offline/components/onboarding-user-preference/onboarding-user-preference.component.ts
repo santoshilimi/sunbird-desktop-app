@@ -49,7 +49,8 @@ export class OnboardingUserPreferenceComponent implements OnInit {
 
   readChannel(custodianOrgId) {
     this.channelService.getFrameWork(custodianOrgId).subscribe(data => {
-      this.boardOption = _.sortBy(_.get(data, 'result.channel.frameworks'), 'index');
+      this.boardOption = this.frameworkService.getSortedFilters(_.get(data, 'result.channel.frameworks'), 'board');
+
     }, err => {
       this.toasterService.error(this.resourceService.messages.emsg.m0005);
     });
@@ -69,7 +70,8 @@ export class OnboardingUserPreferenceComponent implements OnInit {
         const board = _.find(this.frameworkCategories, (element) => {
           return element.code === 'board';
         });
-        this.mediumOption = this.onboardingService.getAssociationData(board.terms, 'medium', this.frameworkCategories);
+       this.mediumOption = this.frameworkService.getSortedFilters(this.onboardingService.getAssociationData(board.terms,
+          'medium', this.frameworkCategories), 'medium');
         this.showMedium = true;
       }
     }, err => {
@@ -82,7 +84,8 @@ export class OnboardingUserPreferenceComponent implements OnInit {
   onMediumChange(mediumData) {
     this.classOption = [];
     this.selectedClass = '';
-    this.classOption = this.onboardingService.getAssociationData(mediumData, 'gradeLevel', this.frameworkCategories);
+    this.classOption = this.frameworkService.getSortedFilters(this.onboardingService.getAssociationData(mediumData,
+      'gradeLevel', this.frameworkCategories), 'gradeLevel');
     this.showClass = _.isEmpty(mediumData) ? false : true;
     this.selectedMedium = mediumData;
     this.disableContinueBtn = _.isEmpty(this.selectedMedium) || _.isEmpty(this.selectedClass) ? true : false;

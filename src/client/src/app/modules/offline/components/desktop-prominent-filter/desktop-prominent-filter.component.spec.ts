@@ -1,5 +1,6 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { formatedFilterDetails, frameworkDetails, facetData } from './desktop-prominent-filter.component.spec.data';
+import { formatedFilterDetails, frameworkDetails,
+    facetData, sortedGrade, sortedMedium } from './desktop-prominent-filter.component.spec.data';
 import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 
 import { DesktopProminentFilterComponent } from './desktop-prominent-filter.component';
@@ -10,6 +11,7 @@ import { RouterModule, ActivatedRoute } from '@angular/router';
 import { SuiModule } from 'ng2-semantic-ui';
 
 import { of, throwError } from 'rxjs';
+import { HttpClientModule } from '@angular/common/http';
 describe('DesktopProminentFilterComponent', () => {
     let component: DesktopProminentFilterComponent;
     let fixture: ComponentFixture<DesktopProminentFilterComponent>;
@@ -40,7 +42,8 @@ describe('DesktopProminentFilterComponent', () => {
                 RouterModule.forRoot([]),
                 SuiModule,
                 TelemetryModule.forRoot(),
-                HttpClientTestingModule
+                HttpClientTestingModule,
+                HttpClientModule
             ],
             providers: [
                 ResourceService,
@@ -255,13 +258,22 @@ describe('DesktopProminentFilterComponent', () => {
         expect(component.unsubscribe$.complete).toHaveBeenCalled();
     });
 
-    it('should get getFilteredFacets ', () => {
+    it('should get getFilteredFacets for gradeLevel', () => {
+        spyOn(component.frameworkService, 'getSortedFilters').and.returnValue(sortedGrade);
         component.formFieldProperties = formatedFilterDetails;
         component.filterData = facetData;
-        const filteredData = (facetData[0].values).map(data => ({name:  data.name}));
-        const classFilter = (facetData[2].values).map(data => ({name:  data.name}));
         component.getFilteredFacets();
-        expect(component.formFieldProperties[0].range[0].name).toEqual(filteredData[0].name);
-        expect(component.formFieldProperties[2].range[0].name).toEqual(classFilter[0].name);
+        expect(component.frameworkService.getSortedFilters).toHaveBeenCalledWith(facetData[2].values, 'gradeLevel');
+        expect(component.formFieldProperties[2].range[0].name).toEqual(sortedGrade[0].name);
     });
+
+    it('should get getFilteredFacets for medium', () => {
+        spyOn(component.frameworkService, 'getSortedFilters').and.returnValue(sortedGrade);
+        component.formFieldProperties = formatedFilterDetails;
+        component.filterData = facetData;
+        component.getFilteredFacets();
+        expect(component.frameworkService.getSortedFilters).toHaveBeenCalledWith(facetData[1].values, 'medium');
+        expect(component.formFieldProperties[1].range[0].name).toEqual(sortedGrade[0].name);
+    });
+
 });

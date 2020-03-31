@@ -160,6 +160,9 @@ export class ViewMoreComponent implements OnInit, OnDestroy {
 
   fetchContents(addFilter) {
     const option = _.cloneDeep(this.apiQuery);
+    if (_.isEmpty(option, 'facets')) {
+      option.facets = ['gradeLevel', 'medium', 'subject', 'board', 'contentType'];
+    }
     option.params.online = Boolean(this.isBrowse);
 
     if (this.isBrowse) {

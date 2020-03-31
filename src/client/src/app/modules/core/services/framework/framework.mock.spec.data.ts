@@ -1336,5 +1336,182 @@ export const mockFrameworkData = {
           'status': 'Live'
         }
      },
+    gradeWithIndex: [
+        {
+          'identifier': 'as_k-12_gradelevel_class5',
+          'code': 'class5',
+          'translations': null,
+          'name': 'Class 5',
+          'description': 'Class 5',
+          'index': 1,
+          'category': 'gradeLevel',
+          'status': 'Live'
+        },
+        {
+          'identifier': 'as_k-12_gradelevel_class6',
+          'code': 'class6',
+          'translations': null,
+          'name': 'Class 6',
+          'description': 'Class 6',
+          'index': 2,
+          'category': 'gradeLevel',
+          'status': 'Live'
+        },
+        {
+          'identifier': 'as_k-12_gradelevel_class7',
+          'code': 'class7',
+          'translations': null,
+          'name': 'Class 7',
+          'description': 'Class 7',
+          'index': 3,
+          'category': 'gradeLevel',
+          'status': 'Live'
+        },
+        {
+          'identifier': 'as_k-12_gradelevel_class8',
+          'code': 'class8',
+          'translations': null,
+          'name': 'Class 8',
+          'description': 'Class 8',
+          'index': 4,
+          'category': 'gradeLevel',
+          'status': 'Live'
+        }
+    ],
+    gradeWithOutIndex: [
+          {
+            'name': 'Kindergarten',
+            'count': 2
+          },
+          {
+            'name': 'Class 9',
+            'count': 2
+          },
+          {
+            'name': 'Class 10',
+            'count': 1
+          },
+          {
+            'name': 'Class 1',
+            'count': 1
+          },
+          {
+            'name': 'Class 2',
+            'count': 1
+          },
+          {
+            'name': 'Class 3',
+            'count': 1
+          },
+          {
+            'name': 'Class 4',
+            'count': 1
+          },
+          {
+            'name': 'Class 5',
+            'count': 1
+          },
+          {
+            'name': 'Other',
+            'count': 2
+          }
+    ],
+    sortedGradeWithOutIndex: [
+        {
+          'name': 'Class 1',
+          'count': 1
+        },
+        {
+          'name': 'Class 10',
+          'count': 1
+        },
+        {
+          'name': 'Class 2',
+          'count': 1
+        },
+        {
+          'name': 'Class 3',
+          'count': 1
+        },
+        {
+          'name': 'Class 4',
+          'count': 1
+        },
+        {
+          'name': 'Class 5',
+          'count': 1
+        },
+        {
+          'name': 'Class 9',
+          'count': 2
+        },
+        {
+            'name': 'Kindergarten',
+            'count': 2
+        },
+        {
+            'name': 'Other',
+            'count': 2
+        }
+  ],
+
+    mediumWithIndex: [
+        {
+          'identifier': 'as_k-12_medium_assamese',
+          'code': 'assamese',
+          'translations': null,
+          'name': 'Assamese',
+          'description': 'Assamese',
+          'index': 1,
+          'category': 'medium',
+          'status': 'Live'
+        },
+        {
+          'identifier': 'as_k-12_medium_english',
+          'code': 'english',
+          'translations': null,
+          'name': 'English',
+          'description': 'English',
+          'index': 2,
+          'category': 'medium',
+          'status': 'Live'
+        }
+      ],
+    mediumWithOutIndex : [
+        {
+        'name': 'English',
+        'count': 5
+      },
+      {
+        'name': 'Hindi',
+        'count': 3
+      },
+      {
+        'name': 'Assamese',
+        'count': 1
+      },
+      {
+        'name': 'Marathi',
+        'count': 1
+      }
+    ],
+    sortedMediumWithOutIndex : [
+        {
+            'name': 'Assamese',
+            'count': 1
+        },
+        {
+            'name': 'English',
+            'count': 5
+        },
+        {
+            'name': 'Hindi',
+            'count': 3
+        },
+        {
+            'name': 'Marathi',
+            'count': 1
+        }
+    ]
 };
 

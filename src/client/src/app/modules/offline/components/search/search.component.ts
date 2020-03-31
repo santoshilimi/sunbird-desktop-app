@@ -241,6 +241,10 @@ export class SearchComponent implements OnInit, OnDestroy {
       option['softConstraints'] = _.get(manipulatedData, 'softConstraints');
     }
 
+    if (isFacetsRequired) {
+      option['facets'] = this.facets;
+     }
+
     this.frameworkService.channelData$
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((channelData) => {

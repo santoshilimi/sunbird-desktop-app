@@ -1,22 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { LandingPageComponent } from './components';
-import { LandingpageGuard } from './services';
 
-const routes: Routes = [
-  {
-    path: '', component: LandingPageComponent, canActivate: [LandingpageGuard],
-    data: { telemetry: { env: 'public', pageid: 'landing-page', type: 'edit', subtype: 'paginate' } }
-  },
-  {
-    path: 'explore', loadChildren: './module/explore/explore.module#ExploreModule'
-  },
-  {
-    path: ':slug/explore', loadChildren: './module/explore/explore.module#ExploreModule'
-  },
-  {
-    path: 'play', loadChildren: './module/player/player.module#PlayerModule'
-  }];
+const routes: Routes = [];
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]

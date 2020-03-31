@@ -318,3 +318,63 @@ export const facetData = [
       ]
     }
 ];
+export const sortedGrade = [
+  {
+    'name': 'Class 1',
+    'count': 1
+  },
+  {
+    'name': 'Class 2',
+    'count': 1
+  },
+  {
+    'name': 'Class 3',
+    'count': 1
+  },
+  {
+    'name': 'Class 4',
+    'count': 1
+  },
+  {
+    'name': 'Class 5',
+    'count': 1
+  },
+  {
+    'name': 'Class 9',
+    'count': 2
+  },
+  {
+      'name': 'Class 10',
+      'count': 1
+  },
+  {
+      'name': 'Kindergarten',
+      'count': 2
+  },
+  {
+      'name': 'Other',
+      'count': 2
+  }
+];
+export const sortedMedium = [
+  {
+    'identifier': 'as_k-12_medium_assamese',
+    'code': 'assamese',
+    'translations': null,
+    'name': 'Assamese',
+    'description': 'Assamese',
+    'index': 1,
+    'category': 'medium',
+    'status': 'Live'
+  },
+  {
+    'identifier': 'as_k-12_medium_english',
+    'code': 'english',
+    'translations': null,
+    'name': 'English',
+    'description': 'English',
+    'index': 2,
+    'category': 'medium',
+    'status': 'Live'
+  }
+];

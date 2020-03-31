@@ -94,10 +94,11 @@ describe('LibraryFiltersComponent', () => {
     });
 
     it('should call setFilters', () => {
-        component.userDetails = response.userData;
-        component.selectedFilters = { 'medium': ['English'], 'gradeLevel': ['Class 5']};
         spyOn(component, 'resetFilters');
         spyOn(component, 'triggerFilterChangeEvent');
+        spyOn(component.frameworkService, 'getSortedFilters').and.returnValue(response.mediumWithIndex);
+        component.userDetails = response.userData;
+        component.selectedFilters = { 'medium': ['English'], 'gradeLevel': ['Class 5']};
         component.frameworkCategories = response.frameWorkData.result.framework.categories;
         component.setFilters();
         expect(component.resetFilters).toHaveBeenCalled();
@@ -110,8 +111,11 @@ describe('LibraryFiltersComponent', () => {
         component.userDetails = response.userData;
         spyOn(component, 'resetFilters');
         spyOn(component, 'triggerFilterChangeEvent');
+        spyOn(component.frameworkService, 'getSortedFilters').and.returnValue(response.mediumWithIndex);
         component.frameworkCategories = response.frameWorkData.result.framework.categories;
         component.setFilters(true);
+        const data = component.frameworkService.getSortedFilters(component.frameworkCategories[1].terms.map(medium => medium), 'medium');
+        expect(component.mediums).toEqual(data.map(medium => medium.name));
         expect(component.resetFilters).toHaveBeenCalled();
         expect(component.mediums).toBeDefined();
         expect(component.classes).toBeDefined();
