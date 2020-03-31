@@ -10,6 +10,7 @@ import { RouterModule, ActivatedRoute } from '@angular/router';
 import { SuiModule } from 'ng2-semantic-ui';
 
 import { of, throwError } from 'rxjs';
+import { HttpClientModule } from '@angular/common/http';
 describe('DesktopProminentFilterComponent', () => {
     let component: DesktopProminentFilterComponent;
     let fixture: ComponentFixture<DesktopProminentFilterComponent>;
@@ -40,7 +41,8 @@ describe('DesktopProminentFilterComponent', () => {
                 RouterModule.forRoot([]),
                 SuiModule,
                 TelemetryModule.forRoot(),
-                HttpClientTestingModule
+                HttpClientTestingModule,
+                HttpClientModule
             ],
             providers: [
                 ResourceService,
