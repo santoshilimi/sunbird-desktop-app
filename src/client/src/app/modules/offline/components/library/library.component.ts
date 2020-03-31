@@ -255,6 +255,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
                                 });
                             }
                         }
+
                         // should not affect the download contents order(should be top)
                         contents.sort((a, b) => a.name.localeCompare(b.name));
                         this.sections.push(...contents);
