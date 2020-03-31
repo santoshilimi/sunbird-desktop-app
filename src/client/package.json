@@ -20,7 +20,9 @@
     "build-offline-prod": "ng build --project offline  --c=offlineProduction && mv ../dist/index.html ../dist/index.ejs",
     "inject-cdn-fallback": "gulp inject:cdnFallBack:script",
     "offline-dev": "ng build --project desktop --watch=true --outputPath=./../public/portal && mv ../public/portal/index.html ../public/portal/index.ejs",
-    "offline-prod": "ng build --project desktop --prod --outputPath=./../public/portal && mv ../public/portal/index.html ../public/portal/index.ejs"
+    "offline-prod": "ng build --project desktop --prod --outputPath=./../public/portal && mv ../public/portal/index.html ../public/portal/index.ejs",
+    "build:stats": "ng build --stats-json",
+    "analyze": "npm run build:stats && webpack-bundle-analyzer ../public/portal/stats.json"
   },
   "nodemonConfig": {
     "ext": "png,jpeg,js,ts,html,json,css,scss"
@@ -122,6 +124,7 @@
     "protractor": "^5.4.2",
     "ts-node": "~4.1.0",
     "tslint": "~5.9.1",
-    "typescript": "~3.2.4"
+    "typescript": "~3.2.4",
+    "webpack-bundle-analyzer": "^3.6.1"
   }
 }
