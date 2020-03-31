@@ -3,6 +3,7 @@ src/log
 src/logs
 src/dist
 src/coverage
+src/client/coverage
 src/.nyc_output
 src/temp
 src/public/portal

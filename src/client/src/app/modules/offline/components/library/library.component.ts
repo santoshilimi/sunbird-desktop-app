@@ -246,7 +246,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
                             });
                         }
 
-                        const  contents = []; // to sort the contents/textbooks other than downloads
+                        const contents = []; // to sort the contents/textbooks other than downloads
                         for (const section in filteredContents) {
                             if (section) {
                                 contents.push({
@@ -256,8 +256,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
                             }
                         }
                         // should not affect the download contents order(should be top)
-                       contents.sort((a, b) => a.name.localeCompare(b.name));
-                        this.sections.push(...contents);
+                        this.sections.push(...contents.sort((a, b) => a.name.localeCompare(b.name)));
 
                         this.carouselMasterData = this.prepareCarouselData(this.sections);
                         this.hideLoader();

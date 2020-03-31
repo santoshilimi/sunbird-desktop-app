@@ -21,3 +21,4 @@ export * from './telemetryShare';
 export * from './batch';
 export * from './highlightText';
 export * from './language';
+export * from './pagination';

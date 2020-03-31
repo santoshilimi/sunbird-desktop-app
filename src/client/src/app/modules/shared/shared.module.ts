@@ -3,10 +3,9 @@ import { SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, Su
 import { SlickModule } from 'ngx-slick';
 import { FormsModule } from '@angular/forms';
 import {
-  AnnouncementInboxCardComponent, PageSectionComponent, NoResultComponent, AppLoaderComponent, CardComponent,
-  CardCreationComponent, ShareLinkComponent, BrowserCompatibilityComponent, QrCodeModalComponent, RedirectComponent,
-  CustomMultiSelectComponent, InstallAppComponent, LockInfoPopupComponent, BatchCardComponent, AccountMergeModalComponent,
-  OfflineCardComponent, OfflineBannerComponent, OfflineApplicationDownloadComponent, FullPageModalComponent
+   PageSectionComponent, NoResultComponent, CardComponent,
+  CardCreationComponent, ShareLinkComponent, QrCodeModalComponent, RedirectComponent,
+  CustomMultiSelectComponent, OfflineCardComponent, FullPageModalComponent, AppLoaderComponent
 } from './components';
 import {
   ConfigService, ResourceService, ToasterService, WindowScrollService, BrowserCacheTtlService,
@@ -34,16 +33,16 @@ import { HighlightTextDirective } from './directives/highlight-text/highlight-te
     FormsModule,
     TelemetryModule
   ],
-  declarations: [AppLoaderComponent, AnnouncementInboxCardComponent, DateFormatPipe, PageSectionComponent,
-    BatchCardComponent, NoResultComponent, DateFilterXtimeAgoPipe, CardComponent, CardCreationComponent, FilterPipe, InterpolatePipe,
-    ShareLinkComponent, BrowserCompatibilityComponent, QrCodeModalComponent, CdnprefixPipe, RedirectComponent, CustomMultiSelectComponent,
-    InstallAppComponent, LockInfoPopupComponent, ContentDirectionDirective, OfflineCardComponent, OfflineBannerComponent,
-    OfflineApplicationDownloadComponent, HighlightTextDirective, FullPageModalComponent, AccountMergeModalComponent],
-  exports: [AppLoaderComponent, AnnouncementInboxCardComponent, DateFormatPipe, DateFilterXtimeAgoPipe,
-    PageSectionComponent, BatchCardComponent, NoResultComponent, CardComponent, OfflineCardComponent, CardCreationComponent, FilterPipe,
-    ShareLinkComponent, BrowserCompatibilityComponent, QrCodeModalComponent, CdnprefixPipe, InterpolatePipe, RedirectComponent,
-    CustomMultiSelectComponent, InstallAppComponent, LockInfoPopupComponent, ContentDirectionDirective, OfflineBannerComponent,
-    OfflineApplicationDownloadComponent, HighlightTextDirective, FullPageModalComponent, AccountMergeModalComponent]
+  declarations: [DateFormatPipe, PageSectionComponent,
+     NoResultComponent, DateFilterXtimeAgoPipe, CardComponent, CardCreationComponent, FilterPipe, InterpolatePipe,
+    ShareLinkComponent,  QrCodeModalComponent, CdnprefixPipe, RedirectComponent, CustomMultiSelectComponent,
+     ContentDirectionDirective, OfflineCardComponent,
+     HighlightTextDirective, FullPageModalComponent, AppLoaderComponent],
+  exports: [ DateFormatPipe, DateFilterXtimeAgoPipe,
+    PageSectionComponent, NoResultComponent, CardComponent, OfflineCardComponent, CardCreationComponent, FilterPipe,
+    ShareLinkComponent, QrCodeModalComponent, CdnprefixPipe, InterpolatePipe, RedirectComponent,
+    CustomMultiSelectComponent, ContentDirectionDirective, HighlightTextDirective,
+    FullPageModalComponent, AppLoaderComponent]
 })
 export class SharedModule {
   static forRoot(): ModuleWithProviders {

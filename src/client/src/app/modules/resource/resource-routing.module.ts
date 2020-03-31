@@ -22,9 +22,6 @@ const routes: Routes = [
       softConstraints: {badgeAssertions: 98, board: 99, channel: 100},
       applyMode: true
     }
-  },
-  {
-    path: 'play', loadChildren: './modules/player/player.module#PlayerModule'
   }
 ];
 

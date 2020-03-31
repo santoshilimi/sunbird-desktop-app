@@ -80,7 +80,7 @@ describe('ViewAllComponent', () => {
      spyOn(searchService, 'contentSearch').and.callFake(() => observableOf(Response.successData));
      spyOn(component, 'setTelemetryImpressionData').and.callThrough();
      spyOn(component, 'setInteractEventData').and.callThrough();
-    spyOn(document, 'getElementById').and.returnValue('true');
+    document.getElementById = jasmine.createSpy().and.returnValue('true');
     component.ngOnInit();
     component.setTelemetryImpressionData();
     component.setInteractEventData();
@@ -123,7 +123,7 @@ describe('ViewAllComponent', () => {
      spyOn(component, 'setTelemetryImpressionData').and.callThrough();
      spyOn(component, 'setInteractEventData').and.callThrough();
      spyOn(toasterService, 'error').and.callThrough();
-     spyOn(document, 'getElementById').and.returnValue('true');
+     document.getElementById = jasmine.createSpy().and.returnValue('true');
     component.ngOnInit();
     component.setTelemetryImpressionData();
     component.setInteractEventData();

@@ -6,10 +6,11 @@ import { DialCodeService } from './dial-code.service';
 import { RouterTestingModule } from '@angular/router/testing';
 import { mockData } from './dial-code.service.spec.data';
 import { of, throwError } from 'rxjs';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 describe('DialCodeService', () => {
 
   beforeEach(() => TestBed.configureTestingModule({
-    imports: [SharedModule.forRoot(), CoreModule, RouterTestingModule],
+    imports: [SharedModule.forRoot(), CoreModule, RouterTestingModule, HttpClientTestingModule],
     providers: [SearchService, PlayerService]
   }));
 
