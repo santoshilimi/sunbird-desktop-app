@@ -115,6 +115,14 @@ describe('ContentActionsComponent', () => {
     expect(component.logTelemetry).toHaveBeenCalledWith('share-content',  actionsData.contentData);
   });
 
+  it('should call onActionButtonClick for FULLSCREEN ', () => {
+    spyOn(component, 'logTelemetry');
+    spyOn(component.contentFullScreen, 'emit').and.returnValue(actionsData.actionButtonEvents.FULLSCREEN.data.name);
+    component.onActionButtonClick(actionsData.actionButtonEvents.FULLSCREEN, actionsData.contentData);
+    expect(component.contentFullScreen.emit).toHaveBeenCalledWith(actionsData.actionButtonEvents.FULLSCREEN.data.name);
+    expect(component.logTelemetry).toHaveBeenCalledWith('fullscreen-content',  actionsData.contentData);
+  });
+
   it('should call downloadContent and successfuly content downloaded', () => {
     spyOn(component['contentManagerService'], 'startDownload').and.returnValue(of(actionsData.downloadContent.success));
     spyOn(component, 'logTelemetry');

@@ -92,9 +92,6 @@ export class ContentActionsComponent implements OnInit, OnChanges {
     };
 
     _.forEach(this.actionButtons, data => {
-      console.log('data.name', data.name);
-      console.log('data.label', data.label);
-
       const disableButton = ['Download', 'Failed', 'Canceled', 'Cancel'];
       if (data.name === 'download') {
         const contentStatus = status[this.contentDownloadStatus[this.contentData.identifier]];
