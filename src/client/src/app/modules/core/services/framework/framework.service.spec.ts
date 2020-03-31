@@ -92,6 +92,27 @@ describe('FrameworkService', () => {
       expect(data.err).toBeDefined();
     });
   });
+
+  it('should sort gradeLevel withIndex', () => {
+    const data = frameworkService.getSortedFilters(mockFrameworkData.gradeWithIndex, 'gradeLevel');
+    expect(data).toEqual(mockFrameworkData.gradeWithIndex);
+  });
+
+  it('should sort gradeLevel with name', () => {
+    const data = frameworkService.getSortedFilters(mockFrameworkData.gradeWithOutIndex, 'gradeLevel');
+    expect(data).toEqual(mockFrameworkData.sortedGradeWithOutIndex);
+  });
+
+  it('should sort medium with name when index is present', () => {
+    const data = frameworkService.getSortedFilters(mockFrameworkData.mediumWithIndex, 'medium');
+    expect(data).toEqual(mockFrameworkData.mediumWithIndex);
+  });
+
+  it('should sort medium with name when index is not present', () => {
+    const data = frameworkService.getSortedFilters(mockFrameworkData.mediumWithOutIndex, 'medium');
+    expect(data).toEqual(mockFrameworkData.sortedMediumWithOutIndex);
+  });
+
 });
 
 
