@@ -124,5 +124,23 @@ describe('ContentPlayerComponent', () => {
     component.handleYoutubeContent(playerData.content.result.content);
     expect(component.youTubeContentStatus).toBeFalsy();
   });
+  it('should handle handleFullScreen when you are going for full screen', () => {
+    component.isFullScreenMode = false;
+    spyOn(component, 'loadPlayer');
+    component.handleFullScreen();
+    expect(component.isLoading).toBeFalsy();
+    expect(component.loadPlayer).toHaveBeenCalled();
+    expect(component.isFullScreenMode).toBeTruthy();
 
+  });
+
+  it('should handle handleFullScreen when you exit from full screen', () => {
+    component.isFullScreenMode = true;
+    spyOn(component, 'loadPlayer');
+    component.handleFullScreen();
+    expect(component.isLoading).toBeFalsy();
+    expect(component.loadPlayer).toHaveBeenCalled();
+    expect(component.isFullScreenMode).toBeFalsy();
+
+  });
 });

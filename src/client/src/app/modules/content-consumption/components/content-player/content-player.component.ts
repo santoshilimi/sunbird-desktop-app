@@ -242,6 +242,8 @@ export class ContentPlayerComponent implements AfterViewInit, OnChanges, OnInit,
     }
   }
   handleFullScreen() {
+    this.isLoading = false;
+    this.loadPlayer();
     this.isFullScreenMode = !this.isFullScreenMode;
   }
   ngOnDestroy() {
