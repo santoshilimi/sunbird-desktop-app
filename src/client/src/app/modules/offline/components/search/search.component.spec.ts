@@ -44,8 +44,8 @@ describe('SearchComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [SearchComponent],
-      imports: [RouterModule.forRoot([]), CommonConsumptionModule, TelemetryModule.forRoot(), SharedModule.forRoot(), CoreModule, 
-      HttpClientTestingModule],
+      imports: [RouterModule.forRoot([]), CommonConsumptionModule, TelemetryModule.forRoot(), SharedModule.forRoot(), CoreModule,
+        HttpClientTestingModule],
       providers: [
         OrgDetailsService, SearchService, UtilService,
         { provide: ResourceService, useValue: resourceBundle },
