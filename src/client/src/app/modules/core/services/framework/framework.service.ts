@@ -122,8 +122,7 @@ export class FrameworkService {
     let sortedFilters;
     if (type === 'gradeLevel' || _.lowerCase(type) === 'class') {
       const isIndexPresent = _.find(filters, 'index');
-      // tslint:disable-next-line:radix
-      sortedFilters = isIndexPresent ? _.sortBy(filters, 'index') : _.sortBy(filters, (o) => parseInt((o.name).split(' ')[1]));
+      sortedFilters = isIndexPresent ? _.sortBy(filters, 'index') : _.sortBy(filters, 'name');
     } else {
       sortedFilters = _.sortBy(filters, 'name');
     }
