@@ -67,7 +67,7 @@ describe('QrCodeModalComponent', () => {
     const mockSetInteractEventData = {
       id: 'close-dial-code',
       type: 'click',
-      pageid: 'explore',
+      pageid: 'dial-code',
     };
     expect(component.closeDialCodeInteractEdata).toEqual(mockSetInteractEventData);
   });
