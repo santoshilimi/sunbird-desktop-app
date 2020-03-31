@@ -1418,6 +1418,10 @@ export const mockFrameworkData = {
     ],
     sortedGradeWithOutIndex: [
         {
+          'name': 'Class 10',
+          'count': 1
+        },
+        {
           'name': 'Class 1',
           'count': 1
         },
@@ -1440,10 +1444,6 @@ export const mockFrameworkData = {
         {
           'name': 'Class 9',
           'count': 2
-        },
-        {
-            'name': 'Class 10',
-            'count': 1
         },
         {
             'name': 'Kindergarten',
