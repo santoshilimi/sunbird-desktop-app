@@ -119,14 +119,8 @@ export class FrameworkService {
   }
 
   getSortedFilters(filters, type) {
-    let sortedFilters;
-    if (type === 'gradeLevel' || _.lowerCase(type) === 'class') {
-      const isIndexPresent = _.find(filters, 'index');
-      sortedFilters = isIndexPresent ? _.sortBy(filters, 'index') : _.sortBy(filters, 'name');
-    } else {
-      sortedFilters = _.sortBy(filters, 'name');
-    }
-    return sortedFilters;
+     return (type === 'gradeLevel' || _.lowerCase(type) === 'class') ?
+    _.sortBy(filters, ['index', 'name']) : _.sortBy(filters, 'name');
   }
 
 }
