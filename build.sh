@@ -7,7 +7,7 @@ npm install
 npm run build
 cd client
 npm install
-npm run offline-prod 
+npm run prod 
 cd ..
 npm run build-resource-bundles
 rm -rf temp client resourcebundles node_modules
