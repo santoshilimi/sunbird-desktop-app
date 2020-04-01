@@ -51,6 +51,7 @@ describe('TelemetryComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(TelemetryComponent);
     component = fixture.componentInstance;
+    component.telemetryImpression = {context: {env: ''}, edata: {type: '', pageid: '', uri: ''}};
     fixture.detectChanges();
   });
 
@@ -92,7 +93,7 @@ describe('TelemetryComponent', () => {
       expect(component['toasterService'].error).toHaveBeenCalledWith(telemetry.resourceBundle.messages.emsg.desktop.telemetryExportEMsg);
     });
   });
-  xit('should call get sync status with enable status', () => {
+  it('should call get sync status with enable status', () => {
     spyOn(component['telemetryActionService'], 'getSyncTelemetryStatus').and.returnValue(of(telemetry.getSyncStatus.enable));
     component.getSyncStatus();
     component['telemetryActionService'].getSyncTelemetryStatus().subscribe(data => {
@@ -100,7 +101,7 @@ describe('TelemetryComponent', () => {
       expect(component.syncStatus).toBeTruthy();
     });
   });
-  xit('should call get sync status with disable status', () => {
+  it('should call get sync status with disable status', () => {
     spyOn(component['telemetryActionService'], 'getSyncTelemetryStatus').and.returnValue(of(telemetry.getSyncStatus.disable));
     component.getSyncStatus();
     component['telemetryActionService'].getSyncTelemetryStatus().subscribe(data => {
@@ -109,7 +110,7 @@ describe('TelemetryComponent', () => {
     });
   });
 
-  xit('should call handleSyncStatus', () => {
+  it('should call handleSyncStatus', () => {
     spyOn(component['telemetryActionService'], 'updateSyncStatus').and.returnValue(of(telemetry.updateSyncStatus));
     spyOn(component, 'setTelemetrySyncStatus');
     const data = {
@@ -123,7 +124,7 @@ describe('TelemetryComponent', () => {
     });
     expect(component.setTelemetrySyncStatus).toHaveBeenCalledWith(data);
   });
-  xit('should call syncTelemetry and show no internet toaster message', () => {
+  it('should call syncTelemetry and show no internet toaster message', () => {
     const toasterService = TestBed.get(ToasterService);
     spyOn(toasterService, 'error');
     spyOn(component, 'setSyncTelemetry');
@@ -134,7 +135,7 @@ describe('TelemetryComponent', () => {
     toHaveBeenCalledWith(telemetry.resourceBundle.messages.emsg.desktop.connectionError);
     expect(component.setSyncTelemetry).toHaveBeenCalledWith();
   });
-  xit('should call syncTelemetry and throw error while syncing', () => {
+  it('should call syncTelemetry and throw error while syncing', () => {
     const toasterService = TestBed.get(ToasterService);
     spyOn(toasterService, 'error');
     spyOn(component, 'setSyncTelemetry');
@@ -160,7 +161,7 @@ describe('TelemetryComponent', () => {
 
     expect(component.setSyncTelemetry).toHaveBeenCalledWith();
   });
-  xit('should call syncTelemetry and sync successfuly', () => {
+  it('should call syncTelemetry and sync successfuly', () => {
     const toasterService = TestBed.get(ToasterService);
     component.isConnected = true;
     spyOn(toasterService, 'error');

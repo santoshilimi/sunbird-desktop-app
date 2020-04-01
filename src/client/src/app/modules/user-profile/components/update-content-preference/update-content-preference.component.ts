@@ -67,7 +67,7 @@ export class UpdateContentPreferenceComponent implements OnInit, OnDestroy {
     this.channelService.getFrameWork(custodianOrgId)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(data => {
-        this.boardOption = _.sortBy(_.get(data, 'result.channel.frameworks'), 'index');
+        this.boardOption = this.frameworkService.getSortedFilters(_.get(data, 'result.channel.frameworks'), 'board');
         this.contentPreferenceForm.controls['board'].setValue(_.find(this.boardOption, { name: this.frameworkDetails.board }));
         this.onBoardChange();
       }, err => {
@@ -88,7 +88,8 @@ export class UpdateContentPreferenceComponent implements OnInit, OnDestroy {
             const board = _.find(this.frameworkCategories, (element) => {
               return element.code === 'board';
             });
-            this.mediumOption = this.userService.getAssociationData(board.terms, 'medium', this.frameworkCategories);
+            this.mediumOption = this.frameworkService.getSortedFilters(this.userService.getAssociationData(board.terms, 'medium',
+            this.frameworkCategories), 'medium');
             if (this.contentPreferenceForm.value.board.name === this.frameworkDetails['board'] && !event) {
             this.contentPreferenceForm.controls['medium'].setValue(this.filterContent(this.mediumOption, this.frameworkDetails['medium']));
             }
@@ -125,7 +126,8 @@ export class UpdateContentPreferenceComponent implements OnInit, OnDestroy {
     }
     this.clearForm(['class', 'subjects']);
     if (!_.isEmpty(this.contentPreferenceForm.value.medium)) {
-    this.classOption = this.userService.getAssociationData(this.contentPreferenceForm.value.medium, 'gradeLevel', this.frameworkCategories);
+    this.classOption = this.frameworkService.getSortedFilters(this.userService.getAssociationData(this.contentPreferenceForm.value.medium,
+      'gradeLevel', this.frameworkCategories), 'gradeLevel');
       if (this.contentPreferenceForm.value.board.name === this.frameworkDetails['board'] && !event) {
         this.contentPreferenceForm.controls['class'].setValue(this.filterContent(this.classOption, this.frameworkDetails['gradeLevel']));
       }
@@ -140,7 +142,8 @@ export class UpdateContentPreferenceComponent implements OnInit, OnDestroy {
     }
     this.clearForm(['subjects']);
     if (!_.isEmpty(this.contentPreferenceForm.value.class)) {
-    this.subjectsOption = this.userService.getAssociationData(this.contentPreferenceForm.value.class, 'subject', this.frameworkCategories);
+    this.subjectsOption = this.frameworkService.getSortedFilters(this.userService.getAssociationData(this.contentPreferenceForm.value.class,
+      'subject', this.frameworkCategories), 'subject');
       if (this.contentPreferenceForm.value.board.name === this.frameworkDetails['board'] && !event) {
         this.contentPreferenceForm.controls['subjects'].setValue(
           _.compact(this.filterContent(this.subjectsOption, this.frameworkDetails['subjects'])));

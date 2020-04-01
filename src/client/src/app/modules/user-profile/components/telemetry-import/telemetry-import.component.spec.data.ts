@@ -26,7 +26,6 @@ export const telemetryData = {
                         status: 'completed',
                         totalSize: 8260
                     },
-                    
                     {
                         addedUsing: 'telemetry_import',
                          createdOn: 1584612077262,

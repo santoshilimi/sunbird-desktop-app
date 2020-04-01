@@ -91,22 +91,19 @@ export class DesktopProminentFilterComponent implements OnInit, OnDestroy, OnCha
     ngOnChanges() {
         this.getFilteredFacets();
     }
+
     getFilteredFacets() {
         _.forEach(this.formFieldProperties, field => {
-            const facet = _.find(this.filterData, {name: _.get(field, 'code')});
+            const facet = _.find(this.filterData, { name: _.get(field, 'code') });
             if (facet) {
-                if (facet.name === 'gradeLevel' || facet.name === 'class') {
-                    const classData = _.map(facet.values, data => data.name);
-                    // tslint:disable-next-line:radix
-                    const filteredData = _.sortBy(classData , (o) => parseInt(o.split(' ')[1]));
-                    field.range = _.map(filteredData, name => ({name}));
-                } else {
-                   const filteredData = _.map(facet.values, (data) => data.name);
-                    field.range = _.map(filteredData.sort(), name => ({name}));
-                }
+                const sortedData = this.frameworkService.getSortedFilters(facet.values, facet.name);
+                field.range = _.map(sortedData, data => ({ name: data.name }));
+            } else {
+                field.range = this.frameworkService.getSortedFilters(field.range, field.name);
             }
         });
     }
+
     private setFilterInteractData() {
         setTimeout(() => { // wait for model to change
             const filters = _.pickBy(this.formInputData, (val, key) =>

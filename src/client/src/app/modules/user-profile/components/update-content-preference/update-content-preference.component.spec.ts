@@ -70,10 +70,6 @@ describe('UpdateContentPreferenceComponent', () => {
     // fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
   it('should call createContentPreferenceForm method', () => {
     spyOn(component, 'createContentPreferenceForm');
     spyOn(component, 'getCustodianOrg');
@@ -102,11 +98,12 @@ describe('UpdateContentPreferenceComponent', () => {
   it('should call onBoardChange', () => {
     spyOn(component, 'onBoardChange');
     spyOn(component.channelService, 'getFrameWork').and.returnValue(of (user_content_preferences_Data.readChannel));
+    spyOn(component.frameworkService, 'getSortedFilters').and.returnValue(user_content_preferences_Data.sortedBoard);
     component.frameworkDetails = user_content_preferences_Data.selectedFramework.framework;
     component.readChannel('0126684405014528002');
     component.channelService.getFrameWork('0126684405014528002').subscribe(data => {
       expect(data).toEqual(user_content_preferences_Data.readChannel);
-      expect(component.boardOption).toEqual(_.sortBy(_.get(data, 'result.channel.frameworks'), 'index'));
+      expect(component.boardOption).toEqual(user_content_preferences_Data.sortedBoard);
       expect(component.contentPreferenceForm.value.board).toBeDefined();
       expect(component.onBoardChange).toHaveBeenCalled();
     });

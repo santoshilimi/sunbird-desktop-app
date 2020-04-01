@@ -73,7 +73,7 @@ export class LibraryFiltersComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(orgDetails => {
         this.boards = _.get(orgDetails, 'result.channel.frameworks');
-
+        this.boards =  this.frameworkService.getSortedFilters(this.boards, 'board');
         if (this.boards) {
           const defaultBoard = this.boards.find((board) => board.name === this.userDetails.framework.board);
 
@@ -115,7 +115,8 @@ export class LibraryFiltersComponent implements OnInit, OnDestroy {
     this.frameworkCategories.forEach(element => {
       switch (element.code) {
         case 'medium':
-          this.mediums = element.terms.map(medium => medium.name);
+          const sortedMediumData = this.frameworkService.getSortedFilters(element.terms.map(medium => medium), 'medium');
+          this.mediums = sortedMediumData.map(medium => medium.name);
           let mediumIndex;
 
           if (showDefault) {
@@ -130,7 +131,8 @@ export class LibraryFiltersComponent implements OnInit, OnDestroy {
           break;
 
         case 'gradeLevel':
-          this.classes = element.terms.map(gradeLevel => gradeLevel.name);
+         const sortedClassData = this.frameworkService.getSortedFilters(element.terms.map(gradeLevel => gradeLevel), 'gradeLevel');
+          this.classes = sortedClassData.map(gradeLevel => gradeLevel.name);
           let classIndex;
 
           if (showDefault) {

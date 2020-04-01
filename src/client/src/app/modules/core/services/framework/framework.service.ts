@@ -118,4 +118,9 @@ export class FrameworkService {
     return _.get(this._channelData, 'defaultLicense');
   }
 
+  getSortedFilters(filters, type) {
+     return (type === 'gradeLevel' || _.lowerCase(type) === 'class') ?
+    _.sortBy(filters, ['index', 'name']) : _.sortBy(filters, 'name');
+  }
+
 }
