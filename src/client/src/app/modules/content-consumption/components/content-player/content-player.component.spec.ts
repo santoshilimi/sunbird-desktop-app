@@ -8,9 +8,10 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
 import { playerData } from './content-player.component.spec.data';
 import { Subject } from 'rxjs';
+import { ConnectionService, ContentManagerService } from '@sunbird/offline';
 import { of, throwError } from 'rxjs';
 import { OfflineCardService } from '@sunbird/shared';
-import { ConnectionService, ContentManagerService } from '@sunbird/offline';
+
 describe('ContentPlayerComponent', () => {
   let component: ContentPlayerComponent;
   let fixture: ComponentFixture<ContentPlayerComponent>;
