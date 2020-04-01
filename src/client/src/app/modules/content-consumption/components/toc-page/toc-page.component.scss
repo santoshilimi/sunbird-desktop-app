@@ -5,7 +5,7 @@
 
 .player-information{
  position: relative;
- z-index: 1;
+ z-index: 9999;
  .side-toc-content{
     overflow-y: auto;
     height: calc(100vh - 280px);

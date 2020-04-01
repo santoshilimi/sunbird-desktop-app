@@ -78,5 +78,9 @@
       height: 100% !important;
       // border: calculateRem(6px) solid var(--black);
     }
+    video.player-fullscreen,iframe.player-fullscreen {
+      width: 100%;
+      height: calc(100vh - 50px) !important;
+    }
   }
 }
