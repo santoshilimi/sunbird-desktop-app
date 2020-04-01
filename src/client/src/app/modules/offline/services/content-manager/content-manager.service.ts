@@ -94,22 +94,22 @@ export class ContentManagerService {
           this.systemInfoService.getSystemInfo().subscribe((info: any) => {
 
             // Check if the system is Windows
-            if (info.platform === 'win32') {
+            if (info.result.platform === 'win32') {
               popupInfo.isWindows = true;
               const getAvailableSpace = (drive: any) => drive.size - drive.used;
-              const suggestedDrive = data.reduce((prev, current) => {
+              const suggestedDrive = info.result.drives.reduce((prev, current) => {
                 return (getAvailableSpace(prev) > getAvailableSpace(current)) ? prev : current;
               });
 
               if (suggestedDrive) {
-                popupInfo.suggestedDrive = suggestedDrive;
+                popupInfo.suggestedDrive = suggestedDrive.fs;
               }
             }
+            this.downloadFailEvent.emit(popupInfo);
           }, error => {
             console.error('Error while fetching system Info');
+            this.downloadFailEvent.emit(popupInfo);
           });
-
-          this.downloadFailEvent.emit(popupInfo);
         }
         return observableThrowError(err);
       }));
