@@ -90,7 +90,6 @@ describe('ContentActionsComponent', () => {
     spyOn(component, 'logTelemetry');
     component.onActionButtonClick(actionsData.actionButtonEvents.DOWNLOAD, actionsData.contentData);
     expect(component.isYoutubeContentPresent).toHaveBeenCalledWith(actionsData.contentData);
-    expect(component.logTelemetry).toHaveBeenCalledWith('is-youtube-content',  actionsData.contentData);
   });
 
   it('should call onActionButtonClick for DELETE ', () => {
