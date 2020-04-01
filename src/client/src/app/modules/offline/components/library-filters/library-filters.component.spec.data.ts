@@ -188,5 +188,27 @@ export const response = {
         'description': 'State test 2',
         'index': 13,
         'status': 'Live'
-    }
+    },
+    mediumWithIndex: [
+        {
+          'identifier': 'as_k-12_medium_assamese',
+          'code': 'assamese',
+          'translations': null,
+          'name': 'Assamese',
+          'description': 'Assamese',
+          'index': 1,
+          'category': 'medium',
+          'status': 'Live'
+        },
+        {
+          'identifier': 'as_k-12_medium_english',
+          'code': 'english',
+          'translations': null,
+          'name': 'English',
+          'description': 'English',
+          'index': 2,
+          'category': 'medium',
+          'status': 'Live'
+        }
+      ],
 };
