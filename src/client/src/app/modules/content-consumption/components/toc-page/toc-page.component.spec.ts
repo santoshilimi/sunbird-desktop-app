@@ -85,7 +85,7 @@ describe('TocPageComponent', () => {
   it('should handle contentFullScreenEvent', () => {
     const contentManagerService = TestBed.get(ContentManagerService);
     spyOn(contentManagerService, 'contentFullScreenEvent').and.returnValue(of());
-    expect(component.isFullScreenMode).toBeFalsy();
+    expect(component.isFullScreenView).toBeFalsy();
   });
 
 });

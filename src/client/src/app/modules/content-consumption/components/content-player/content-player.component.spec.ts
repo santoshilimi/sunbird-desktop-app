@@ -125,22 +125,22 @@ describe('ContentPlayerComponent', () => {
     expect(component.youTubeContentStatus).toBeFalsy();
   });
   it('should handle handleFullScreen when you are going for full screen', () => {
-    component.isFullScreenMode = false;
+    component.isFullScreenView = false;
     spyOn(component, 'loadPlayer');
     component.handleFullScreen();
     expect(component.isLoading).toBeFalsy();
     expect(component.loadPlayer).toHaveBeenCalled();
-    expect(component.isFullScreenMode).toBeTruthy();
+    expect(component.isFullScreenView).toBeTruthy();
 
   });
 
   it('should handle handleFullScreen when you exit from full screen', () => {
-    component.isFullScreenMode = true;
+    component.isFullScreenView = true;
     spyOn(component, 'loadPlayer');
     component.handleFullScreen();
     expect(component.isLoading).toBeFalsy();
     expect(component.loadPlayer).toHaveBeenCalled();
-    expect(component.isFullScreenMode).toBeFalsy();
+    expect(component.isFullScreenView).toBeFalsy();
   });
   it('should call emitContentFullScreenEvent ', () => {
     component.contentData = playerData.content.result.content;

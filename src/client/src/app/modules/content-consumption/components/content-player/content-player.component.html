@@ -1,13 +1,13 @@
 <div class="content-video">
-  <div class="d-flex flex-w-wrap sb-bg-color-white" [ngClass]="{'content-full-video': isFullScreenMode === true}">
-    <div class="video-close-btn" (click)="closeContentFullScreen()" *ngIf="isFullScreenMode">
+  <div class="d-flex flex-w-wrap sb-bg-color-white" [ngClass]="{'content-full-video': isFullScreenView === true}">
+    <div class="video-close-btn" (click)="closeContentFullScreen()" *ngIf="isFullScreenView">
       <img src="https://image.flaticon.com/icons/svg/660/660252.svg" width="100%" height="" alt="Cancel free icon"
         title="Cancel free icon">
     </div>
   </div>
 
   <section class="content-video__player" id="player-area-height">
-    <div class="aspectratio" data-ratio="16:9" id="help-video-aspect-ratio" #aspectRatio [ngClass]="{'player-fullscreen': isFullScreenMode === true}">
+    <div class="aspectratio" data-ratio="16:9" id="help-video-aspect-ratio" #aspectRatio [ngClass]="{'player-fullscreen': isFullScreenView === true}">
       <div>
         <iframe #contentIframe id="contentPlayer" 
           class="contentViewerIframeShadow br-4" name="contentPlayer"></iframe>

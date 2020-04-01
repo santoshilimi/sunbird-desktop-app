@@ -44,7 +44,7 @@ export class ContentPlayerComponent implements AfterViewInit, OnChanges, OnInit,
  */
   @ViewChild('modal') modal;
   @Input() contentData;
-  isFullScreenMode: Boolean = false;
+  isFullScreenView: Boolean = false;
   isLoading: Boolean = false; // To restrict player loading multiple times
   constructor(public configService: ConfigService, public router: Router, public toasterService: ToasterService,
     public resourceService: ResourceService, public navigationHelperService: NavigationHelperService,
@@ -252,7 +252,7 @@ export class ContentPlayerComponent implements AfterViewInit, OnChanges, OnInit,
   handleFullScreen() {
     this.isLoading = false;
     this.loadPlayer();
-    this.isFullScreenMode = !this.isFullScreenMode;
+    this.isFullScreenView = !this.isFullScreenView;
   }
   closeContentFullScreen() {
     this.contentManagerService.emitContentFullScreenEvent();
