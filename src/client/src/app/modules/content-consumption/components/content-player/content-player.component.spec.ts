@@ -152,4 +152,12 @@ describe('ContentPlayerComponent', () => {
     expect(component.logTelemetry).toHaveBeenCalledWith('minimise-content',  playerData.content.result.content);
     expect(contentManagerService.emitContentFullScreenEvent).toHaveBeenCalled();
   });
+  it('should call contentFullScreenEvent ', () => {
+    const contentManagerService = TestBed.get(ContentManagerService);
+    spyOn(component, 'handleFullScreen');
+    component.ngOnInit();
+    contentManagerService.contentFullScreenEvent.subscribe(data => {
+      expect(component.handleFullScreen).toHaveBeenCalled();
+    });
+  });
 });
