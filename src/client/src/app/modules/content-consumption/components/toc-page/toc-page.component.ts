@@ -72,6 +72,7 @@ export class TocPageComponent implements OnInit, OnDestroy {
   contentDeleted;
   isContentPresent = true;
   telemetryImpression: IImpressionEventInput;
+  isFullScreenMode: Boolean = false;
   constructor(public playerService: PublicPlayerService, private configService: ConfigService, public activatedRoute: ActivatedRoute,
     public router: Router, public resourceService: ResourceService, private contentUtilsService: ContentUtilsServiceService,
     public externalUrlPreviewService: ExternalUrlPreviewService,
@@ -95,6 +96,13 @@ export class TocPageComponent implements OnInit, OnDestroy {
     this.router.events
     .pipe(filter((event) => event instanceof NavigationStart), takeUntil(this.unsubscribe$))
     .subscribe(x => {this.setPageExitTelemtry(); });
+
+    this.contentManagerService.contentFullScreenEvent
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe(response => {
+     this.isFullScreenMode = !this.isFullScreenMode;
+      console.log(this.isFullScreenMode, 'this.isFullScreenMode');
+    });
   }
 
   checkDownloadStatus(downloadListdata) {

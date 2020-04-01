@@ -116,11 +116,12 @@ describe('ContentActionsComponent', () => {
   });
 
   it('should call onActionButtonClick for FULLSCREEN ', () => {
+    const contentManagerService = TestBed.get(ContentManagerService);
     spyOn(component, 'logTelemetry');
-    spyOn(component.contentFullScreen, 'emit').and.returnValue(actionsData.actionButtonEvents.FULLSCREEN.data.name);
+    spyOn(contentManagerService, 'emitContentFullScreenEvent');
     component.onActionButtonClick(actionsData.actionButtonEvents.FULLSCREEN, actionsData.contentData);
-    expect(component.contentFullScreen.emit).toHaveBeenCalledWith(actionsData.actionButtonEvents.FULLSCREEN.data.name);
-    expect(component.logTelemetry).toHaveBeenCalledWith('fullscreen-content',  actionsData.contentData);
+    expect(contentManagerService.emitContentFullScreenEvent).toHaveBeenCalled();
+    expect(component.logTelemetry).toHaveBeenCalledWith('maximise-content',  actionsData.contentData);
   });
 
   it('should call downloadContent and successfuly content downloaded', () => {

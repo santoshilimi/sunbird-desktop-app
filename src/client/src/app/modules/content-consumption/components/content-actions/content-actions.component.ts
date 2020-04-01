@@ -18,7 +18,6 @@ export class ContentActionsComponent implements OnInit, OnChanges {
   @Input() contentData;
   @Input() showUpdate;
   @Output() contentDownloaded = new EventEmitter();
-  @Output() contentFullScreen = new EventEmitter();
   actionButtons;
   contentRatingModal = false;
   contentId;
@@ -152,8 +151,8 @@ export class ContentActionsComponent implements OnInit, OnChanges {
         this.logTelemetry('share-content', content);
         break;
         case 'FULLSCREEN':
-            this.contentFullScreen.emit('fullscreen');
-          this.logTelemetry('fullscreen-content', content);
+            this.contentManagerService.emitContentFullScreenEvent();
+          this.logTelemetry('maximise-content', content);
           break;
     }
   }

@@ -140,4 +140,10 @@ describe('ContentManagerService', () => {
     const apiRes = service.retryDownloadContent('do_312522408518803456214665');
     expect(publicDataService.post).toHaveBeenCalled();
   });
+  it('should call emitContentFullScreenEvent ', () => {
+    const contentManagerService = TestBed.get(ContentManagerService);
+    spyOn(contentManagerService, 'emitContentFullScreenEvent');
+    contentManagerService.emitContentFullScreenEvent();
+    expect(contentManagerService.emitContentFullScreenEvent).toHaveBeenCalled();
+  });
 });

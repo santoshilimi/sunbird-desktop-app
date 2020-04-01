@@ -8,9 +8,9 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
 import { playerData } from './content-player.component.spec.data';
 import { Subject } from 'rxjs';
-import { ConnectionService } from '@sunbird/offline';
 import { of, throwError } from 'rxjs';
 import { OfflineCardService } from '@sunbird/shared';
+import { ConnectionService, ContentManagerService } from '@sunbird/offline';
 describe('ContentPlayerComponent', () => {
   let component: ContentPlayerComponent;
   let fixture: ComponentFixture<ContentPlayerComponent>;
@@ -19,7 +19,7 @@ describe('ContentPlayerComponent', () => {
       declarations: [ContentPlayerComponent],
       imports: [HttpClientTestingModule, TelemetryModule.forRoot(), RouterModule.forRoot([]), SharedModule.forRoot()],
       providers: [
-         ConnectionService, ToasterService,
+         ConnectionService, ToasterService, ContentManagerService ,
            OfflineCardService
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
@@ -141,6 +141,14 @@ describe('ContentPlayerComponent', () => {
     expect(component.isLoading).toBeFalsy();
     expect(component.loadPlayer).toHaveBeenCalled();
     expect(component.isFullScreenMode).toBeFalsy();
-
+  });
+  it('should call emitContentFullScreenEvent ', () => {
+    component.contentData = playerData.content.result.content;
+    spyOn(component, 'logTelemetry');
+    const contentManagerService = TestBed.get(ContentManagerService);
+    spyOn(contentManagerService, 'emitContentFullScreenEvent');
+    component.closeContentFullScreen();
+    expect(component.logTelemetry).toHaveBeenCalledWith('minimise-content',  playerData.content.result.content);
+    expect(contentManagerService.emitContentFullScreenEvent).toHaveBeenCalled();
   });
 });

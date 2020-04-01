@@ -5,7 +5,7 @@
 
 .player-information{
  position: relative;
- z-index: 9999;
+ z-index: 1;
  .side-toc-content{
     overflow-y: auto;
     height: calc(100vh - 280px);
@@ -14,4 +14,7 @@
         margin: calculateRem(16px) 0;
     }
 }
+}
+.player-fullscreen {
+    z-index: 9999 !important;
 }
