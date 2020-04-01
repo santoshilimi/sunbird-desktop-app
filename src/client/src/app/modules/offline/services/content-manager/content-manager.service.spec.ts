@@ -151,8 +151,8 @@ describe('ContentManagerService', () => {
 
     const error = {
       contentSize: 100,
-      currentDrive: "C",
-      suggestedDrive: "D",
+      currentDrive: 'C',
+      suggestedDrive: 'D',
       isWindows: true,
     };
     spyOn(publicDataService, 'post').and.callFake(() => observableOf(throwError(error)));
