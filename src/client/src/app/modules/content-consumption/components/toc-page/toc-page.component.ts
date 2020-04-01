@@ -101,7 +101,6 @@ export class TocPageComponent implements OnInit, OnDestroy {
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe(response => {
      this.isFullScreenMode = !this.isFullScreenMode;
-      console.log(this.isFullScreenMode, 'this.isFullScreenMode');
     });
   }
 
