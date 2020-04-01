@@ -99,12 +99,8 @@ export class ContentPlayerComponent implements AfterViewInit, OnChanges, OnInit,
     this.contentManagerService.deletedContent.pipe(takeUntil(this.unsubscribe$)).subscribe((data) => {
       this.deleteContent(data);
     });
-    this.contentManagerService.contentFullScreenEvent
-    .pipe(takeUntil(this.unsubscribe$))
-    .subscribe(response => {
-    this.handleFullScreen();
-    });
-  }
+    this.contentManagerService.contentFullScreenEvent.pipe(takeUntil(this.unsubscribe$)).subscribe(response => {this.handleFullScreen();
+    }); }
 
   loadCdnPlayer() {
     if (this.isLoading) {// To restrict player loading multiple times

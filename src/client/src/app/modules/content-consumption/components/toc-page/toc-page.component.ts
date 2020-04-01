@@ -97,12 +97,8 @@ export class TocPageComponent implements OnInit, OnDestroy {
     .pipe(filter((event) => event instanceof NavigationStart), takeUntil(this.unsubscribe$))
     .subscribe(x => {this.setPageExitTelemtry(); });
 
-    this.contentManagerService.contentFullScreenEvent
-    .pipe(takeUntil(this.unsubscribe$))
-    .subscribe(response => {
-     this.isFullScreenView = !this.isFullScreenView;
-    });
-  }
+    this.contentManagerService.contentFullScreenEvent.pipe(takeUntil(this.unsubscribe$)).subscribe(response => {
+     this.isFullScreenView = !this.isFullScreenView; }); }
 
   checkDownloadStatus(downloadListdata) {
     this.collectionData = this.playerService.updateDownloadStatus(downloadListdata, this.collectionData);
