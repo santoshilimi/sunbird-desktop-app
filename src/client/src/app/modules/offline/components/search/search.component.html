@@ -13,9 +13,6 @@
     </div>
   </div>
 
-
-
-
   <div class="ui container">
     <div class="twelve wide column">
       <app-loader [data]='loaderMessage' *ngIf="showLoader"></app-loader>
@@ -48,17 +45,15 @@
             [telemetryInteractEdata]="myDownloadsLinkInteractEdata"
             class="link">{{resourceService?.frmelmnts?.btn?.myLibrary}}</a>
         </div>
-        <div *ngIf="!downloadedContents?.length" class="py-24 px-0">
+        <div *ngIf="!downloadedContents?.length" class="pt-24 px-0">
           <span
             [innerHTML]="resourceService?.frmelmnts?.lbl?.noResultFoundFor | interpolate: '{query}':searchKey"></span>&nbsp;
           <a [routerLink]="'/'" (click)="clearSearchQuery()" appTelemetryInteract
             [telemetryInteractEdata]="myDownloadsLinkInteractEdata"
             class="link">{{resourceService?.frmelmnts?.btn?.myLibrary}}</a>
         </div>
-        <hr *ngIf="!downloadedContents?.length" class="border m-0">
+     
       </div>
-
-
       <app-desktop-explore-content *ngIf="downloadedContents" [contentList]="downloadedContents"
         [isOnlineContents]="false" (visits)="prepareVisits($event)"></app-desktop-explore-content>
 
@@ -72,9 +67,11 @@
       </div>
     </section>
 
+    <hr *ngIf="!downloadedContents?.length" class="border m-0">
+
     <section>
       <div class="category-label fs-1">
-        <div *ngIf="onlineContents?.length" class="px-0">
+        <div *ngIf="onlineContents?.length" class="pt-24 px-0">
           <span
             [innerHTML]="resourceService.frmelmnts?.lbl?.showingResultsForwithCount |
           interpolate:'{count}':onlineContents?.length | interpolate:'{searchString}': searchKey"></span>&nbsp;
@@ -82,7 +79,7 @@
             [telemetryInteractEdata]="onlineLibraryLinkInteractEdata"
             class="link">{{resourceService?.frmelmnts?.lbl?.library}}</a>
         </div>
-        <div *ngIf="!onlineContents?.length" class="px-0">
+        <div *ngIf="!onlineContents?.length" class="pt-24 px-0">
           <span
             [innerHTML]="resourceService?.frmelmnts?.lbl?.noResultFoundFor | interpolate: '{query}':searchKey"></span>&nbsp;
           <a [routerLink]="'/browse'" (click)="clearSearchQuery()" appTelemetryInteract

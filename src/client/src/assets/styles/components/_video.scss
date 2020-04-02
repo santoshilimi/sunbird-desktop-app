@@ -79,4 +79,12 @@
       // border: calculateRem(6px) solid var(--black);
     }
   }
+  &.player-fullscreen iframe, &.player-fullscreen video {
+    width: 100%;
+    height: calc(100vh - 50px) !important;
+ }
 }
+
+
+
+

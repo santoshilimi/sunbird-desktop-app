@@ -3,8 +3,8 @@
 
 .help-faq__report {
   width: 100%;
-  padding: 32px;
-  min-height: 160px;
+  padding: calculateRem(32px);
+  min-height: calculateRem(160px);
   display: flex;
   align-items: center;
   justify-content: center;

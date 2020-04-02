@@ -12,7 +12,6 @@ import { Observable, of, combineLatest, BehaviorSubject } from 'rxjs';
 import { first, filter, mergeMap, tap, map, skipWhile, startWith, catchError } from 'rxjs/operators';
 import { CacheService } from 'ng2-cache-service';
 import { DOCUMENT } from '@angular/platform-browser';
-import { ShepherdService } from 'angular-shepherd';
 import {builtInButtons, defaultStepOptions} from './shepherd-data';
 import { OnboardingService , ConnectionService} from '@sunbird/offline';
 import { Subject } from 'rxjs';
@@ -82,7 +81,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private connectionService: ConnectionService,
      private toasterService: ToasterService, public utilService: UtilService,
     @Inject(DOCUMENT) private _document: any,
-    private shepherdService: ShepherdService, public onboardingService: OnboardingService) {
+     public onboardingService: OnboardingService) {
       this.instance = (<HTMLInputElement>document.getElementById('instance'))
         ? (<HTMLInputElement>document.getElementById('instance')).value : 'sunbird';
   }
@@ -311,18 +310,6 @@ handleOnlineStatus() {
   }
   initializeTourTravel() {
     this.showOnboardingPopup = false;
-    //   setTimeout(() => {
-    //     this.initializeShepherdData();
-    //       this.shepherdService.defaultStepOptions = defaultStepOptions;
-    //       this.shepherdService.disableScroll = true;
-    //       this.shepherdService.modal = true;
-    //       this.shepherdService.confirmCancel = false;
-    //       this.shepherdService.addSteps(this.shepherdData);
-    //       if ((localStorage.getItem('TakeOfflineTour') !== 'show')) {
-    //         localStorage.setItem('TakeOfflineTour', 'show');
-    //         this.shepherdService.start();
-    //       }
-    //   }, 1000);
   }
 
   getDesktopUserData() {

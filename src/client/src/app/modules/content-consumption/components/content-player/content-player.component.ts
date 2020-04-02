@@ -3,12 +3,14 @@ import { ConfigService, NavigationHelperService } from '@sunbird/shared';
 import { Component, AfterViewInit, ViewChild, ElementRef, Input, Output, EventEmitter, OnChanges, OnInit, OnDestroy } from '@angular/core';
 import * as _ from 'lodash-es';
 import { PlayerConfig } from '@sunbird/shared';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { ToasterService, ResourceService , OfflineCardService} from '@sunbird/shared';
 const OFFLINE_ARTIFACT_MIME_TYPES = ['application/epub', 'video/webm', 'video/mp4', 'application/pdf'];
 import { Subject } from 'rxjs';
 import { ConnectionService, ContentManagerService } from '@sunbird/offline';
 import { takeUntil } from 'rxjs/operators';
+import { TelemetryService } from '@sunbird/telemetry';
+import { ContentService} from '@sunbird/core';
 @Component({
   selector: 'app-content-player',
   templateUrl: './content-player.component.html',
@@ -43,12 +45,16 @@ export class ContentPlayerComponent implements AfterViewInit, OnChanges, OnInit,
  */
   @ViewChild('modal') modal;
   @Input() contentData;
+  isFullScreenView: Boolean = false;
   isLoading: Boolean = false; // To restrict player loading multiple times
   constructor(public configService: ConfigService, public router: Router, public toasterService: ToasterService,
     public resourceService: ResourceService, public navigationHelperService: NavigationHelperService,
     private connectionService: ConnectionService,
     private contentManagerService: ContentManagerService,
     private offlineCardService: OfflineCardService,
+    public activatedRoute: ActivatedRoute,
+    private telemetryService: TelemetryService,
+    public contentService: ContentService,
     public playerService: PublicPlayerService) {
     this.buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'))
       ? (<HTMLInputElement>document.getElementById('buildNumber')).value : '1.0';
@@ -95,7 +101,8 @@ export class ContentPlayerComponent implements AfterViewInit, OnChanges, OnInit,
     this.contentManagerService.deletedContent.pipe(takeUntil(this.unsubscribe$)).subscribe((data) => {
       this.deleteContent(data);
     });
-  }
+    this.contentService.contentFullScreenEvent.pipe(takeUntil(this.unsubscribe$)).subscribe(response => {this.handleFullScreen();
+    }); }
 
   loadCdnPlayer() {
     if (this.isLoading) {// To restrict player loading multiple times
@@ -240,6 +247,35 @@ export class ContentPlayerComponent implements AfterViewInit, OnChanges, OnInit,
       }
     }
   }
+  handleFullScreen() {
+    this.isLoading = false;
+    this.loadPlayer();
+    this.isFullScreenView = !this.isFullScreenView;
+  }
+  closeContentFullScreen() {
+    this.contentService.emitContentFullScreenEvent();
+    this.logTelemetry('minimise-content', this.contentData);
+  }
+  logTelemetry(id, content) {
+    const interactData = {
+      context: {
+        env: _.get(this.activatedRoute.snapshot.data.telemetry, 'env') || 'content',
+        cdata: []
+      },
+      edata: {
+        id: id,
+        type: 'click',
+        pageid: _.get(this.activatedRoute.snapshot.data.telemetry, 'pageid') || 'play-content',
+      },
+      object: {
+        id: content['identifier'],
+        type: content['contentType'],
+        ver: `${content['pkgVersion']}`,
+        rollup: this.objectRollUp,
+      }
+    };
+    this.telemetryService.interact(interactData);
+}
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();

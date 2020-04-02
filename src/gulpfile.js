@@ -18,7 +18,7 @@ gulp.task("client:install", cb => {
 
 gulp.task("offline-client:dist", cb => {
   exec(
-    'npm run offline-prod --prefix ./client',
+    'npm run prod --prefix ./client',
     { maxBuffer: Infinity },
     function(err, stdout, stderr) {
       console.log(stdout);

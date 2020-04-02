@@ -1,8 +1,6 @@
-
 @import "variables";
 @import "mixins/mixins";
 @import 'components/video';
-
 .no-content-player{
     background: var(--black);
     color: var(--white);
@@ -11,4 +9,34 @@
     &__text{
         max-width: calculateRem(300px);   
     }
+}
+
+.content-full-video{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: calculateRem(50px);
+    line-height: calculateRem(50px);
+    z-index: 999999;
+    .video-close-btn{
+        position: fixed;
+        right: calculateRem(32px);
+        width: calculateRem(32px);
+        top: 0px;
+        cursor: pointer;
+    }
+}
+    
+.player-fullscreen {
+    position:fixed;
+    top:calculateRem(50px);
+    left:0;
+    bottom:0; 
+    right:0;
+    border:none; 
+    margin:0;
+    padding:0; 
+    overflow:hidden; 
+    z-index:9999;
 }

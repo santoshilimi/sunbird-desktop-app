@@ -1,6 +1,6 @@
 import { ConfigService } from '@sunbird/shared';
 import { DataService } from './../data/data.service';
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { CollectionHierarchyAPI } from '../../interfaces';
@@ -25,6 +25,8 @@ export class ContentService extends DataService {
    * reference of lerner service.
    */
   public http: HttpClient;
+contentFullScreenEvent = new EventEmitter();
+
   /**
    * constructor
    * @param {ConfigService} config ConfigService reference
@@ -35,5 +37,7 @@ export class ContentService extends DataService {
     this.config = config;
     this.baseUrl = this.config.urlConFig.URLS.CONTENT_PREFIX;
   }
-
+  emitContentFullScreenEvent() {
+    this.contentFullScreenEvent.emit();
+}
 }

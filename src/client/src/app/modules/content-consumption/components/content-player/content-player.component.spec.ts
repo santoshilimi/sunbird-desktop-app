@@ -11,6 +11,8 @@ import { Subject } from 'rxjs';
 import { ConnectionService } from '@sunbird/offline';
 import { of, throwError } from 'rxjs';
 import { OfflineCardService } from '@sunbird/shared';
+import { ContentService} from '@sunbird/core';
+
 describe('ContentPlayerComponent', () => {
   let component: ContentPlayerComponent;
   let fixture: ComponentFixture<ContentPlayerComponent>;
@@ -19,7 +21,7 @@ describe('ContentPlayerComponent', () => {
       declarations: [ContentPlayerComponent],
       imports: [HttpClientTestingModule, TelemetryModule.forRoot(), RouterModule.forRoot([]), SharedModule.forRoot()],
       providers: [
-         ConnectionService, ToasterService,
+         ConnectionService, ToasterService, ContentService ,
            OfflineCardService
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
@@ -124,5 +126,39 @@ describe('ContentPlayerComponent', () => {
     component.handleYoutubeContent(playerData.content.result.content);
     expect(component.youTubeContentStatus).toBeFalsy();
   });
+  it('should handle handleFullScreen when you are going for full screen', () => {
+    component.isFullScreenView = false;
+    spyOn(component, 'loadPlayer');
+    component.handleFullScreen();
+    expect(component.isLoading).toBeFalsy();
+    expect(component.loadPlayer).toHaveBeenCalled();
+    expect(component.isFullScreenView).toBeTruthy();
 
+  });
+
+  it('should handle handleFullScreen when you exit from full screen', () => {
+    component.isFullScreenView = true;
+    spyOn(component, 'loadPlayer');
+    component.handleFullScreen();
+    expect(component.isLoading).toBeFalsy();
+    expect(component.loadPlayer).toHaveBeenCalled();
+    expect(component.isFullScreenView).toBeFalsy();
+  });
+  it('should call emitContentFullScreenEvent ', () => {
+    component.contentData = playerData.content.result.content;
+    spyOn(component, 'logTelemetry');
+    const contentService = TestBed.get(ContentService);
+    spyOn(contentService, 'emitContentFullScreenEvent');
+    component.closeContentFullScreen();
+    expect(component.logTelemetry).toHaveBeenCalledWith('minimise-content',  playerData.content.result.content);
+    expect(contentService.emitContentFullScreenEvent).toHaveBeenCalled();
+  });
+  it('should call contentFullScreenEvent ', () => {
+    const contentService = TestBed.get(ContentService);
+    spyOn(component, 'handleFullScreen');
+    component.ngOnInit();
+    contentService.contentFullScreenEvent.subscribe(data => {
+      expect(component.handleFullScreen).toHaveBeenCalled();
+    });
+  });
 });
