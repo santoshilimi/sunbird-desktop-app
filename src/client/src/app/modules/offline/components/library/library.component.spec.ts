@@ -239,6 +239,7 @@ describe('LibraryComponent', () => {
     expect(component.downloadContent).toHaveBeenCalledWith(component.downloadIdentifier);
     expect(component.logTelemetry).toHaveBeenCalledWith(component.contentData, 'download-collection');
     expect(component.showModal).toBeFalsy();
+    expect(component.contentData).toBeDefined();
   });
 
   it('should call hoverActionClicked for Export ', () => {
@@ -255,5 +256,6 @@ describe('LibraryComponent', () => {
     expect(component.logTelemetry).toHaveBeenCalled();
     expect(component.showExportLoader).toBeTruthy();
     expect(component.logTelemetry).toHaveBeenCalledWith(component.contentData, 'export-collection');
+    expect(component.contentData).toBeDefined();
   });
 });
