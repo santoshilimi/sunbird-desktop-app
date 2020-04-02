@@ -84,7 +84,7 @@
         "@types/lodash": "^4.14.123",
         "cpy-cli": "^2.0.0",
         "devtron": "^1.4.0",
-        "electron": "7.1.7",
+        "electron": "8.2.0",
         "electron-builder": "^21.2.0",
         "electron-builder-squirrel-windows": "^22.2.0",
         "electron-icon-maker": "0.0.4",

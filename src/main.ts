@@ -288,7 +288,7 @@ async function initLogger() {
     logLevel: logLevel,
     context: {src: 'desktop', did: deviceId},
     adopterConfig: {
-      adopter: 'console'
+      adopter: 'winston'
     }
   });
 }
