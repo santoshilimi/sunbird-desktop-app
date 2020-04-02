@@ -137,7 +137,7 @@ export class ContentActionsComponent implements OnInit, OnChanges {
         break;
       case 'DOWNLOAD':
         this.isYoutubeContentPresent(content);
-        const id = content.mimeType !== 'application/vnd.ekstep.content-collection' ? 'download-content' : 'download-collection';
+        const id = content.mimeType === 'application/vnd.ekstep.content-collection' ? 'download-collection' : 'download-content';
         this.logTelemetry(id, content);
         break;
       case 'DELETE':

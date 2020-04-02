@@ -187,15 +187,15 @@ export class DesktopExploreContentComponent implements OnInit, OnDestroy {
           this.showDownloadLoader = true;
           this.downloadContent(this.downloadIdentifier);
         }
-        telemetryButtonId = this.contentData.mimeType !==
-        'application/vnd.ekstep.content-collection' ? 'download-content' : 'download-collection';
+        telemetryButtonId = this.contentData.mimeType ===
+        'application/vnd.ekstep.content-collection' ? 'download-collection' : 'download-content';
         this.logTelemetry(this.contentData, telemetryButtonId);
         break;
       case 'SAVE':
         this.showExportLoader = true;
         this.exportContent(_.get(event, 'content.metaData.identifier'));
-        telemetryButtonId = this.contentData.mimeType !==
-          'application/vnd.ekstep.content-collection' ? 'export-content' : 'export-collection';
+        telemetryButtonId = this.contentData.mimeType ===
+          'application/vnd.ekstep.content-collection' ? 'export-collection' : 'export-content';
         this.logTelemetry(this.contentData, telemetryButtonId);
         break;
     }
