@@ -21,7 +21,6 @@ export class ContentManagerService {
   contentDownloadStatus$ = new BehaviorSubject<any>({});
   contentDownloadStatus = {};
   deletedContentIds = [];
-  contentFullScreenEvent = new EventEmitter();
   constructor(private configService: ConfigService, private publicDataService: PublicDataService,
     public toasterService: ToasterService, public resourceService: ResourceService,
     private electronDialogService: ElectronDialogService) { }
