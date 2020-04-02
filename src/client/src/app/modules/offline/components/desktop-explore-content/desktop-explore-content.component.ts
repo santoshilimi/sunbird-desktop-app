@@ -33,6 +33,7 @@ export class DesktopExploreContentComponent implements OnInit, OnDestroy {
   public dataDrivenFilters: any = {};
   public facets: string[];
   public isViewAll = false;
+
   public contentData: any;
   public paginationDetails: IPagination;
   public isConnected = navigator.onLine;
@@ -41,6 +42,7 @@ export class DesktopExploreContentComponent implements OnInit, OnDestroy {
   showDownloadLoader = false;
   contentName: string;
   downloadedContents: any[] = [];
+
   backButtonInteractEdata: IInteractEventEdata;
   filterByButtonInteractEdata: IInteractEventEdata;
   telemetryImpression: IImpressionEventInput;
