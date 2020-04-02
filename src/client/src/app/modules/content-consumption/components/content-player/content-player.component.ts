@@ -10,6 +10,7 @@ import { Subject } from 'rxjs';
 import { ConnectionService, ContentManagerService } from '@sunbird/offline';
 import { takeUntil } from 'rxjs/operators';
 import { TelemetryService } from '@sunbird/telemetry';
+import { ContentService} from '@sunbird/core';
 @Component({
   selector: 'app-content-player',
   templateUrl: './content-player.component.html',
@@ -53,6 +54,7 @@ export class ContentPlayerComponent implements AfterViewInit, OnChanges, OnInit,
     private offlineCardService: OfflineCardService,
     public activatedRoute: ActivatedRoute,
     private telemetryService: TelemetryService,
+    public contentService: ContentService,
     public playerService: PublicPlayerService) {
     this.buildNumber = (<HTMLInputElement>document.getElementById('buildNumber'))
       ? (<HTMLInputElement>document.getElementById('buildNumber')).value : '1.0';
@@ -99,7 +101,7 @@ export class ContentPlayerComponent implements AfterViewInit, OnChanges, OnInit,
     this.contentManagerService.deletedContent.pipe(takeUntil(this.unsubscribe$)).subscribe((data) => {
       this.deleteContent(data);
     });
-    this.contentManagerService.contentFullScreenEvent.pipe(takeUntil(this.unsubscribe$)).subscribe(response => {this.handleFullScreen();
+    this.contentService.contentFullScreenEvent.pipe(takeUntil(this.unsubscribe$)).subscribe(response => {this.handleFullScreen();
     }); }
 
   loadCdnPlayer() {
@@ -251,7 +253,7 @@ export class ContentPlayerComponent implements AfterViewInit, OnChanges, OnInit,
     this.isFullScreenView = !this.isFullScreenView;
   }
   closeContentFullScreen() {
-    this.contentManagerService.emitContentFullScreenEvent();
+    this.contentService.emitContentFullScreenEvent();
     this.logTelemetry('minimise-content', this.contentData);
   }
   logTelemetry(id, content) {

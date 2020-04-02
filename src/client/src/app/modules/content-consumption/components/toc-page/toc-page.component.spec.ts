@@ -9,6 +9,7 @@ import { TocPageComponent } from './toc-page.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ContentManagerService } from '@sunbird/offline';
+import { ContentService} from '@sunbird/core';
 
 describe('TocPageComponent', () => {
   let component: TocPageComponent;
@@ -37,7 +38,7 @@ describe('TocPageComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ TocPageComponent ],
       imports: [TelemetryModule.forRoot(), SharedModule.forRoot(), HttpClientTestingModule, RouterTestingModule],
-      providers: [{provide: ActivatedRoute, useValue: ActivatedRouteStub}, ContentManagerService],
+      providers: [{provide: ActivatedRoute, useValue: ActivatedRouteStub}, ContentManagerService, ContentService],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
     .compileComponents();
@@ -83,8 +84,8 @@ describe('TocPageComponent', () => {
   });
 
   it('should handle contentFullScreenEvent', () => {
-    const contentManagerService = TestBed.get(ContentManagerService);
-    spyOn(contentManagerService, 'contentFullScreenEvent').and.returnValue(of());
+    const contentService = TestBed.get(ContentService);
+    spyOn(contentService, 'contentFullScreenEvent').and.returnValue(of());
     expect(component.isFullScreenView).toBeFalsy();
   });
 

@@ -89,9 +89,6 @@ export class ContentManagerService {
         return observableThrowError(err);
       }));
   }
-  emitContentFullScreenEvent() {
-      this.contentFullScreenEvent.emit();
-  }
   exportContent(contentId) {
     const exportOptions: any = {
       url: `${this.configService.urlConFig.URLS.OFFLINE.EXPORT}/${contentId}`

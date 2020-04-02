@@ -8,7 +8,7 @@ import { Component, OnInit, Input, OnChanges, SimpleChanges, Output, EventEmitte
 import { takeUntil } from 'rxjs/operators';
 import { Subject} from 'rxjs';
 import * as _ from 'lodash-es';
-
+import { ContentService} from '@sunbird/core';
 @Component({
   selector: 'app-content-actions',
   templateUrl: './content-actions.component.html',
@@ -41,7 +41,8 @@ export class ContentActionsComponent implements OnInit, OnChanges {
     public toasterService: ToasterService,
     public offlineCardService: OfflineCardService,
     public navigationHelperService: NavigationHelperService,
-    private telemetryService: TelemetryService
+    private telemetryService: TelemetryService,
+    public contentService: ContentService
   ) { }
 
   ngOnInit() {
@@ -151,7 +152,7 @@ export class ContentActionsComponent implements OnInit, OnChanges {
         this.logTelemetry('share-content', content);
         break;
         case 'FULLSCREEN':
-            this.contentManagerService.emitContentFullScreenEvent();
+            this.contentService.emitContentFullScreenEvent();
           this.logTelemetry('maximise-content', content);
           break;
     }

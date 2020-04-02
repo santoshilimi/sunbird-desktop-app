@@ -8,9 +8,10 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
 import { playerData } from './content-player.component.spec.data';
 import { Subject } from 'rxjs';
-import { ConnectionService, ContentManagerService } from '@sunbird/offline';
+import { ConnectionService } from '@sunbird/offline';
 import { of, throwError } from 'rxjs';
 import { OfflineCardService } from '@sunbird/shared';
+import { ContentService} from '@sunbird/core';
 
 describe('ContentPlayerComponent', () => {
   let component: ContentPlayerComponent;
@@ -20,7 +21,7 @@ describe('ContentPlayerComponent', () => {
       declarations: [ContentPlayerComponent],
       imports: [HttpClientTestingModule, TelemetryModule.forRoot(), RouterModule.forRoot([]), SharedModule.forRoot()],
       providers: [
-         ConnectionService, ToasterService, ContentManagerService ,
+         ConnectionService, ToasterService, ContentService ,
            OfflineCardService
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
@@ -146,17 +147,17 @@ describe('ContentPlayerComponent', () => {
   it('should call emitContentFullScreenEvent ', () => {
     component.contentData = playerData.content.result.content;
     spyOn(component, 'logTelemetry');
-    const contentManagerService = TestBed.get(ContentManagerService);
-    spyOn(contentManagerService, 'emitContentFullScreenEvent');
+    const contentService = TestBed.get(ContentService);
+    spyOn(contentService, 'emitContentFullScreenEvent');
     component.closeContentFullScreen();
     expect(component.logTelemetry).toHaveBeenCalledWith('minimise-content',  playerData.content.result.content);
-    expect(contentManagerService.emitContentFullScreenEvent).toHaveBeenCalled();
+    expect(contentService.emitContentFullScreenEvent).toHaveBeenCalled();
   });
   it('should call contentFullScreenEvent ', () => {
-    const contentManagerService = TestBed.get(ContentManagerService);
+    const contentService = TestBed.get(ContentService);
     spyOn(component, 'handleFullScreen');
     component.ngOnInit();
-    contentManagerService.contentFullScreenEvent.subscribe(data => {
+    contentService.contentFullScreenEvent.subscribe(data => {
       expect(component.handleFullScreen).toHaveBeenCalled();
     });
   });
