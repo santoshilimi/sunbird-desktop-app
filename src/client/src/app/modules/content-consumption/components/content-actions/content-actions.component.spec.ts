@@ -90,6 +90,7 @@ describe('ContentActionsComponent', () => {
     spyOn(component, 'logTelemetry');
     component.onActionButtonClick(actionsData.actionButtonEvents.DOWNLOAD, actionsData.contentData);
     expect(component.isYoutubeContentPresent).toHaveBeenCalledWith(actionsData.contentData);
+    expect(component.logTelemetry).toHaveBeenCalledWith('download-content',  actionsData.contentData);
   });
 
   it('should call onActionButtonClick for DELETE ', () => {
@@ -114,9 +115,8 @@ describe('ContentActionsComponent', () => {
     expect(component.logTelemetry).toHaveBeenCalledWith('share-content',  actionsData.contentData);
   });
 
-  it('should call downloadContent and successfuly content downloaded', () => {
+  it('should call downloadContent and successfully content downloaded', () => {
     spyOn(component['contentManagerService'], 'startDownload').and.returnValue(of(actionsData.downloadContent.success));
-    spyOn(component, 'logTelemetry');
     spyOn(component, 'changeContentStatus');
     component.contentData = actionsData.contentData;
     component.downloadContent(actionsData.contentData);
@@ -124,12 +124,10 @@ describe('ContentActionsComponent', () => {
       expect(data).toEqual(actionsData.downloadContent.success);
       expect(component.contentManagerService.downloadContentId).toEqual('');
     });
-    expect(component.logTelemetry).toHaveBeenCalledWith('download-content',  actionsData.contentData);
   });
 
   it('should call downloadContent and error while downloading content', () => {
     spyOn(component['contentManagerService'], 'startDownload').and.returnValue(throwError(actionsData.downloadContent.downloadError));
-    spyOn(component, 'logTelemetry');
     spyOn(component.toasterService, 'error');
     component.contentData = actionsData.contentData;
     component.downloadContent(actionsData.contentData);
@@ -139,7 +137,6 @@ describe('ContentActionsComponent', () => {
       expect(component.contentManagerService.failedContentName).toEqual('');
       expect(component.toasterService.error).toHaveBeenCalledWith(actionsData.resourceBundle.messages.fmsg.m0090);
     });
-    expect(component.logTelemetry).toHaveBeenCalledWith('download-content',  actionsData.contentData);
   });
 
   it('should call updateContent and successfuly update content ', () => {
