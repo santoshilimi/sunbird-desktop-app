@@ -226,4 +226,32 @@ describe('LibraryComponent', () => {
     });
     fixture.destroy();
   });
+  it('should call hoverActionClicked for DOWNLOAD ', () => {
+    response.hoverActionsData['hover'] = {
+      'type': 'download',
+      'label': 'Download',
+      'disabled': false
+    };
+    response.hoverActionsData['data'] = response.hoverActionsData.content;
+    spyOn(component, 'logTelemetry');
+    spyOn(component, 'downloadContent');
+    component.hoverActionClicked(response.hoverActionsData);
+    expect(component.downloadContent).toHaveBeenCalledWith(component.downloadIdentifier);
+    expect(component.logTelemetry).toHaveBeenCalled();
+  });
+
+  it('should call hoverActionClicked for Export ', () => {
+    response.hoverActionsData['hover'] = {
+      'type': 'save',
+      'label': 'SAVE',
+      'disabled': false
+    };
+    response.hoverActionsData['data'] = response.hoverActionsData.content;
+    spyOn(component, 'logTelemetry');
+    spyOn(component, 'exportContent');
+    component.hoverActionClicked(response.hoverActionsData);
+    expect(component.exportContent).toHaveBeenCalledWith(response.hoverActionsData.content.metaData.identifier);
+    expect(component.logTelemetry).toHaveBeenCalled();
+    expect(component.showExportLoader).toBeTruthy();
+  });
 });
