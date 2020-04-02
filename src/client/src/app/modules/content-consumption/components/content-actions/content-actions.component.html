@@ -29,7 +29,7 @@ class="sb-modal" appBodyScroll (dismissed)="showModal = !showModal;" #modal>
 </div>
 <div class="sb-modal-actions">
   <button  class="sb-btn sb-btn-normal sb-btn-primary"
-    (click)="downloadContent(contentData); showModal = !showModal;">
+    (click)="downloadContent(contentData); showModal = !showModal; logTelemetry('confirm-download-content', contentData);">
     {{resourceService.frmelmnts?.btn?.yes}}
   </button>
   <button class="sb-btn sb-btn-normal sb-btn-outline-primary"

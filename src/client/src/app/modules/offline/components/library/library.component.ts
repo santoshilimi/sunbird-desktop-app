@@ -58,6 +58,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
     public telemetryImpression: IImpressionEventInput;
     public cardInteractObject: any;
     public cardInteractCdata: any;
+    public contentData: any;
 
     @HostListener('window:scroll', []) onScroll(): void {
         if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight * 2 / 3)
@@ -374,10 +375,6 @@ export class LibraryComponent implements OnInit, OnDestroy {
     }
 
     logTelemetry(content, actionId) {
-        const telemetryInteractCdata = [{
-            id: content.metaData.identifier || content.metaData.courseId,
-            type: content.metaData.contentType
-        }];
         const telemetryInteractObject = {
             id: content.metaData.identifier || content.metaData.courseId,
             type: content.metaData.contentType || 'Course',
@@ -410,24 +407,30 @@ export class LibraryComponent implements OnInit, OnDestroy {
     hoverActionClicked(event) {
         event['data'] = event.content;
         this.contentName = event.content.name;
+        this.contentData = event.data;
+        let telemetryButtonId: any;
         switch (event.hover.type.toUpperCase()) {
             case 'OPEN':
                 this.playContent(event);
-                this.logTelemetry(event.data, 'play-content');
+                this.logTelemetry(this.contentData, 'play-content');
                 break;
             case 'DOWNLOAD':
                 this.downloadIdentifier = _.get(event, 'content.metaData.identifier');
-                this.showModal = this.offlineCardService.isYoutubeContent(event.data);
+                this.showModal = this.offlineCardService.isYoutubeContent(this.contentData);
                 if (!this.showModal) {
                     this.showDownloadLoader = true;
                     this.downloadContent(this.downloadIdentifier);
-                    this.logTelemetry(event.data, 'download-content');
                 }
+                telemetryButtonId = this.contentData.mimeType ===
+                    'application/vnd.ekstep.content-collection' ? 'download-collection' : 'download-content';
+                this.logTelemetry(this.contentData, telemetryButtonId);
                 break;
             case 'SAVE':
                 this.showExportLoader = true;
                 this.exportContent(_.get(event, 'content.metaData.identifier'));
-                this.logTelemetry(event.data, 'export-content');
+                telemetryButtonId = this.contentData.mimeType ===
+                    'application/vnd.ekstep.content-collection' ? 'export-collection' : 'export-content';
+                this.logTelemetry(this.contentData, telemetryButtonId);
                 break;
         }
     }
