@@ -205,5 +205,5 @@ describe('DesktopExploreContentComponent', () => {
     component.logTelemetry(contentList[0], 'play-content');
     expect(telemetryService.interact).toHaveBeenCalledWith(appTelemetryInteractData);
   });
-  
+
 });
