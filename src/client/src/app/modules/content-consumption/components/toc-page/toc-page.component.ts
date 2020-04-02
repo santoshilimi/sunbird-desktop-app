@@ -11,7 +11,7 @@ import {
   ICollectionTreeOptions, NavigationHelperService, ResourceService,  ExternalUrlPreviewService, ConfigService,
   ContentUtilsServiceService, UtilService, OfflineCardService
 } from '@sunbird/shared';
-import { CollectionHierarchyAPI , ContentService} from '@sunbird/core';
+import { CollectionHierarchyAPI, ContentService} from '@sunbird/core';
 import * as _ from 'lodash-es';
 @Component({
   selector: 'app-toc-page',
