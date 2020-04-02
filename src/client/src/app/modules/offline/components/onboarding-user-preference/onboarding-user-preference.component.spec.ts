@@ -65,9 +65,11 @@ describe('OnboardingUserPreferenceComponent', () => {
   });
 
   it('should get tenant data', () => {
+    spyOn(component, 'setTelemetryImpression');
     spyOn(component.tenantService, 'tenantData$').and.returnValue(observableOf(onboarding_user_preference_test.tenantInfo));
     component.ngOnInit();
     expect(component.tenantInfo).toBeDefined();
+    expect(component.setTelemetryImpression).toHaveBeenCalled();
   });
 
   it('should call readChannel and get board option', () => {
