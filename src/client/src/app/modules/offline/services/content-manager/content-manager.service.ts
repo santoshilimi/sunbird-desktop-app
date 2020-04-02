@@ -2,7 +2,7 @@ import { ElectronDialogService } from './../electron-dialog/electron-dialog.serv
 import { Injectable, EventEmitter } from '@angular/core';
 import { ConfigService, ToasterService, ResourceService } from '@sunbird/shared';
 import { PublicDataService } from '@sunbird/core';
-import { throwError as observableThrowError, BehaviorSubject } from 'rxjs';
+import { throwError as observableThrowError, BehaviorSubject, Observable } from 'rxjs';
 import { catchError, map, mergeMap, tap } from 'rxjs/operators';
 import * as _ from 'lodash-es';
 import { SystemInfoService } from '../system-info/system-info.service';
@@ -86,7 +86,7 @@ export class ContentManagerService {
         this.downloadEvent.emit('Download started');
       }),
       catchError((err: any) => {
-        if (err.params.err === 'LOW_DISK_SPACE') {
+        if (err.error.params.err === 'LOW_DISK_SPACE') {
           const popupInfo: any = {
             failedContentName: this.failedContentName,
           };
@@ -222,6 +222,15 @@ export class ContentManagerService {
         this.deletedContentIds = _.uniq(_.concat(this.deletedContentIds, _.get(data, 'result.deleted')));
         this.deletedContent.emit(this.deletedContentIds);
       }));
+  }
+
+  changeContentLocation(request): Observable<any> {
+    const options = {
+      url: this.configService.urlConFig.URLS.OFFLINE.CHANGE_CONTENT_LOCATION,
+      data: request
+    };
+
+    return this.publicDataService.post(options);
   }
 
 }

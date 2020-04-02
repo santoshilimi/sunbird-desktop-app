@@ -129,7 +129,19 @@ export class ContentManagerComponent implements OnInit, OnDestroy {
     this.unHandledFailedList = [];
 
     if (this.isWindows) {
-      this.electronDialogService.showContentLocationChangePopup();
+      this.electronDialogService.showContentLocationChangePopup().subscribe((data: any) => {
+        const req = {
+          request: {
+            path: data.destFolder
+          }
+        };
+        this.contentManagerService.changeContentLocation(req).subscribe(response => { }, error => {
+          this.toasterService.error(this.resourceService.messages.fmsg.m0097);
+        });
+        console.log('New Content Location', data);
+      }, error => {
+        console.error('Error while getting location');
+      });
     }
   }
   contentManagerActions(type: string, action: string, id: string) {
