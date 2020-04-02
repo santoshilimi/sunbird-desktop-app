@@ -218,7 +218,8 @@ describe('DesktopExploreContentComponent', () => {
     spyOn(component, 'downloadContent');
     component.hoverActionClicked(response.hoverActionsData);
     expect(component.downloadContent).toHaveBeenCalledWith(component.downloadIdentifier);
-    expect(component.logTelemetry).toHaveBeenCalled();
+    expect(component.logTelemetry).toHaveBeenCalledWith(component.contentData, 'download-collection');
+    expect(component.showModal).toBeFalsy();
   });
 
   it('should call hoverActionClicked for Export ', () => {
@@ -234,5 +235,6 @@ describe('DesktopExploreContentComponent', () => {
     expect(component.exportContent).toHaveBeenCalledWith(response.hoverActionsData.content.metaData.identifier);
     expect(component.logTelemetry).toHaveBeenCalled();
     expect(component.showExportLoader).toBeTruthy();
+    expect(component.logTelemetry).toHaveBeenCalledWith(component.contentData, 'export-collection');
   });
 });
