@@ -8,7 +8,6 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TocPageComponent } from './toc-page.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ContentManagerService } from '@sunbird/offline';
 import { ContentService} from '@sunbird/core';
 
 describe('TocPageComponent', () => {
@@ -38,7 +37,7 @@ describe('TocPageComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ TocPageComponent ],
       imports: [TelemetryModule.forRoot(), SharedModule.forRoot(), HttpClientTestingModule, RouterTestingModule],
-      providers: [{provide: ActivatedRoute, useValue: ActivatedRouteStub}, ContentManagerService, ContentService],
+      providers: [{provide: ActivatedRoute, useValue: ActivatedRouteStub}, ContentService],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
     .compileComponents();
