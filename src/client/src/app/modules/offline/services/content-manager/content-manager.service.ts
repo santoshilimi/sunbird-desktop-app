@@ -21,7 +21,6 @@ export class ContentManagerService {
   contentDownloadStatus$ = new BehaviorSubject<any>({});
   contentDownloadStatus = {};
   deletedContentIds = [];
-
   constructor(private configService: ConfigService, private publicDataService: PublicDataService,
     public toasterService: ToasterService, public resourceService: ResourceService,
     private electronDialogService: ElectronDialogService) { }
@@ -89,7 +88,6 @@ export class ContentManagerService {
         return observableThrowError(err);
       }));
   }
-
   exportContent(contentId) {
     const exportOptions: any = {
       url: `${this.configService.urlConFig.URLS.OFFLINE.EXPORT}/${contentId}`

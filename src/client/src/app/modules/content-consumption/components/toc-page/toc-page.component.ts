@@ -11,7 +11,7 @@ import {
   ICollectionTreeOptions, NavigationHelperService, ResourceService,  ExternalUrlPreviewService, ConfigService,
   ContentUtilsServiceService, UtilService, OfflineCardService
 } from '@sunbird/shared';
-import { CollectionHierarchyAPI } from '@sunbird/core';
+import { CollectionHierarchyAPI, ContentService} from '@sunbird/core';
 import * as _ from 'lodash-es';
 @Component({
   selector: 'app-toc-page',
@@ -72,6 +72,7 @@ export class TocPageComponent implements OnInit, OnDestroy {
   contentDeleted;
   isContentPresent = true;
   telemetryImpression: IImpressionEventInput;
+  isFullScreenView: Boolean = false;
   constructor(public playerService: PublicPlayerService, private configService: ConfigService, public activatedRoute: ActivatedRoute,
     public router: Router, public resourceService: ResourceService, private contentUtilsService: ContentUtilsServiceService,
     public externalUrlPreviewService: ExternalUrlPreviewService,
@@ -82,6 +83,7 @@ export class TocPageComponent implements OnInit, OnDestroy {
     private deviceDetectorService: DeviceDetectorService,
     private connectionService: ConnectionService,
     private offlineCardService: OfflineCardService,
+    public contentService: ContentService,
     private telemetryService: TelemetryService) { }
 
   ngOnInit() {
@@ -95,7 +97,9 @@ export class TocPageComponent implements OnInit, OnDestroy {
     this.router.events
     .pipe(filter((event) => event instanceof NavigationStart), takeUntil(this.unsubscribe$))
     .subscribe(x => {this.setPageExitTelemtry(); });
-  }
+
+    this.contentService.contentFullScreenEvent.pipe(takeUntil(this.unsubscribe$)).subscribe(response => {
+     this.isFullScreenView = !this.isFullScreenView; }); }
 
   checkDownloadStatus(downloadListdata) {
     this.collectionData = this.playerService.updateDownloadStatus(downloadListdata, this.collectionData);
