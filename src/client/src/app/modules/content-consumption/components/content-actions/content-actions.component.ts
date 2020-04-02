@@ -120,7 +120,6 @@ export class ContentActionsComponent implements OnInit, OnChanges {
     return (_.has(this.contentData, 'desktopAppMetadata') ? (!_.has(this.contentData, 'desktopAppMetadata.isAvailable')
     || _.get(this.contentData, 'desktopAppMetadata.isAvailable')) : false);
   }
-
   isBrowse() {
     return this.router.url.includes('browse');
   }

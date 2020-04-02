@@ -254,9 +254,23 @@ describe('LibraryComponent', () => {
     spyOn(component, 'exportContent');
     component.hoverActionClicked(response.hoverActionsData);
     expect(component.exportContent).toHaveBeenCalledWith(response.hoverActionsData.content.metaData.identifier);
-    expect(component.logTelemetry).toHaveBeenCalled();
     expect(component.showExportLoader).toBeTruthy();
     expect(component.logTelemetry).toHaveBeenCalledWith(component.contentData, 'export-collection');
+    expect(component.contentData).toBeDefined();
+  });
+
+  it('should call hoverActionClicked for Open ', () => {
+    response.hoverActionsData['hover'] = {
+      'type': 'Open',
+      'label': 'OPEN',
+      'disabled': false
+    };
+    response.hoverActionsData['data'] = response.hoverActionsData.content;
+    spyOn(component, 'logTelemetry');
+    spyOn(component, 'playContent');
+    component.hoverActionClicked(response.hoverActionsData);
+    expect(component.playContent).toHaveBeenCalledWith(response.hoverActionsData);
+    expect(component.logTelemetry).toHaveBeenCalledWith(component.contentData, 'play-content');
     expect(component.contentData).toBeDefined();
   });
 });
