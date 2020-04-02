@@ -12,7 +12,7 @@
   }
 
   .ui.selection.fields-select-dropdown.dropdown:focus {
-    border: 1px solid var(--primary-300);
+    border: calculateRem(1px) solid var(--primary-300);
     color: #0076FE;
   }
 

@@ -1,5 +1,5 @@
 @import "variables";
-@import "../../../../../../node_modules/common-consumption-styles/assets/mixins/mixins";
+@import "mixins/mixins";
 :host {
   .page {
     background: rgba(0, 0, 0, 0.6);
@@ -64,12 +64,12 @@
   }
   [dir="ltr"].slick-slider .slick-prev,
   [dir="rtl"].slick-slider .slick-next {
-    left: -16px !important;
+    left: calculateRem(-16px) !important;
     right: auto !important;
   }
   [dir="rtl"].slick-slider .slick-prev,
   [dir="ltr"].slick-slider .slick-next {
-    right: -8px !important;
+    right: calculateRem(-8px) !important;
     left: auto !important;
   }
 }

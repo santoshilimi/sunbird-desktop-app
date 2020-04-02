@@ -2,7 +2,7 @@
 @import "mixins/mixins";
 
 .sbpage-title {
-  min-height: 56px;
+  min-height: calculateRem(56px);
   display: flex;
   align-items: center;
 
