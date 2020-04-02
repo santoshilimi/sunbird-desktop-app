@@ -41,7 +41,6 @@ export class DesktopExploreContentComponent implements OnInit, OnDestroy {
   showDownloadLoader = false;
   contentName: string;
   downloadedContents: any[] = [];
-
   backButtonInteractEdata: IInteractEventEdata;
   filterByButtonInteractEdata: IInteractEventEdata;
   telemetryImpression: IImpressionEventInput;

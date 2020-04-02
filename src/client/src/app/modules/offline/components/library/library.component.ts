@@ -3,7 +3,6 @@ import { Router, ActivatedRoute, NavigationStart } from '@angular/router';
 import { combineLatest, Subject, of } from 'rxjs';
 import { tap, catchError, filter, takeUntil } from 'rxjs/operators';
 import * as _ from 'lodash-es';
-
 import {
     OfflineCardService, ResourceService, ToasterService, ConfigService, UtilService, ICaraouselData, NavigationHelperService, ILanguage
 } from '@sunbird/shared';

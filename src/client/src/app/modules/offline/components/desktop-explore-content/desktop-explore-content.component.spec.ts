@@ -161,10 +161,8 @@ describe('DesktopExploreContentComponent', () => {
   it('should export a content for given content ID', () => {
     const contentManagerService = TestBed.get(ContentManagerService);
     const toasterService = TestBed.get(ToasterService);
-
     spyOn(contentManagerService, 'exportContent').and.returnValue(observableOf({}));
     spyOn(toasterService, 'success');
-
     component.exportContent('do_31288771643112652813019');
     expect(contentManagerService.exportContent).toHaveBeenCalledWith('do_31288771643112652813019');
     expect(component.showExportLoader).toBeFalsy();

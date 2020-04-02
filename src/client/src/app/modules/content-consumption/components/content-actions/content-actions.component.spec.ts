@@ -25,7 +25,6 @@ describe('ContentActionsComponent', () => {
       }
     }
   };
-
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ContentActionsComponent],
