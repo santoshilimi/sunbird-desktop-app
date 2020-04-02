@@ -12,6 +12,7 @@ import { CUSTOM_ELEMENTS_SCHEMA, SimpleChange } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { ContentManagerService, ConnectionService } from '@sunbird/offline';
 import { PublicPlayerService } from '@sunbird/public';
+import { ContentService} from '@sunbird/core';
 
 describe('ContentActionsComponent', () => {
   let component: ContentActionsComponent;
@@ -33,7 +34,7 @@ describe('ContentActionsComponent', () => {
         { provide: ActivatedRoute, useValue: ActivatedRouteStub },
         { provide: ResourceService, useValue: actionsData.resourceBundle },
         ConnectionService, ContentManagerService, PublicPlayerService,
-        OfflineCardService, TelemetryService
+        OfflineCardService, TelemetryService, ContentService
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
@@ -113,6 +114,15 @@ describe('ContentActionsComponent', () => {
     component.onActionButtonClick(actionsData.actionButtonEvents.SHARE, actionsData.contentData);
     expect(component.exportContent).toHaveBeenCalledWith(actionsData.contentData);
     expect(component.logTelemetry).toHaveBeenCalledWith('share-content',  actionsData.contentData);
+  });
+
+  it('should call onActionButtonClick for FULLSCREEN ', () => {
+    const contentService = TestBed.get(ContentService);
+    spyOn(component, 'logTelemetry');
+    spyOn(contentService, 'emitContentFullScreenEvent');
+    component.onActionButtonClick(actionsData.actionButtonEvents.FULLSCREEN, actionsData.contentData);
+    expect(contentService.emitContentFullScreenEvent).toHaveBeenCalled();
+    expect(component.logTelemetry).toHaveBeenCalledWith('maximise-content',  actionsData.contentData);
   });
 
   it('should call downloadContent and successfuly content downloaded', () => {

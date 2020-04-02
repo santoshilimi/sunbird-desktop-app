@@ -8,7 +8,7 @@ import { Component, OnInit, Input, OnChanges, SimpleChanges, Output, EventEmitte
 import { takeUntil } from 'rxjs/operators';
 import { Subject} from 'rxjs';
 import * as _ from 'lodash-es';
-
+import { ContentService} from '@sunbird/core';
 @Component({
   selector: 'app-content-actions',
   templateUrl: './content-actions.component.html',
@@ -18,7 +18,7 @@ export class ContentActionsComponent implements OnInit, OnChanges {
   @Input() contentData;
   @Input() showUpdate;
   @Output() contentDownloaded = new EventEmitter();
-  actionButtons = actionButtons;
+  actionButtons;
   contentRatingModal = false;
   contentId;
   collectionId;
@@ -41,10 +41,12 @@ export class ContentActionsComponent implements OnInit, OnChanges {
     public toasterService: ToasterService,
     public offlineCardService: OfflineCardService,
     public navigationHelperService: NavigationHelperService,
-    private telemetryService: TelemetryService
+    private telemetryService: TelemetryService,
+    public contentService: ContentService
   ) { }
 
   ngOnInit() {
+    this.actionButtons = _.cloneDeep(actionButtons);
     this.collectionId = _.get(this.activatedRoute.snapshot.params, 'collectionId');
     this.checkOnlineStatus();
     this.contentManagerService.contentDownloadStatus$.pipe(takeUntil(this.unsubscribe$)).subscribe( contentDownloadStatus => {
@@ -103,6 +105,9 @@ export class ContentActionsComponent implements OnInit, OnChanges {
         data.label = _.capitalize(data.name);
         data.disabled =
         !(_.has(this.contentData, 'desktopAppMetadata') && _.get(this.contentData, 'desktopAppMetadata.updateAvailable'));
+      } else if ( data.name === 'fullscreen') {
+        data.disabled = false;
+        data.label = 'Full screen';
       } else if (data.name !== 'rate') {
         const downloaded = _.find(this.actionButtons, {name: 'download'});
         data.label = _.capitalize(data.name);
@@ -146,6 +151,10 @@ export class ContentActionsComponent implements OnInit, OnChanges {
         this.exportContent(content);
         this.logTelemetry('share-content', content);
         break;
+        case 'FULLSCREEN':
+            this.contentService.emitContentFullScreenEvent();
+          this.logTelemetry('maximise-content', content);
+          break;
     }
   }
 

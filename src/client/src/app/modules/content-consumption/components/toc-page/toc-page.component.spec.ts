@@ -8,6 +8,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TocPageComponent } from './toc-page.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { ContentService} from '@sunbird/core';
 
 describe('TocPageComponent', () => {
   let component: TocPageComponent;
@@ -36,7 +37,7 @@ describe('TocPageComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ TocPageComponent ],
       imports: [TelemetryModule.forRoot(), SharedModule.forRoot(), HttpClientTestingModule, RouterTestingModule],
-      providers: [{provide: ActivatedRoute, useValue: ActivatedRouteStub}],
+      providers: [{provide: ActivatedRoute, useValue: ActivatedRouteStub}, ContentService],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
     .compileComponents();
@@ -80,4 +81,11 @@ describe('TocPageComponent', () => {
     component.showNoContent({message: 'No Content Available'});
     expect(component.isContentPresent).toBeFalsy();
   });
+
+  it('should handle contentFullScreenEvent', () => {
+    const contentService = TestBed.get(ContentService);
+    spyOn(contentService, 'contentFullScreenEvent').and.returnValue(of());
+    expect(component.isFullScreenView).toBeFalsy();
+  });
+
 });

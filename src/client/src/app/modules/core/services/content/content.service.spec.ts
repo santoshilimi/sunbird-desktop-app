@@ -14,4 +14,10 @@ describe('ContentService', () => {
   it('should be created', inject([ContentService], (service: ContentService) => {
     expect(service).toBeTruthy();
   }));
+  it('should call emitContentFullScreenEvent ', () => {
+    const contentService = TestBed.get(ContentService);
+    spyOn(contentService, 'emitContentFullScreenEvent');
+    contentService.emitContentFullScreenEvent();
+    expect(contentService.emitContentFullScreenEvent).toHaveBeenCalled();
+  });
 });

@@ -234,5 +234,10 @@ export const actionsData = {
                 name: 'share'
             }
         },
+        FULLSCREEN: {
+            data: {
+                name: 'fullscreen'
+            }
+        },
     }
 };
