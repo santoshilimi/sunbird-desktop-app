@@ -205,49 +205,5 @@ describe('DesktopExploreContentComponent', () => {
     component.logTelemetry(contentList[0], 'play-content');
     expect(telemetryService.interact).toHaveBeenCalledWith(appTelemetryInteractData);
   });
-  it('should call hoverActionClicked for DOWNLOAD ', () => {
-    response.hoverActionsData['hover'] = {
-      'type': 'download',
-      'label': 'Download',
-      'disabled': false
-    };
-    response.hoverActionsData['data'] = response.hoverActionsData.content;
-    spyOn(component, 'logTelemetry');
-    spyOn(component, 'downloadContent');
-    component.hoverActionClicked(response.hoverActionsData);
-    expect(component.downloadContent).toHaveBeenCalledWith(component.downloadIdentifier);
-    expect(component.logTelemetry).toHaveBeenCalledWith(component.contentData, 'download-collection');
-    expect(component.showModal).toBeFalsy();
-    expect(component.contentData).toBeDefined();
-  });
-
-  it('should call hoverActionClicked for Export ', () => {
-    response.hoverActionsData['hover'] = {
-      'type': 'save',
-      'label': 'SAVE',
-      'disabled': false
-    };
-    response.hoverActionsData['data'] = response.hoverActionsData.content;
-    spyOn(component, 'logTelemetry');
-    spyOn(component, 'exportContent');
-    component.hoverActionClicked(response.hoverActionsData);
-    expect(component.exportContent).toHaveBeenCalledWith(response.hoverActionsData.content.metaData.identifier);
-    expect(component.showExportLoader).toBeTruthy();
-    expect(component.logTelemetry).toHaveBeenCalledWith(component.contentData, 'export-collection');
-    expect(component.contentData).toBeDefined();
-  });
-  it('should call hoverActionClicked for Open ', () => {
-    response.hoverActionsData['hover'] = {
-      'type': 'Open',
-      'label': 'OPEN',
-      'disabled': false
-    };
-    response.hoverActionsData['data'] = response.hoverActionsData.content;
-    spyOn(component, 'logTelemetry');
-    spyOn(component, 'playContent');
-    component.hoverActionClicked(response.hoverActionsData);
-    expect(component.playContent).toHaveBeenCalledWith(response.hoverActionsData);
-    expect(component.logTelemetry).toHaveBeenCalledWith(component.contentData, 'play-content');
-    expect(component.contentData).toBeDefined();
-  });
+  
 });

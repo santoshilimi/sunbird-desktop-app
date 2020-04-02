@@ -102,6 +102,53 @@ describe('LibraryComponent', () => {
     expect(component.getSelectedFilters).toHaveBeenCalled();
   });
 
+  it('should call hoverActionClicked for DOWNLOAD ', () => {
+    response.hoverActionsData['hover'] = {
+      'type': 'download',
+      'label': 'Download',
+      'disabled': false
+    };
+    response.hoverActionsData['data'] = response.hoverActionsData.content;
+    spyOn(component, 'logTelemetry');
+    spyOn(component, 'downloadContent');
+    component.hoverActionClicked(response.hoverActionsData);
+    expect(component.downloadContent).toHaveBeenCalledWith(component.downloadIdentifier);
+    expect(component.logTelemetry).toHaveBeenCalledWith(component.contentData, 'download-collection');
+    expect(component.showModal).toBeFalsy();
+    expect(component.contentData).toBeDefined();
+  });
+
+  it('should call hoverActionClicked for Export ', () => {
+    response.hoverActionsData['hover'] = {
+      'type': 'save',
+      'label': 'SAVE',
+      'disabled': false
+    };
+    response.hoverActionsData['data'] = response.hoverActionsData.content;
+    spyOn(component, 'logTelemetry');
+    spyOn(component, 'exportContent');
+    component.hoverActionClicked(response.hoverActionsData);
+    expect(component.exportContent).toHaveBeenCalledWith(response.hoverActionsData.content.metaData.identifier);
+    expect(component.showExportLoader).toBeTruthy();
+    expect(component.logTelemetry).toHaveBeenCalledWith(component.contentData, 'export-collection');
+    expect(component.contentData).toBeDefined();
+  });
+
+  it('should call hoverActionClicked for Open ', () => {
+    response.hoverActionsData['hover'] = {
+      'type': 'Open',
+      'label': 'OPEN',
+      'disabled': false
+    };
+    response.hoverActionsData['data'] = response.hoverActionsData.content;
+    spyOn(component, 'logTelemetry');
+    spyOn(component, 'playContent');
+    component.hoverActionClicked(response.hoverActionsData);
+    expect(component.playContent).toHaveBeenCalledWith(response.hoverActionsData);
+    expect(component.logTelemetry).toHaveBeenCalledWith(component.contentData, 'play-content');
+    expect(component.contentData).toBeDefined();
+  });
+
   it('should call getSelectedFilters', () => {
     component.getSelectedFilters();
     expect(component.selectedFilters).toBeDefined();
@@ -226,51 +273,5 @@ describe('LibraryComponent', () => {
     expect(component.sections[1].contents[0].name).toEqual(response.testSectionName[1].contents[0].name);
     });
     fixture.destroy();
-  });
-  it('should call hoverActionClicked for DOWNLOAD ', () => {
-    response.hoverActionsData['hover'] = {
-      'type': 'download',
-      'label': 'Download',
-      'disabled': false
-    };
-    response.hoverActionsData['data'] = response.hoverActionsData.content;
-    spyOn(component, 'logTelemetry');
-    spyOn(component, 'downloadContent');
-    component.hoverActionClicked(response.hoverActionsData);
-    expect(component.downloadContent).toHaveBeenCalledWith(component.downloadIdentifier);
-    expect(component.logTelemetry).toHaveBeenCalledWith(component.contentData, 'download-collection');
-    expect(component.showModal).toBeFalsy();
-    expect(component.contentData).toBeDefined();
-  });
-
-  it('should call hoverActionClicked for Export ', () => {
-    response.hoverActionsData['hover'] = {
-      'type': 'save',
-      'label': 'SAVE',
-      'disabled': false
-    };
-    response.hoverActionsData['data'] = response.hoverActionsData.content;
-    spyOn(component, 'logTelemetry');
-    spyOn(component, 'exportContent');
-    component.hoverActionClicked(response.hoverActionsData);
-    expect(component.exportContent).toHaveBeenCalledWith(response.hoverActionsData.content.metaData.identifier);
-    expect(component.showExportLoader).toBeTruthy();
-    expect(component.logTelemetry).toHaveBeenCalledWith(component.contentData, 'export-collection');
-    expect(component.contentData).toBeDefined();
-  });
-
-  it('should call hoverActionClicked for Open ', () => {
-    response.hoverActionsData['hover'] = {
-      'type': 'Open',
-      'label': 'OPEN',
-      'disabled': false
-    };
-    response.hoverActionsData['data'] = response.hoverActionsData.content;
-    spyOn(component, 'logTelemetry');
-    spyOn(component, 'playContent');
-    component.hoverActionClicked(response.hoverActionsData);
-    expect(component.playContent).toHaveBeenCalledWith(response.hoverActionsData);
-    expect(component.logTelemetry).toHaveBeenCalledWith(component.contentData, 'play-content');
-    expect(component.contentData).toBeDefined();
   });
 });
