@@ -375,10 +375,6 @@ export class LibraryComponent implements OnInit, OnDestroy {
     }
 
     logTelemetry(content, actionId) {
-        const telemetryInteractCdata = [{
-            id: content.metaData.identifier || content.metaData.courseId,
-            type: content.metaData.contentType
-        }];
         const telemetryInteractObject = {
             id: content.metaData.identifier || content.metaData.courseId,
             type: content.metaData.contentType || 'Course',
