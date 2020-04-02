@@ -14,7 +14,7 @@ import { ContentManagerService, ConnectionService } from '@sunbird/offline';
 import { PublicPlayerService } from '@sunbird/public';
 import { ContentService} from '@sunbird/core';
 
-fdescribe('ContentActionsComponent', () => {
+describe('ContentActionsComponent', () => {
   let component: ContentActionsComponent;
   let fixture: ComponentFixture<ContentActionsComponent>;
   const ActivatedRouteStub = {
