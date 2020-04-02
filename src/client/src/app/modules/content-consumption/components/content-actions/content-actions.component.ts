@@ -120,6 +120,7 @@ export class ContentActionsComponent implements OnInit, OnChanges {
     return (_.has(this.contentData, 'desktopAppMetadata') ? (!_.has(this.contentData, 'desktopAppMetadata.isAvailable')
     || _.get(this.contentData, 'desktopAppMetadata.isAvailable')) : false);
   }
+
   isBrowse() {
     return this.router.url.includes('browse');
   }
@@ -137,7 +138,8 @@ export class ContentActionsComponent implements OnInit, OnChanges {
         break;
       case 'DOWNLOAD':
         this.isYoutubeContentPresent(content);
-        this.logTelemetry('is-youtube-content', content);
+        const id = content.mimeType === 'application/vnd.ekstep.content-collection' ? 'download-collection' : 'download-content';
+        this.logTelemetry(id, content);
         break;
       case 'DELETE':
         this.showDeleteModal = true;
@@ -167,7 +169,6 @@ export class ContentActionsComponent implements OnInit, OnChanges {
 
   downloadContent(content) {
     this.showDownloadLoader = true;
-    this.logTelemetry('download-content', content);
     this.contentData['downloadStatus'] = this.resourceService.messages.stmsg.m0140;
     this.contentManagerService.downloadContentId = content.identifier;
     this.contentManagerService.failedContentName = content.name;

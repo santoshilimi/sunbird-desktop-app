@@ -161,10 +161,8 @@ describe('DesktopExploreContentComponent', () => {
   it('should export a content for given content ID', () => {
     const contentManagerService = TestBed.get(ContentManagerService);
     const toasterService = TestBed.get(ToasterService);
-
     spyOn(contentManagerService, 'exportContent').and.returnValue(observableOf({}));
     spyOn(toasterService, 'success');
-
     component.exportContent('do_31288771643112652813019');
     expect(contentManagerService.exportContent).toHaveBeenCalledWith('do_31288771643112652813019');
     expect(component.showExportLoader).toBeFalsy();
@@ -206,5 +204,37 @@ describe('DesktopExploreContentComponent', () => {
     spyOn(telemetryService, 'interact');
     component.logTelemetry(contentList[0], 'play-content');
     expect(telemetryService.interact).toHaveBeenCalledWith(appTelemetryInteractData);
+  });
+  it('should call hoverActionClicked for DOWNLOAD ', () => {
+    response.hoverActionsData['hover'] = {
+      'type': 'download',
+      'label': 'Download',
+      'disabled': false
+    };
+    response.hoverActionsData['data'] = response.hoverActionsData.content;
+    spyOn(component, 'logTelemetry');
+    spyOn(component, 'downloadContent');
+    component.hoverActionClicked(response.hoverActionsData);
+    expect(component.downloadContent).toHaveBeenCalledWith(component.downloadIdentifier);
+    expect(component.logTelemetry).toHaveBeenCalledWith(component.contentData, 'download-collection');
+    expect(component.showModal).toBeFalsy();
+    expect(component.contentData).toBeDefined();
+  });
+
+  it('should call hoverActionClicked for Export ', () => {
+    response.hoverActionsData['hover'] = {
+      'type': 'save',
+      'label': 'SAVE',
+      'disabled': false
+    };
+    response.hoverActionsData['data'] = response.hoverActionsData.content;
+    spyOn(component, 'logTelemetry');
+    spyOn(component, 'exportContent');
+    component.hoverActionClicked(response.hoverActionsData);
+    expect(component.exportContent).toHaveBeenCalledWith(response.hoverActionsData.content.metaData.identifier);
+    expect(component.logTelemetry).toHaveBeenCalled();
+    expect(component.showExportLoader).toBeTruthy();
+    expect(component.logTelemetry).toHaveBeenCalledWith(component.contentData, 'export-collection');
+    expect(component.contentData).toBeDefined();
   });
 });

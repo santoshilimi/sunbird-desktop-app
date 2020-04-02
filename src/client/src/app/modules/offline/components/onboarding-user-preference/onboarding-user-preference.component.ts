@@ -37,6 +37,7 @@ export class OnboardingUserPreferenceComponent implements OnInit {
     public router: Router) { }
 
   ngOnInit() {
+    this.setTelemetryImpression();
     this.tenantService.tenantData$.subscribe(({tenantData}) => {
       this.tenantInfo.logo = tenantData ? tenantData.logo : undefined;
       this.tenantInfo.titleName = (tenantData && tenantData.titleName) ? tenantData.titleName.toUpperCase() : undefined;
