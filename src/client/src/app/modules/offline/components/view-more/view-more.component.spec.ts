@@ -282,5 +282,4 @@ describe('ViewMoreComponent', () => {
     expect(data).toEqual({filters: component['userService'].userSelectedFilters});
     expect(data.mode).toEqual('soft');
   });
-
 });
