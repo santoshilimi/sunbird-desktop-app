@@ -1,3 +1,4 @@
+import { OnboardingService } from './../../services';
 import { combineLatest, Subject, of, Observable } from 'rxjs';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -66,7 +67,8 @@ export class SearchComponent implements OnInit, OnDestroy {
     public navigationHelperService: NavigationHelperService,
     public telemetryService: TelemetryService,
     private connectionService: ConnectionService,
-    private dialCodeService: DialCodeService
+    private dialCodeService: DialCodeService,
+    private userService: OnboardingService
   ) {
     this.filterType = this.configService.appConfig.explore.filterType;
 
@@ -267,12 +269,18 @@ export class SearchComponent implements OnInit, OnDestroy {
 
     return option;
   }
-
+  addMode(option) {
+    const contentType = _.get(option, 'filters.contentType');
+    option.filters = _.omit(this.userService.userSelectedFilters, 'subjects');
+    option.filters['subject'] = _.get(this.userService.userSelectedFilters, 'subjects');
+    option.filters['contentType'] = contentType;
+    return option;
+  }
   searchContent(request, isOnlineRequest: boolean) {
     if (!this.isConnected && isOnlineRequest) {
       return of(undefined);
     }
-
+    request = this.addMode(request);
     return this.searchService.contentSearch(request, !Boolean(this.params.dialCode)).pipe(
       tap(data => {
       }), catchError(error => {

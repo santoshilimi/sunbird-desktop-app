@@ -1,3 +1,4 @@
+import { OnboardingService } from './../../services';
 import { combineLatest, Subject } from 'rxjs';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -41,7 +42,7 @@ export class ViewMoreComponent implements OnInit, OnDestroy {
   showDownloadLoader = false;
   downloadedContents: any[] = [];
   visits: any = [];
-
+  isFilterChanged = false;
   backButtonInteractEdata: IInteractEventEdata;
   filterByButtonInteractEdata: IInteractEventEdata;
   telemetryImpression: IImpressionEventInput;
@@ -65,6 +66,7 @@ export class ViewMoreComponent implements OnInit, OnDestroy {
     public telemetryService: TelemetryService,
     public paginationService: PaginationService,
     private connectionService: ConnectionService,
+    private userService: OnboardingService
   ) {
     this.filterType = this.configService.appConfig.explore.filterType;
   }
@@ -123,22 +125,35 @@ export class ViewMoreComponent implements OnInit, OnDestroy {
   }
 
   fetchRecentlyAddedContent(addFilter) {
-    const option = _.cloneDeep(this.apiQuery);
+    let option = _.cloneDeep(this.apiQuery);
     if (addFilter && _.get(this.dataDrivenFilters, 'appliedFilters')) {
       option.filters = _.omit(this.dataDrivenFilters, ['appliedFilters']);
     }
-
+    option = this.addMode(option);
     this.searchService.contentSearch(option)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(response => {
         this.filterData =  _.get(response, 'result.facets');
         this.showLoader = false;
-        const orderedContents = _.orderBy(_.get(response, 'result.content'), ['desktopAppMetadata.updatedOn'], ['desc']);
+        const orderedContents = _.get(response, 'result.content');
         this.contentList = this.formatSearchResults(orderedContents);
         this.contentList = this.utilService.addHoverData(this.contentList, this.isBrowse);
       }, error => {
         this.showLoader = false;
       });
+  }
+
+  addMode(option) {
+    if (!this.isFilterChanged) {
+      const contentType = _.get(option, 'filters.contentType');
+      option.filters = _.omit(this.userService.userSelectedFilters, 'subjects');
+      option.filters['subject'] = _.get(this.userService.userSelectedFilters, 'subjects');
+      option.filters['contentType'] = contentType;
+      option['mode'] = 'soft';
+    } else {
+      delete option['mode'];
+    }
+    return option;
   }
 
   fetchContentOnParamChange() {
@@ -159,7 +174,7 @@ export class ViewMoreComponent implements OnInit, OnDestroy {
   }
 
   fetchContents(addFilter) {
-    const option = _.cloneDeep(this.apiQuery);
+    let option = _.cloneDeep(this.apiQuery);
     if (_.isEmpty(option, 'facets')) {
       option.facets = ['gradeLevel', 'medium', 'subject', 'board', 'contentType'];
     }
@@ -173,6 +188,7 @@ export class ViewMoreComponent implements OnInit, OnDestroy {
     if (addFilter && _.get(this.dataDrivenFilters, 'appliedFilters')) {
       option.filters = _.omit(this.dataDrivenFilters, ['appliedFilters']);
     }
+    option = this.addMode(option);
 
     this.searchService.contentSearch(option)
       .pipe(takeUntil(this.unsubscribe$))
@@ -199,6 +215,7 @@ export class ViewMoreComponent implements OnInit, OnDestroy {
   }
 
   onFilterChange(event) {
+    this.isFilterChanged = true;
     this.showLoader = true;
     this.dataDrivenFilters = _.cloneDeep(event.filters);
 

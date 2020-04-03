@@ -12,6 +12,7 @@ import { map, catchError } from 'rxjs/operators';
 export class OnboardingService {
   onboardCompletion = new EventEmitter();
   userData;
+  private _userSelectedFilters: any = {};
   constructor(public configService: ConfigService, public publicDataService: PublicDataService) { }
 
   searchLocation(filters): Observable<ServerResponse> {
@@ -26,13 +27,22 @@ export class OnboardingService {
     return this.publicDataService.post(options);
   }
 
+  get userSelectedFilters() {
+    return this._userSelectedFilters;
+  }
+
+  set userSelectedFilters(filters) {
+    this._userSelectedFilters = filters;
+  }
+
   getUser() {
     const options = {
       url: this.configService.urlConFig.URLS.OFFLINE.READ_USER
-    };
+  };
 
     return this.publicDataService.get(options).pipe(map((response: ServerResponse) => {
         this.userData = response.result;
+        this._userSelectedFilters = _.get(this.userData, 'framework');
         return this.userData;
       }), catchError(err => {
         return throwError(err);
