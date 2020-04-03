@@ -29,9 +29,10 @@ export class OnboardingService {
 
   get userSelectedFilters() {
     // replace subjects with subject
-    _.has(this._userSelectedFilters, 'subjects') ? (this._userSelectedFilters['subject'] =
-    // tslint:disable-next-line:no-unused-expression
-    this._userSelectedFilters['subjects'] , delete this._userSelectedFilters['subjects']) : {};
+    if (_.has(this._userSelectedFilters, 'subjects')) {
+      this._userSelectedFilters['subject'] = _.get(this._userSelectedFilters, 'subjects') || [];
+      delete this._userSelectedFilters['subjects'];
+    }
     return this._userSelectedFilters;
   }
 
