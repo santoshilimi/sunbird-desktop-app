@@ -282,11 +282,4 @@ describe('ViewMoreComponent', () => {
     expect(data).toEqual({filters: component['userService'].userSelectedFilters});
     expect(data.mode).toEqual('soft');
   });
-
-  it('should delete mode', () => {
-    component.isFilterChanged = true;
-    const data = component.addMode({filters: {}});
-    expect(data).not.toContain('mode');
-  });
-
 });

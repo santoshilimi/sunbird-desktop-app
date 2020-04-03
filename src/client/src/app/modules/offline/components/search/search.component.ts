@@ -276,6 +276,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     _.forEach(this.userService.userSelectedFilters, (filter, key) => {
       option.filters[key] = filter;
     });
+    delete option.filters['channel'], delete option['softConstraints'];
     return option;
   }
   searchContent(request, isOnlineRequest: boolean) {
