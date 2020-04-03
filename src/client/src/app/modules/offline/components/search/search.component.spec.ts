@@ -100,8 +100,6 @@ describe('SearchComponent', () => {
     expect(router.navigate).toHaveBeenCalledWith(['']);
   });
 
-
-
   it('should create visits for search page', () => {
     component.telemetryImpression = {
       context: {
@@ -142,16 +140,21 @@ describe('SearchComponent', () => {
   });
 
   it('should return option with user selected filters', () => {
-    component['userService'].userSelectedFilters = {board: ['State (Andhra Pradesh)'], medium: ['English'], gradeLevel: ['Class 8']};
+    component['userService'].userSelectedFilters = {board: ['TEST_BOARD'], medium: ['English'], gradeLevel: ['Class 8']};
     const data = component.addMode({filters: {}});
     expect(data).toEqual({filters: component['userService'].userSelectedFilters});
   });
 
   it('should call addMode ', () => {
-    component.params.dialCode = '';
+    component.params = {};
+    component.isConnected = true;
+    component['userService'].userSelectedFilters = {board: ['TEST_BOARD'], medium: ['English'], gradeLevel: ['Class 8']};
     spyOn(component, 'addMode');
-    component.searchContent({}, false);
-    expect(component.addMode).toHaveBeenCalledWith({});
+    spyOn(component['searchService'], 'contentSearch').and.returnValue(of({}));
+    component.searchContent({filters: {board: ['TEST_BOARD'],
+    medium: ['English'], gradeLevel: ['Class 8']}, mode: 'soft'}, false);
+    expect(component.addMode).toHaveBeenCalled();
+    expect(component.searchService.contentSearch).toHaveBeenCalled();
   });
 
 });

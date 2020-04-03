@@ -240,7 +240,7 @@ describe('ViewMoreComponent', () => {
     spyOn(component, 'formatSearchResults');
     spyOn(utilService, 'addHoverData');
     spyOn(component, 'addMode');
-    component['userService'].userSelectedFilters = {};
+    component['userService'].userSelectedFilters = {board: ['TEST_BOARD'], medium: ['English'], gradeLevel: ['Class 8']};
     component.dataDrivenFilters = filters;
     component.fetchRecentlyAddedContent(false);
     expect(searchService.contentSearch).toHaveBeenCalled();
@@ -254,7 +254,8 @@ describe('ViewMoreComponent', () => {
     spyOn(searchService, 'contentSearch').and.returnValue(throwError({}));
     spyOn(component, 'addMode');
     component.dataDrivenFilters = filters;
-    component['userService'].userSelectedFilters = {};
+    component.apiQuery = {params: {}};
+    component['userService'].userSelectedFilters = {board: ['TEST_BOARD'], medium: ['English'], gradeLevel: ['Class 8']};
     component.dataDrivenFilters.appliedFilters = true;
     component.fetchRecentlyAddedContent(true);
     expect(searchService.contentSearch).toHaveBeenCalled();
@@ -283,7 +284,8 @@ describe('ViewMoreComponent', () => {
 
   it('should return option with user selected filters', () => {
     component.isFilterChanged = false;
-    component['userService'].userSelectedFilters = {board: ['State (Andhra Pradesh)'], medium: ['English'], gradeLevel: ['Class 8']};
+    component.apiQuery = {params: {}};
+    component['userService'].userSelectedFilters = {board: ['TEST_BOARD'], medium: ['English'], gradeLevel: ['Class 8']};
     const data = component.addMode({filters: {}});
     expect(data.filters.board).toEqual(component['userService'].userSelectedFilters.board);
   });
@@ -295,13 +297,15 @@ describe('ViewMoreComponent', () => {
   });
 
   it('should call addMode fetchContents', () => {
-    spyOn(component, 'addMode');
-    component.apiQuery = {};
-    component.dataDrivenFilters = {};
-    component.isBrowse = true;
-    component.fetchContents({});
-    expect(component.addMode).toHaveBeenCalledWith({});
+    spyOn(component, 'addMode').and.returnValue({});
+    component.apiQuery = {params: {}};
+    component.dataDrivenFilters = { appliedFilters: true, board: ['TEST_BOARD'], medium: ['English'], gradeLevel: ['Class 8']};
+    component['userService'].userSelectedFilters = {board: ['TEST_BOARD'], medium: ['English'], gradeLevel: ['Class 8']};
+    component.isBrowse = false;
+    component.isFilterChanged = false;
+    fixture.detectChanges();
+    component.fetchContents(false);
+    expect(component.addMode).toHaveBeenCalled();
   });
-
 
 });
