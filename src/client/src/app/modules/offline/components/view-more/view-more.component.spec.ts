@@ -279,6 +279,12 @@ describe('ViewMoreComponent', () => {
     component.isFilterChanged = false;
     component['userService'].userSelectedFilters = {board: ['State (Andhra Pradesh)'], medium: ['English'], gradeLevel: ['Class 8']};
     const data = component.addMode({filters: {}});
-    expect(data).toEqual({filters: component['userService'].userSelectedFilters});
+    expect(data.filters.board).toEqual(component['userService'].userSelectedFilters.board);
+  });
+
+  it('should delete mode from option', () => {
+    component.isFilterChanged = true;
+    const data = component.addMode({filters: {}, mode: 'soft'});
+    expect(data).not.toContain('mode');
   });
 });
