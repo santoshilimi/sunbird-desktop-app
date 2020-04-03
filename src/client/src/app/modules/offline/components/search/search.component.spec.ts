@@ -147,4 +147,11 @@ describe('SearchComponent', () => {
     expect(data).toEqual({filters: component['userService'].userSelectedFilters});
   });
 
+  it('should call addMode ', () => {
+    component.params.dialCode = '';
+    spyOn(component, 'addMode');
+    component.searchContent({}, false);
+    expect(component.addMode).toHaveBeenCalledWith({});
+  });
+
 });

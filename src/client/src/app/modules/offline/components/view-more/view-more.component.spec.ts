@@ -239,21 +239,27 @@ describe('ViewMoreComponent', () => {
     spyOn(searchService, 'contentSearch').and.returnValue(of({}));
     spyOn(component, 'formatSearchResults');
     spyOn(utilService, 'addHoverData');
+    spyOn(component, 'addMode');
+    component['userService'].userSelectedFilters = {};
     component.dataDrivenFilters = filters;
     component.fetchRecentlyAddedContent(false);
     expect(searchService.contentSearch).toHaveBeenCalled();
     expect(component.formatSearchResults).toHaveBeenCalled();
     expect(utilService.addHoverData).toHaveBeenCalled();
+    expect(component.addMode).toHaveBeenCalled();
   });
 
   it('should call fetchRecentlyAddedContent on error', () => {
     const searchService = TestBed.get(SearchService);
     spyOn(searchService, 'contentSearch').and.returnValue(throwError({}));
+    spyOn(component, 'addMode');
     component.dataDrivenFilters = filters;
+    component['userService'].userSelectedFilters = {};
     component.dataDrivenFilters.appliedFilters = true;
     component.fetchRecentlyAddedContent(true);
     expect(searchService.contentSearch).toHaveBeenCalled();
     expect(component.showLoader).toBe(false);
+    expect(component.addMode).toHaveBeenCalled();
   });
 
   it('should call updateCardData', () => {
@@ -287,4 +293,15 @@ describe('ViewMoreComponent', () => {
     const data = component.addMode({filters: {}, mode: 'soft'});
     expect(data).not.toContain('mode');
   });
+
+  it('should call addMode fetchContents', () => {
+    spyOn(component, 'addMode');
+    component.apiQuery = {};
+    component.dataDrivenFilters = {};
+    component.isBrowse = true;
+    component.fetchContents({});
+    expect(component.addMode).toHaveBeenCalledWith({});
+  });
+
+
 });
