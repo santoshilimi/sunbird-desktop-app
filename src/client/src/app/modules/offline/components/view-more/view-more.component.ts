@@ -147,7 +147,6 @@ export class ViewMoreComponent implements OnInit, OnDestroy {
     if (!this.isFilterChanged) {
       const contentType = _.get(option, 'filters.contentType');
       option.filters = _.omit(this.userService.userSelectedFilters, 'subjects');
-      option.filters['subject'] = _.get(this.userService.userSelectedFilters, 'subjects');
       option.filters['contentType'] = contentType;
       option['mode'] = 'soft';
     } else {

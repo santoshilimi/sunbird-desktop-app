@@ -28,6 +28,8 @@ export class OnboardingService {
   }
 
   get userSelectedFilters() {
+    _.has(this._userSelectedFilters, 'subjects') ? (this._userSelectedFilters['subject'] =
+    this._userSelectedFilters['subjects'] , delete this._userSelectedFilters['subjects']) : ``;
     return this._userSelectedFilters;
   }
 
