@@ -280,6 +280,5 @@ describe('ViewMoreComponent', () => {
     component['userService'].userSelectedFilters = {board: ['State (Andhra Pradesh)'], medium: ['English'], gradeLevel: ['Class 8']};
     const data = component.addMode({filters: {}});
     expect(data).toEqual({filters: component['userService'].userSelectedFilters});
-    expect(data.mode).toEqual('soft');
   });
 });
