@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { ConfigService } from '@sunbird/shared';
 import { DataService } from '@sunbird/core';
 import * as _ from 'lodash-es';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -34,15 +35,11 @@ export class ElectronDialogService extends DataService {
     });
   }
 
-  showContentLocationChangePopup() {
+  showContentLocationChangePopup(): Observable<any> {
     const option = {
       url: this.configService.urlConFig.URLS.ELECTRON_DIALOG.CONTENT_SUGGEST_LOCATION
     };
 
-    this.post(option).subscribe(response => {
-      console.log('import dialog box opened', response);
-    }, error => {
-      console.log('error while showing import dialog box');
-    });
+    return this.post(option);
   }
 }
