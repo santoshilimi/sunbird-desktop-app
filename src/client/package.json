@@ -8,9 +8,9 @@
     "prod": "ng build --prod && mv ../public/portal/index.html ../public/portal/index.ejs",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "test": "ng test --watch=false --sourceMap=false",
+    "test": "ng test --watch=false --sourceMap=false --browsers Chrome",
     "test-coverage": "ng test src --watch=false  --sourceMap=false --code-coverage=true",
-    "analyze": "ng build --prod --stats-json && webpack-bundle-analyzer ../public/portal/stats.json"
+    "analyze": "ng build  --stats-json && webpack-bundle-analyzer ../public/portal/stats.json"
   },
   "nodemonConfig": {
     "ext": "png,jpeg,js,ts,html,json,css,scss"
