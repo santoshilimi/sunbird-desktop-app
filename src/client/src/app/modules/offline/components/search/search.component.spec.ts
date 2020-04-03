@@ -141,4 +141,10 @@ describe('SearchComponent', () => {
     expect(component.noResultMessage).toEqual({ messageText: 'messages.stmsg.m0006' });
   });
 
+  it('should return option with user selected filters', () => {
+    component['userService'].userSelectedFilters = {board: ['State (Andhra Pradesh)'], medium: ['English'], gradeLevel: ['Class 8']};
+    const data = component.addMode({filters: {}});
+    expect(data).toEqual({filters: component['userService'].userSelectedFilters});
+  });
+
 });

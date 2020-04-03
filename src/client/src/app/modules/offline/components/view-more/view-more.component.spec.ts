@@ -274,4 +274,19 @@ describe('ViewMoreComponent', () => {
     expect(component.paginationDetails.currentPage).toEqual(1);
     expect(component.fetchContents).toHaveBeenCalledWith(false);
   });
+
+  it('should return option with user selected filters', () => {
+    component.isFilterChanged = false;
+    component['userService'].userSelectedFilters = {board: ['State (Andhra Pradesh)'], medium: ['English'], gradeLevel: ['Class 8']};
+    const data = component.addMode({filters: {}});
+    expect(data).toEqual({filters: component['userService'].userSelectedFilters});
+    expect(data.mode).toEqual('soft');
+  });
+
+  it('should delete mode', () => {
+    component.isFilterChanged = true;
+    const data = component.addMode({filters: {}});
+    expect(data).not.toContain('mode');
+  });
+
 });
