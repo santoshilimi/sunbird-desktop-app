@@ -288,10 +288,13 @@ describe('ViewMoreComponent', () => {
     component['userService'].userSelectedFilters = {board: ['TEST_BOARD'], medium: ['English'], gradeLevel: ['Class 8']};
     const data = component.addMode({filters: {}});
     expect(data.filters.board).toEqual(component['userService'].userSelectedFilters.board);
+    expect(data.mode).toEqual('soft');
   });
 
   it('should delete mode from option', () => {
     component.isFilterChanged = true;
+    component.apiQuery = {params: {}};
+    component['userService'].userSelectedFilters = {board: ['TEST_BOARD'], medium: ['English'], gradeLevel: ['Class 8']};
     const data = component.addMode({filters: {}, mode: 'soft'});
     expect(data).not.toContain('mode');
   });
