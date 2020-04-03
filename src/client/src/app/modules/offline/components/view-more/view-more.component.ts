@@ -145,9 +145,9 @@ export class ViewMoreComponent implements OnInit, OnDestroy {
 
   addMode(option) {
     if (!this.isFilterChanged) {
-      const contentType = _.get(option, 'filters.contentType');
-      option.filters = _.omit(this.userService.userSelectedFilters, 'subjects');
-      option.filters['contentType'] = contentType;
+      _.forEach(this.userService.userSelectedFilters, (filter, key) => {
+        option.filters[key] = filter;
+      });
       option['mode'] = 'soft';
     } else {
       delete option['mode'];
@@ -201,6 +201,7 @@ export class ViewMoreComponent implements OnInit, OnDestroy {
         const { constantData, metaData, dynamicFields } = this.configService.appConfig.LibrarySearch;
         this.contentList = this.utilService.getDataForCard(data.result.content, constantData, dynamicFields, metaData);
         this.contentList = this.utilService.addHoverData(this.contentList, this.isBrowse);
+        this.contentList = _.uniqBy(this.contentList, 'identifier');
       }, err => {
         this.showLoader = false;
         this.contentList = [];
@@ -214,7 +215,7 @@ export class ViewMoreComponent implements OnInit, OnDestroy {
   }
 
   onFilterChange(event) {
-    this.isFilterChanged = true;
+    this.isFilterChanged = !_.isEmpty(event);
     this.showLoader = true;
     this.dataDrivenFilters = _.cloneDeep(event.filters);
 

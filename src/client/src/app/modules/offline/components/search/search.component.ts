@@ -157,7 +157,8 @@ export class SearchComponent implements OnInit, OnDestroy {
 
                 if (onlineDialCodeRes) {
                   const linkedContents = _.flatMap(_.values(onlineDialCodeRes));
-                  const contents = getDataForCard(linkedContents);
+                  let contents = getDataForCard(linkedContents);
+                  contents = _.uniqBy(contents, 'identifier');
                   this.onlineContentsCount = contents.length;
                   _.forEach(contents, content => {
                     if (this.contentDownloadStatus[content.identifier]) {
@@ -168,12 +169,13 @@ export class SearchComponent implements OnInit, OnDestroy {
                 }
                 if (offlineDialCodeRes) {
                   const linkedContents = _.flatMap(_.values(offlineDialCodeRes));
-                  const contents = getDataForCard(linkedContents);
+                  let contents = getDataForCard(linkedContents);
                   _.forEach(contents, content => {
                     if (this.contentDownloadStatus[content.identifier]) {
                         content['downloadStatus'] = this.contentDownloadStatus[content.identifier];
                     }
                  });
+                  contents = _.uniqBy(contents, 'identifier');
                   this.downloadedContentsCount = contents.length;
                   this.downloadedContents = this.utilService.addHoverData(contents, false);
                 }
@@ -191,7 +193,7 @@ export class SearchComponent implements OnInit, OnDestroy {
               }
            });
             this.downloadedContents = this.utilService.addHoverData(this.downloadedContents, false);
-
+            this.downloadedContents = _.uniqBy(this.downloadedContents, 'identifier');
             if (onlineRes) {
               this.onlineContents = onlineRes.result.count ?
                 _.chunk(getDataForCard(onlineRes.result.content), this.MAX_CARDS_TO_SHOW)[0] : [];
@@ -201,6 +203,7 @@ export class SearchComponent implements OnInit, OnDestroy {
                     content['downloadStatus'] = this.contentDownloadStatus[content.identifier];
                 }
              });
+              this.onlineContentsCount = onlineRes.result.count;
               this.onlineContents = this.utilService.addHoverData(this.onlineContents, true);
             }
 
@@ -270,16 +273,16 @@ export class SearchComponent implements OnInit, OnDestroy {
     return option;
   }
   addMode(option) {
-    const contentType = _.get(option, 'filters.contentType');
-    option.filters = _.omit(this.userService.userSelectedFilters, 'subjects');
-    option.filters['contentType'] = contentType;
+    _.forEach(this.userService.userSelectedFilters, (filter, key) => {
+      option.filters[key] = filter;
+    });
     return option;
   }
   searchContent(request, isOnlineRequest: boolean) {
     if (!this.isConnected && isOnlineRequest) {
       return of(undefined);
     }
-    request = this.addMode(request);
+    request = !this.params.dialCode ? this.addMode(request) : request;
     return this.searchService.contentSearch(request, !Boolean(this.params.dialCode)).pipe(
       tap(data => {
       }), catchError(error => {
