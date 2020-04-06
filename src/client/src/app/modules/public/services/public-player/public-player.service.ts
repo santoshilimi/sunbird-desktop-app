@@ -84,7 +84,6 @@ export class PublicPlayerService {
    */
   getConfig(contentDetails: ContentDetails, option: any = {}): PlayerConfig {
     const configuration: any = _.cloneDeep(this.configService.appConfig.PLAYER_CONFIG.playerConfig);
-    console.log(contentDetails.contentData.mimeType, 'contentDetails.contentData.mimeType');
     if (contentDetails.contentData.mimeType === 'video/x-youtube') {
       try {
       const origin = (<HTMLInputElement>document.getElementById('baseUrl')).value;
