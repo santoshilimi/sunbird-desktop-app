@@ -35,7 +35,6 @@ export class OnboardingService {
     }
     return this._userSelectedFilters;
   }
-
   set userSelectedFilters(filters) {
     this._userSelectedFilters = filters;
   }
