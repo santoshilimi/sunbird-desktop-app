@@ -47,7 +47,7 @@ describe('PublicPlayerService', () => {
     expect(playerConfig).toBeTruthy();
     expect(playerConfig.context.contentId).toContain('domain_66675');
   });
-  fit('should add origin(baseUrl) for youtube content ', () => {
+  it('should add origin(baseUrl) for youtube content ', () => {
     const playerService = TestBed.get(PublicPlayerService);
     const userService = TestBed.get(UserService);
     userService._anonymousSid = UUID.UUID();
