@@ -184,7 +184,6 @@ export class UpdateContentPreferenceComponent implements OnInit, OnDestroy {
 
       }, error => {
         this.toasterService.error(this.resourceService.messages.emsg.m0022);
-
       });
   }
 
