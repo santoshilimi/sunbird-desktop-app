@@ -1,5 +1,5 @@
 import { OnboardingService } from './../../services';
-import { combineLatest, Subject, of, Observable } from 'rxjs';
+import { combineLatest, Subject, of } from 'rxjs';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
