@@ -33,7 +33,7 @@ export class OnboardingService {
       this._userSelectedFilters['subject'] = _.get(this._userSelectedFilters, 'subjects') || [];
       delete this._userSelectedFilters['subjects'];
     }
-    return this._userSelectedFilters;
+    return _.omit(this._userSelectedFilters, 'id');
   }
   set userSelectedFilters(filters) {
     this._userSelectedFilters = filters;
@@ -115,7 +115,6 @@ export class OnboardingService {
         resultArray = _.concat(resultArray, codeData);
       }
     });
-
     return _.sortBy(_.unionBy(resultArray, 'identifier'), 'index');
   }
 }

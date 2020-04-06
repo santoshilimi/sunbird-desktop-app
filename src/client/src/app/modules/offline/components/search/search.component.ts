@@ -274,11 +274,9 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   addMode(option) {
-    _.forEach(this.userService.userSelectedFilters, (filter, key) => {
-      option.filters[key] = filter;
-    });
-    delete option.filters['channel'];
-    delete option['softConstraints'];
+    const contentType = _.get(option, 'filters.contentType');
+    option.filters = this.userService.userSelectedFilters;
+    option.filters.contentType = contentType;
     return option;
   }
 

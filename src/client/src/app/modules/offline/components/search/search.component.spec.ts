@@ -141,8 +141,11 @@ describe('SearchComponent', () => {
 
   it('should return option with user selected filters', () => {
     component['userService'].userSelectedFilters = {board: ['TEST_BOARD'], medium: ['English'], gradeLevel: ['Class 8']};
-    const data = component.addMode({filters: {}});
-    expect(data).toEqual({filters: component['userService'].userSelectedFilters});
+    const data = component.addMode({filters: {contentType: ['Textbook', 'resource']}});
+    expect(data.filters.contentType).toEqual(['Textbook', 'resource']);
+    expect(data.filters.board).toEqual(component['userService'].userSelectedFilters.board);
+    expect(data.filters.medium).toEqual(component['userService'].userSelectedFilters.medium);
+    expect(data.filters.gradeLevel).toEqual(component['userService'].userSelectedFilters.gradeLevel);
   });
 
   it('should call addMode ', () => {

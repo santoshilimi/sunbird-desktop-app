@@ -285,18 +285,23 @@ describe('ViewMoreComponent', () => {
   it('should return option with user selected filters', () => {
     component.isFilterChanged = false;
     component.apiQuery = {params: {}};
+    const option = {filters: {contentType: ['Textbook', 'resource']}, mode: 'soft'};
     component['userService'].userSelectedFilters = {board: ['TEST_BOARD'], medium: ['English'], gradeLevel: ['Class 8']};
-    const data = component.addMode({filters: {}});
-    expect(data.filters.board).toEqual(component['userService'].userSelectedFilters.board);
-    expect(data.mode).toEqual('soft');
+    component.addMode(option);
+    fixture.detectChanges();
+    expect(option.filters['board']).toEqual(component['userService'].userSelectedFilters.board);
+    expect(option.mode).toEqual('soft');
+    expect(option.filters['board']).toEqual(component['userService'].userSelectedFilters.board);
   });
 
   it('should delete mode from option', () => {
     component.isFilterChanged = true;
     component.apiQuery = {params: {}};
     component['userService'].userSelectedFilters = {board: ['TEST_BOARD'], medium: ['English'], gradeLevel: ['Class 8']};
-    const data = component.addMode({filters: {}, mode: 'soft'});
-    expect(data).not.toContain('mode');
+    const option = {filters: {contentType: ['Textbook', 'resource']}, mode: 'soft'};
+    component.addMode(option);
+    fixture.detectChanges();
+    expect(option).not.toContain('mode');
   });
 
   it('should call addMode fetchContents', () => {
