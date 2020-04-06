@@ -128,5 +128,4 @@ describe('OnboardingService', () => {
     service.userSelectedFilters = {board: ['TEST_BOARD'], medium: ['TEST_MEDIUM'], gradeLevel: ['Class 3']};
     expect(service['_userSelectedFilters']).toEqual({board: ['TEST_BOARD'], medium: ['TEST_MEDIUM'], gradeLevel: ['Class 3']});
   });
-
 });
