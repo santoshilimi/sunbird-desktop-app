@@ -74,7 +74,7 @@ export const serverRes = {
         'versionKey': '1532325238485',
         'framework': 'ap_k-12_1',
         'createdBy': 'ef644daf-69e6-4ed4-ae40-916c21496708',
-        'board': 'State (Andhra Pradesh)',
+        'board': 'test',
         'resourceType': 'Learn'
     }
 };
