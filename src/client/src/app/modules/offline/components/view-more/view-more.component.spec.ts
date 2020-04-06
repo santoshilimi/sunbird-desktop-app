@@ -310,5 +310,4 @@ describe('ViewMoreComponent', () => {
     component.fetchContents(false);
     expect(component.addMode).toHaveBeenCalled();
   });
-
 });

@@ -155,6 +155,7 @@ export class ViewMoreComponent implements OnInit, OnDestroy {
     return option;
   }
 
+
   fetchContentOnParamChange() {
     combineLatest(this.activatedRoute.params, this.activatedRoute.queryParams)
       .pipe(debounceTime(5),

@@ -156,5 +156,4 @@ describe('SearchComponent', () => {
     expect(component.addMode).toHaveBeenCalled();
     expect(component.searchService.contentSearch).toHaveBeenCalled();
   });
-
 });

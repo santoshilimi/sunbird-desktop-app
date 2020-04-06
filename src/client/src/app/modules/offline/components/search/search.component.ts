@@ -272,6 +272,7 @@ export class SearchComponent implements OnInit, OnDestroy {
 
     return option;
   }
+
   addMode(option) {
     _.forEach(this.userService.userSelectedFilters, (filter, key) => {
       option.filters[key] = filter;
@@ -280,6 +281,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     delete option['softConstraints'];
     return option;
   }
+
   searchContent(request, isOnlineRequest: boolean) {
     if (!this.isConnected && isOnlineRequest) {
       return of(undefined);
