@@ -15,6 +15,12 @@ describe('PublicPlayerService', () => {
       imports: [HttpClientTestingModule, CoreModule, SharedModule.forRoot(), RouterTestingModule],
       providers: [PublicPlayerService]
     });
+    spyOn(document, 'getElementById').and.callFake((id) => {
+      if (id === 'baseUrl') {
+          return { value: 'https://diksha.gov.in' };
+      }
+
+  });
   });
 
   it('should return content details', () => {
@@ -46,7 +52,21 @@ describe('PublicPlayerService', () => {
     expect(playerConfig).toBeTruthy();
     expect(playerConfig.context.contentId).toContain('domain_66675');
   });
-
+  it('should add origin(baseUrl) for youtube content ', () => {
+    const playerService = TestBed.get(PublicPlayerService);
+    const userService = TestBed.get(UserService);
+    userService._anonymousSid = UUID.UUID();
+    userService._userId = 'anonymous';
+    userService._channel = 'in.ekstep';
+    userService._appId = 'd5773f35773feab';
+    const PlayerMeta = {
+      contentId: serverRes.successResult.result.content.identifier,
+      contentData: serverRes.youtubeContent,
+    };
+    const playerConfig = playerService.getConfig(PlayerMeta);
+    expect(playerConfig).toBeTruthy();
+    expect(playerConfig.context.origin).toContain('https://diksha.gov.in');
+  });
   it('should call player updateDownloadStatus()', () => {
     const playerService = TestBed.get(PublicPlayerService);
     const resourceService = TestBed.get(ResourceService);
