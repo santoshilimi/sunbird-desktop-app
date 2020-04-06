@@ -34,7 +34,7 @@ export const serverRes = {
             '1.Lateral Inversion'
         ],
         'subject': 'Physical Science',
-        'channel': 'in.ekstep',
+        'channel': 'in.test',
         'language': [
             'English'
         ],
