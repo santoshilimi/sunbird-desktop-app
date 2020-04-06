@@ -52,7 +52,7 @@ describe('PublicPlayerService', () => {
     const userService = TestBed.get(UserService);
     userService._anonymousSid = UUID.UUID();
     userService._userId = 'anonymous';
-    userService._channel = 'in.ekstep';
+    userService._channel = 'in.test';
     userService._appId = 'd5773f35773feab';
 
     const PlayerMeta = {
