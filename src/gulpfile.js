@@ -4,6 +4,33 @@ const fs = require("fs-extra");
 const NodeGit = require("nodegit");
 const path = require("path");
 
+
+gulp.task('download:content-player', cb => {
+  new Promise((resolve, reject) => {
+    exec(
+      "npm install @project-sunbird/content-player@2.9.0-alpha-ea50f5d0.0  --prefix ./public/contentPlayer",
+      { maxBuffer: Infinity },
+      function(err, stdout, stderr) {
+        console.log(stdout);
+        console.log(stderr);
+        if(err) reject(err);
+        resolve()
+      }
+    );
+  }).then(() => {
+    return fs.remove('./public/contentPlayer/preview')
+  }).then(() => {
+    return fs.move('./public/contentPlayer/node_modules/@project-sunbird/content-player', './public/contentPlayer/preview')
+  })
+  .then(() => {
+    return fs.remove('./public/contentPlayer/node_modules')
+  })
+  .then(() => {
+    return fs.remove('./public/contentPlayer/package-lock.json')
+  }).then(() => {cb()})
+  .catch(err => cb(err));
+})
+
 gulp.task("client:install", cb => {
   exec(
     "npm install  --prefix ./client",
@@ -170,7 +197,8 @@ gulp.task('clean:build',  gulp.parallel("clean", "clean:node_modules"));
 
 gulp.task("build",  gulp.series(
   gulp.parallel("clean", "clean:portal"),
-   "app:dist"
+   "app:dist",
+   "download:content-player"
  ))
 
  gulp.task("build:copy-clean", gulp.series("build:resource:bundles", "clean:build"))
