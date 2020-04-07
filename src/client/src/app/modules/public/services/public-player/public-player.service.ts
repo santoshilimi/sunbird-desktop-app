@@ -84,6 +84,14 @@ export class PublicPlayerService {
    */
   getConfig(contentDetails: ContentDetails, option: any = {}): PlayerConfig {
     const configuration: any = _.cloneDeep(this.configService.appConfig.PLAYER_CONFIG.playerConfig);
+    if (contentDetails.contentData.mimeType === 'video/x-youtube') {
+      try {
+      const origin = (<HTMLInputElement>document.getElementById('baseUrl')).value;
+      configuration.context.origin = origin;
+    } catch (err) {
+        console.error(`error while getting origin`, err);
+    }
+ }
     configuration.context.contentId = contentDetails.contentId;
     configuration.context.sid = (environment.isOffline && !_.isEmpty(this.sessionId)) ? this.sessionId : this.userService.anonymousSid;
     configuration.context.uid = 'anonymous';
