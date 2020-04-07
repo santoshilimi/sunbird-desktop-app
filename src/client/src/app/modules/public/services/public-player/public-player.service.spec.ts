@@ -61,7 +61,7 @@ describe('PublicPlayerService', () => {
     };
     const playerConfig = playerService.getConfig(PlayerMeta);
     expect(playerConfig).toBeTruthy();
-    expect(playerConfig.context.origin).toContain('test');
+    expect(playerConfig.context.origin).toContain('ntp');
   });
   it('should call player updateDownloadStatus()', () => {
     const playerService = TestBed.get(PublicPlayerService);
