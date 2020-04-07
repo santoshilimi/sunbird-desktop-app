@@ -145,7 +145,6 @@ describe('SearchComponent', () => {
     expect(data.filters.contentType).toEqual(['Textbook', 'resource']);
     expect(data.filters.board).toEqual(component['userService'].userSelectedFilters.board);
     expect(data.filters.medium).toEqual(component['userService'].userSelectedFilters.medium);
-    expect(data.filters.gradeLevel).toEqual(component['userService'].userSelectedFilters.gradeLevel);
   });
 
   it('should call addMode ', () => {
