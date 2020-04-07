@@ -15,6 +15,7 @@ describe('PublicPlayerService', () => {
       imports: [HttpClientTestingModule, CoreModule, SharedModule.forRoot(), RouterTestingModule],
       providers: [PublicPlayerService]
     });
+
   });
 
   it('should return content details', () => {
@@ -46,7 +47,23 @@ describe('PublicPlayerService', () => {
     expect(playerConfig).toBeTruthy();
     expect(playerConfig.context.contentId).toContain('domain_66675');
   });
+  it('should add origin(baseUrl) for youtube content ', () => {
+    document.getElementById = jasmine.createSpy('baseUrl').and.returnValue('test');
+    const playerService = TestBed.get(PublicPlayerService);
+    const userService = TestBed.get(UserService);
+    userService._anonymousSid = UUID.UUID();
+    userService._userId = 'anonymous';
+    userService._channel = 'in.test';
+    userService._appId = 'd5773f35773feab';
 
+    const PlayerMeta = {
+      contentId: serverRes.youtubeContent.identifier,
+      contentData: serverRes.youtubeContent,
+    };
+    const playerConfig = playerService.getConfig(PlayerMeta);
+    expect(playerConfig).toBeTruthy();
+    expect(playerConfig.context.origin).toBe(document.getElementById('baseUrl').innerHTML);
+  });
   it('should call player updateDownloadStatus()', () => {
     const playerService = TestBed.get(PublicPlayerService);
     const resourceService = TestBed.get(ResourceService);
