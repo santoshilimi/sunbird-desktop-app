@@ -39,7 +39,7 @@
     </div>
     <div class="twelve wide column right aligned"
       *ngIf="paginationDetails.totalItems > configService.appConfig.SEARCH.PAGE_LIMIT && !showLoader && !isOffline">
-      <div class="sb-pagination-container flex-jc-flex-end mt-16" *ngIf="paginationDetails.pages.length">
+      <div class="sb-pagination-container flex-jc-flex-end py-16" *ngIf="paginationDetails.pages.length">
         <div class="sb-pagination my-0">
           <a [ngClass]="{disabled:paginationDetails.currentPage===1 }" class="sb-item "
             (click)="navigateToPage(1) ">&laquo;</a>
@@ -56,7 +56,7 @@
     </div>
     <div class="twelve wide column right aligned"
       *ngIf="paginationDetails.totalItems > configService.appConfig.SEARCH.PAGE_LIMIT && !showLoader && (isOffline && router.url.includes('browse'))">
-      <div class="sb-pagination-container flex-jc-flex-end mt-16" *ngIf="paginationDetails.pages.length">
+      <div class="sb-pagination-container flex-jc-flex-end py-16" *ngIf="paginationDetails.pages.length">
         <div class="sb-pagination my-0">
           <a [ngClass]="{disabled:paginationDetails.currentPage===1 }" class="sb-item "
             (click)="navigateToPage(1) ">&laquo;</a>
