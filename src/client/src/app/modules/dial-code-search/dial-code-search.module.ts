@@ -5,7 +5,6 @@ import { TelemetryModule } from '@sunbird/telemetry';
 import { CoreModule } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';
 import { NgInviewModule } from 'angular-inport';
-import { SharedFeatureModule } from '@sunbird/shared-feature';
 import { SuiSelectModule, SuiModalModule, SuiAccordionModule, SuiPopupModule, SuiDropdownModule, SuiProgressModule,
   SuiRatingModule, SuiCollapseModule, SuiDimmerModule } from 'ng2-semantic-ui';
 import { FormsModule } from '@angular/forms';
@@ -25,7 +24,6 @@ import { PlayerHelperModule } from '@sunbird/player-helper';
     FormsModule,
     InfiniteScrollModule,
     PlayerHelperModule,
-    SharedFeatureModule
   ]
 })
 export class DialCodeSearchModule { }
