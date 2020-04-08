@@ -3,9 +3,9 @@ import { CommonModule } from '@angular/common';
 import { SuiModule } from 'ng2-semantic-ui/dist';
 import { TelemetryModule } from '@sunbird/telemetry';
 import {
-  ContentCreditsComponent, PlayerComponent, ContentPlayerMetadataComponent,
-  CollectionTreeComponent, FancyTreeComponent, CollectionPlayerMetadataComponent,
-  ContentRatingComponent, CommingSoonComponent, ContentDownloadComponent
+  ContentCreditsComponent,
+  CollectionTreeComponent, FancyTreeComponent,
+  ContentRatingComponent, CommingSoonComponent
 } from './components';
 import { SharedModule } from '@sunbird/shared';
 import { CoreModule } from '@sunbird/core';
@@ -20,11 +20,11 @@ import { FormsModule } from '@angular/forms';
     CoreModule,
     FormsModule
   ],
-  declarations: [ContentCreditsComponent, PlayerComponent, ContentPlayerMetadataComponent,
-    CollectionTreeComponent, FancyTreeComponent, CollectionPlayerMetadataComponent, ContentRatingComponent,
-    CommingSoonComponent, ContentDownloadComponent],
-  exports: [ContentCreditsComponent, PlayerComponent, ContentPlayerMetadataComponent,
-    CollectionTreeComponent, FancyTreeComponent, CollectionPlayerMetadataComponent, ContentRatingComponent,
-    CommingSoonComponent, ContentDownloadComponent]
+  declarations: [ContentCreditsComponent,
+    CollectionTreeComponent, FancyTreeComponent, ContentRatingComponent,
+    CommingSoonComponent],
+  exports: [ContentCreditsComponent,
+    CollectionTreeComponent, FancyTreeComponent, ContentRatingComponent,
+    CommingSoonComponent]
 })
 export class PlayerHelperModule { }

@@ -1,4 +1,3 @@
-import { ExploreModule } from './../../../../src/app/modules/public/module/explore/explore.module';
 import { ContentManagerService } from './services';
 import {
     SuiModalModule, SuiProgressModule, SuiAccordionModule,
@@ -43,7 +42,6 @@ import { SharedFeatureModule } from '@sunbird/shared-feature';
         SuiProgressModule,
         SuiSelectModule,
         WebExtensionModule,
-        ExploreModule,
         FileSizeModule,
         SuiAccordionModule,
         SuiTabsModule,

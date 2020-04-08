@@ -69,9 +69,6 @@ const routes: Routes = [
             },
             softConstraints: { badgeAssertions: 98, board: 99, channel: 100 }
         }
-    },
-    {
-        path: ':slug/explore', loadChildren: './../../../../src/app/modules/public/module/explore/explore.module#ExploreModule'
     }
 ];
 @NgModule({
