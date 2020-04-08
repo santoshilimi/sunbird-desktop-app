@@ -1,8 +1,9 @@
 <div class="content-video">
   <div class="d-flex flex-w-wrap sb-bg-color-white" [ngClass]="{'content-full-video': isFullScreenView}">
     <div class="video-close-btn" (click)="closeContentFullScreen()" *ngIf="isFullScreenView">
-      <img src="https://image.flaticon.com/icons/svg/660/660252.svg" width="100%" height="" alt="Cancel free icon"
-        title="Minimise">
+        <svg class="icon icon-svg--white">
+          <use xlink:href="assets/images/sprite.svg#close-button"></use>
+        </svg>
     </div>
   </div>
 

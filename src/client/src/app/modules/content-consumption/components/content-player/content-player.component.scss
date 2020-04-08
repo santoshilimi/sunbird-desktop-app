@@ -22,9 +22,19 @@
     .video-close-btn{
         position: fixed;
         right: calculateRem(32px);
-        width: calculateRem(32px);
         top: 0px;
         cursor: pointer;
+        background: var(--black);
+        height: calculateRem(32px);
+        width: calculateRem(32px);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        svg{
+            width: calculateRem(16px);
+            height: calculateRem(16px);
+        }
     }
 }
     
