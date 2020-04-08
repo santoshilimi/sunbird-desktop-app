@@ -100,8 +100,6 @@ describe('SearchComponent', () => {
     expect(router.navigate).toHaveBeenCalledWith(['']);
   });
 
-
-
   it('should create visits for search page', () => {
     component.telemetryImpression = {
       context: {
@@ -139,6 +137,26 @@ describe('SearchComponent', () => {
   it('should call setNoResultMessage', () => {
     component.setNoResultMessage();
     expect(component.noResultMessage).toEqual({ messageText: 'messages.stmsg.m0006' });
+  });
+
+  it('should return option with user selected filters', () => {
+    component['userService'].userSelectedFilters = {board: ['TEST_BOARD'], medium: ['English'], gradeLevel: ['Class 8']};
+    const data = component.addMode({filters: {contentType: ['Textbook', 'resource']}});
+    expect(data.filters.contentType).toEqual(['Textbook', 'resource']);
+    expect(data.filters.board).toEqual(component['userService'].userSelectedFilters.board);
+    expect(data.filters.medium).toEqual(component['userService'].userSelectedFilters.medium);
+  });
+
+  it('should call addMode ', () => {
+    component.params = {};
+    component.isConnected = true;
+    component['userService'].userSelectedFilters = {board: ['TEST_BOARD'], medium: ['English'], gradeLevel: ['Class 8']};
+    spyOn(component, 'addMode');
+    spyOn(component['searchService'], 'contentSearch').and.returnValue(of({}));
+    component.searchContent({filters: {board: ['TEST_BOARD'],
+    medium: ['English'], gradeLevel: ['Class 8']}, mode: 'soft'}, false);
+    expect(component.addMode).toHaveBeenCalled();
+    expect(component.searchService.contentSearch).toHaveBeenCalled();
   });
 
 });
