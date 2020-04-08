@@ -348,8 +348,14 @@ async function createWindow() {
       })
     
     win.webContents.once("dom-ready", () => {
+    let perfLogger = containerAPI.getPerfLoggerInstance();
     const startUpDuration = (Date.now() - startTime) / 1000  
     logger.info(`App took ${startUpDuration} sec to start`);
+    perfLogger.log({
+      type: 'APP_STARTUP',
+      time: startUpDuration,
+      metaData: {}
+    });
       telemetryInstance.start({
         context: {
           env: "home"
