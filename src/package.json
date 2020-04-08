@@ -23,7 +23,8 @@
         "public": "gulp",
         "postinstall": "electron-builder install-app-deps",
         "build-icons": "electron-icon-maker --input=logo.png --output=./build",
-        "build-resource-bundles": "node resourcebundles/build.js"
+        "build-resource-bundles": "node resourcebundles/build.js",
+        "content-player": "gulp download:content-player"
     },
     "build": {
         "appId": "local.sunbird.desktop",
