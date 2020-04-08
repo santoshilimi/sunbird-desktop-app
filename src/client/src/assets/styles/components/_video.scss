@@ -10,6 +10,14 @@
       padding: calculateRem(8px);
     }
 
+    &__information{
+      margin-left:calculateRem(8px);
+      html[dir="rtl"] & {
+        margin-left:inherit;
+        margin-right: calculateRem(8px)inherit;
+      }
+    }
+
     &__title {
       font-weight: bold;
       color: var(--primary-400);
