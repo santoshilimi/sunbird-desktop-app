@@ -211,16 +211,18 @@ describe('DesktopProminentFilterComponent', () => {
     });
 
     it('should return form configurations', () => {
-        const formServiceInputParams = {
-            contentType: 'explore',
-            formAction: 'search',
-            formType: 'content',
-            framework: undefined
-        };
+        formService = TestBed.get(FormService);
+        component.filterEnv = 'explore';
+        component.framework = '';
         component.hashTagId = '5s3d23hgsd232';
-        const formConfig = spyOn(formService, 'getFormConfig').and.returnValue(of({}));
+        spyOn(formService, 'getFormConfig').and.returnValue(of({}));
         component['getFormDetails']();
-        expect(formConfig).toBeTruthy();
+        expect(formService.getFormConfig).toHaveBeenCalledWith({
+            formType: 'content',
+            formAction: 'search',
+            contentType: 'explore',
+            framework: ''
+        }, '5s3d23hgsd232');
     });
 
     it('hardRefreshFilter', () => {
@@ -231,6 +233,7 @@ describe('DesktopProminentFilterComponent', () => {
     });
 
     it('should return org details', () => {
+        orgDetailsService = TestBed.get(OrgDetailsService);
         spyOn(orgDetailsService, 'searchOrg').and.returnValue(of({ data: { content: 'some content' } }));
         const returnValue = component['getOrgSearch']();
         expect(returnValue).toBeDefined();
@@ -244,6 +247,7 @@ describe('DesktopProminentFilterComponent', () => {
     });
 
     it('should handle error for orgDetailsSearch', () => {
+        orgDetailsService = TestBed.get(OrgDetailsService);
         spyOn(orgDetailsService, 'searchOrg').and.returnValue(throwError(''));
         const returnValue = component['getOrgSearch']();
         expect(returnValue).toBeDefined();

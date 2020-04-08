@@ -9,7 +9,7 @@ import {
 import { FormsModule, ReactiveFormsModule, } from '@angular/forms';
 import { SharedModule } from '@sunbird/shared';
 import { AvatarModule } from 'ngx-avatar';
-import { SearchComponent,
+import {
   DataDrivenFilterComponent, ErrorPageComponent, SortByComponent,
   LanguageDropdownComponent, ProminentFilterComponent, TopicPickerComponent, MainFooterComponent
 } from './components';
@@ -29,7 +29,7 @@ import { TelemetryModule } from '@sunbird/telemetry';
     TelemetryModule,
     AvatarModule
   ],
-  declarations: [ SearchComponent,
+  declarations: [
     BodyScrollDirective, DataDrivenFilterComponent, SortByComponent,
     ErrorPageComponent, LanguageDropdownComponent,
     ProminentFilterComponent, TopicPickerComponent, StickyHeaderDirective, MainFooterComponent],

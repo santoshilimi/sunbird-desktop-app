@@ -179,11 +179,11 @@ export class UpdateContentPreferenceComponent implements OnInit, OnDestroy {
     .subscribe(() => {
       this.updateFilters();
         this.closeModal(this.userPreferenceData);
+        this.userService.userSelectedFilters = this.userPreferenceData.framework;
         this.toasterService.success(this.resourceService.messages.smsg.m0058);
 
       }, error => {
         this.toasterService.error(this.resourceService.messages.emsg.m0022);
-
       });
   }
 

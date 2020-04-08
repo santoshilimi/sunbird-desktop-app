@@ -18,6 +18,7 @@ module.exports = function (config) {
     browserNoActivityTimeout: 100000,
     client: {
       jasmine: {
+        random: false,
         timeoutInterval: 50000
       },
       args: [tags],
@@ -28,7 +29,7 @@ module.exports = function (config) {
       fixWebpackSourcePaths: true
     },
     
-    reporters: ['coverage-istanbul', 'progress'],
+    reporters: ['mocha'],
     mochaReporter: {
       symbols: {
         success: '+',
