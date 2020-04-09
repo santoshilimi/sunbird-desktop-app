@@ -110,7 +110,7 @@ describe('ContentManagerComponent', () => {
   it('should call updateLocalStatus', () => {
     component.contentResponse = response.contentResponse;
     component.updateLocalStatus(response.contentData, 'pausing');
-    expect(component.contentStatusObject).toEqual(response.contentStatusObj);
+    expect(component.contentStatusObject['ceb037f9-226c-4a61-9403-1813c631e9ba'].currentStatus).toEqual('pausing');
   });
 
   it('should call getButtonsInteractData', () => {

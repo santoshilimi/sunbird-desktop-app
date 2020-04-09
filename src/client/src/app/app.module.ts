@@ -8,7 +8,6 @@ import { CommonModule } from '@angular/common';
 import { CoreModule } from '@sunbird/core';
 import { SharedModule } from '@sunbird/shared';
 import { TelemetryModule } from '@sunbird/telemetry';
-import { SharedFeatureModule } from '@sunbird/shared-feature';
 import { CacheService } from 'ng2-cache-service';
 import { CacheStorageAbstract } from 'ng2-cache-service/dist/src/services/storage/cache-storage-abstract.service';
 import { CacheSessionStorage } from 'ng2-cache-service/dist/src/services/storage/session-storage/cache-session-storage.service';
@@ -32,7 +31,6 @@ import { UserProfileModule } from '@sunbird/user-profile';
     WebExtensionModule.forRoot(),
     TelemetryModule.forRoot(),
     DeviceDetectorModule.forRoot(),
-    SharedFeatureModule,
     UserProfileModule,
     PluginModules,
     AppRoutingModule // don't add any module below this because it contains wildcard route
