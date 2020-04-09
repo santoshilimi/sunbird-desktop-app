@@ -81,7 +81,7 @@
     position: absolute;
     display: block;
     content: ' ';
-    top: -3px;
+    top: calculateRem(-3px);
     left: 0;
     height: 100%;
     width: $sb-fancyTree-list-border-width;
