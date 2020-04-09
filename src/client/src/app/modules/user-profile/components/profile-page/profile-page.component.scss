@@ -21,6 +21,7 @@
         position: absolute;
         margin-top: 0;
         right: 12%;
+        left: auto;
         bottom: calculateRem(8px);
         html[dir="rtl"] & {
           left: 12%;
