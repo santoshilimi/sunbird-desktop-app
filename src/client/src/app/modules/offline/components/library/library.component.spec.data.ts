@@ -9404,26 +9404,7 @@ export const response = {
         },
         'responseCode': 'OK',
         'result': {
-            'id': '439a102168d501bc0babd548bc61299b026edf93c0c585fd8c3037bec7a073f8',
-            'platform': 'darwin',
-            'distro': 'Mac OS X',
-            'osVersion': '10.14.6',
-            'servicePack': '',
-            'arch': 'x64',
-            'cores': 4,
-            'cpuManufacturer': 'Intel®',
-            'cpuBrand': 'Core™ i5-5257U',
-            'cpuSpeed': '2.70',
             'cpuLoad': 30.913978494623656,
-            'systemTime': 1586350283681,
-            'hasBattery': true,
-            'displayResolution': '2560*1600',
-            'appVersion': '1.3.0',
-            'appId': 'local.sunbird.desktop',
-            'totalMemory': 8589934592,
-            'availableMemory': 58437632,
-            'totalHarddisk': 121123069952,
-            'availableHarddisk': 18934538240
         }
     },
     systemInfo: {
@@ -9439,26 +9420,7 @@ export const response = {
         },
         'responseCode': 'OK',
         'result': {
-            'id': '439a102168d501bc0babd548bc61299b026edf93c0c585fd8c3037bec7a073f8',
-            'platform': 'darwin',
-            'distro': 'Mac OS X',
-            'osVersion': '10.14.6',
-            'servicePack': '',
-            'arch': 'x64',
-            'cores': 4,
-            'cpuManufacturer': 'Intel®',
-            'cpuBrand': 'Core™ i5-5257U',
-            'cpuSpeed': '2.70',
             'cpuLoad': 91.913978494623656,
-            'systemTime': 1586350283681,
-            'hasBattery': true,
-            'displayResolution': '2560*1600',
-            'appVersion': '1.3.0',
-            'appId': 'local.sunbird.desktop',
-            'totalMemory': 8589934592,
-            'availableMemory': 58437632,
-            'totalHarddisk': 121123069952,
-            'availableHarddisk': 18934538240
         }
     },
     systemInfoError: {
