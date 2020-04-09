@@ -9408,6 +9408,7 @@ export const response = {
         }
     },
     systemInfo: {
+
         'id': 'api.desktop.system-info',
         'ver': '1.0',
         'ts': '2020-04-08T12:51:24.217Z',
