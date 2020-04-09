@@ -29,7 +29,6 @@ import { FormsModule } from '@angular/forms';
 import { CommonConsumptionModule } from '@project-sunbird/common-consumption';
 import { DesktopExploreContentComponent } from './components/desktop-explore-content/desktop-explore-content.component';
 import { NgInviewModule } from 'angular-inport';
-import { SharedFeatureModule } from '@sunbird/shared-feature';
 @NgModule({
     imports: [
         BrowserAnimationsModule,
@@ -51,7 +50,6 @@ import { SharedFeatureModule } from '@sunbird/shared-feature';
         CommonConsumptionModule,
         SuiDimmerModule,
         NgInviewModule,
-        SharedFeatureModule,
         SuiCollapseModule,
         SuiDropdownModule
     ],

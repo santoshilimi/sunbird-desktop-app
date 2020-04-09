@@ -3,8 +3,6 @@ import { CommonModule } from '@angular/common';
 import { SuiModule } from 'ng2-semantic-ui/dist';
 import { TelemetryModule } from '@sunbird/telemetry';
 import {
-  ContentCreditsComponent,
-  CollectionTreeComponent, FancyTreeComponent,
   ContentRatingComponent, CommingSoonComponent
 } from './components';
 import { SharedModule } from '@sunbird/shared';
@@ -20,11 +18,9 @@ import { FormsModule } from '@angular/forms';
     CoreModule,
     FormsModule
   ],
-  declarations: [ContentCreditsComponent,
-    CollectionTreeComponent, FancyTreeComponent, ContentRatingComponent,
+  declarations: [ ContentRatingComponent,
     CommingSoonComponent],
-  exports: [ContentCreditsComponent,
-    CollectionTreeComponent, FancyTreeComponent, ContentRatingComponent,
+  exports: [ ContentRatingComponent,
     CommingSoonComponent]
 })
 export class PlayerHelperModule { }
