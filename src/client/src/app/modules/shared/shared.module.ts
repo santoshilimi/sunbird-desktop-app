@@ -11,7 +11,6 @@ import {
   PaginationService, RouterNavigationService, NavigationHelperService, UtilService, ContentUtilsServiceService, ExternalUrlPreviewService,
   OfflineCardService
 } from './services';
-import { ContentDirectionDirective } from './directives';
 import { CommonModule } from '@angular/common';
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { DateFormatPipe, DateFilterXtimeAgoPipe, FilterPipe, InterpolatePipe } from './pipes';
@@ -20,7 +19,6 @@ import { DeviceDetectorModule } from 'ngx-device-detector';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { CdnprefixPipe } from './pipes/cdnprefix.pipe';
-import { HighlightTextDirective } from './directives/highlight-text/highlight-text.directive';
 
 
 @NgModule({
@@ -35,11 +33,10 @@ import { HighlightTextDirective } from './directives/highlight-text/highlight-te
   declarations: [DateFormatPipe,
      NoResultComponent, DateFilterXtimeAgoPipe, CardComponent, CardCreationComponent, FilterPipe, InterpolatePipe,
     ShareLinkComponent,  QrCodeModalComponent, CdnprefixPipe, RedirectComponent, CustomMultiSelectComponent,
-     ContentDirectionDirective,
-     HighlightTextDirective, FullPageModalComponent, AppLoaderComponent],
+    FullPageModalComponent, AppLoaderComponent],
   exports: [ DateFormatPipe, DateFilterXtimeAgoPipe, NoResultComponent, CardComponent, CardCreationComponent, FilterPipe,
     ShareLinkComponent, QrCodeModalComponent, CdnprefixPipe, InterpolatePipe, RedirectComponent,
-    CustomMultiSelectComponent, ContentDirectionDirective, HighlightTextDirective,
+    CustomMultiSelectComponent,
     FullPageModalComponent, AppLoaderComponent]
 })
 export class SharedModule {
