@@ -1,45 +1,53 @@
 @import "variables";
 @import "mixins/mixins";
 
-.sb-profile-page {
-  &__avatar {
-    width: calculateRem(92px);
-    height: calculateRem(92px);
-    margin: 0 auto;
-  }
+:host{
 
-  &__location-label {
-    color: var(--gray-200);
-  }
-
-  &__right-aligned-button {
-    margin-top: calculateRem(16px);
-
-    @include respond-above(sm) {
-      position: absolute;
-      margin-top: 0;
-      right: 12%;
-      bottom: calculateRem(8px);
+  .sb-profile-page {
+    &__avatar {
+      width: calculateRem(92px);
+      height: calculateRem(92px);
+      margin: 0 auto;
     }
-  }
-
-  &__profile-bg {
-    background: var(--primary-100);
-    background: #E0EFFF;
-  }
-
-  &__category,
-  &__m-responsive-flex-dc {
-    flex-direction: row;
-    margin-top: calculateRem(16px);
-
-    @include respond-below(sm) {
-      flex-wrap: wrap;
-      margin-top: calculateRem(0px);
+  
+    &__location-label {
+      color: var(--gray-200);
     }
-  }
-
-  .max-w-400 {
-    max-width: calculateRem(480px);
+  
+    &__right-aligned-button {
+      margin-top: calculateRem(16px);
+  
+      @include respond-above(sm) {
+        position: absolute;
+        margin-top: 0;
+        right: 12%;
+        bottom: calculateRem(8px);
+        html[dir="rtl"] & {
+          left: 12%;
+          right: auto;
+        }
+      }
+    }
+  
+    &__profile-bg {
+      background: var(--primary-100);
+      background: #E0EFFF;
+    }
+  
+    &__category,
+    &__m-responsive-flex-dc {
+      flex-direction: row;
+      margin-top: calculateRem(16px);
+  
+      @include respond-below(sm) {
+        flex-wrap: wrap;
+        margin-top: calculateRem(0px);
+      }
+    }
+  
+    .max-w-400 {
+      max-width: calculateRem(480px);
+    }
   }
 }
+
