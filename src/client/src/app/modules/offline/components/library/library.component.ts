@@ -51,7 +51,9 @@ export class LibraryComponent implements OnInit, OnDestroy {
     showModal = false;
     downloadIdentifier: string;
     readonly MINIMUM_REQUIRED_RAM = 100;
+    readonly MAXIMUM_CPU_LOAD = 90;
     showMinimumRAMWarning = false;
+    showCpuLoadWarning = false;
     contentDownloadStatus = {};
     /* Telemetry */
     public viewAllInteractEdata: IInteractEventEdata;
@@ -97,8 +99,12 @@ export class LibraryComponent implements OnInit, OnDestroy {
         this.systemInfoService.getSystemInfo().pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
             let { availableMemory } = data.result;
             availableMemory = Math.floor(availableMemory / (1024 * 1024));
+            const availableCpuLoad =  _.get(data.result, 'cpuLoad');
+            this.showCpuLoadWarning = availableCpuLoad ? Boolean(availableCpuLoad > this.MAXIMUM_CPU_LOAD) : false;
+
             this.showMinimumRAMWarning = availableMemory ? Boolean(availableMemory < this.MINIMUM_REQUIRED_RAM) : false;
         }, error => {
+            this.showCpuLoadWarning = false;
             this.showMinimumRAMWarning = false;
         });
 
