@@ -10,14 +10,6 @@
       padding: calculateRem(8px);
     }
 
-    &__information{
-      margin-left:calculateRem(8px);
-      html[dir="rtl"] & {
-        margin-left:inherit;
-        margin-right: calculateRem(8px);
-      }
-    }
-
     &__title {
       font-weight: bold;
       color: var(--primary-400);
@@ -25,9 +17,6 @@
 
       &__subtitle {
         color: var(--gray-800);
-        display: flex;
-        align-items: center;
-        font-size:  calculateRem(12px);
         .dot-divider {
           width: ($base-block-space / 2);
           height: ($base-block-space / 2);

@@ -8,7 +8,7 @@
       <sb-library-filters [list]="mimeTypeFilters" [layout]="'round-with-icon'"
         (selectedMimeType)="selectedFilter($event)">
       </sb-library-filters>
-      <div class="side-toc-content">
+      <div class="side-toc-content text-left">
         <sb-toc-item [tocData]="collectionData" [activeMimeTypeFilter]= "activeMimeTypeFilter" (tocCardClick)="tocCardClickHandler($event)" [activeContent]="activeContent" (noContent)="showNoContent($event)"></sb-toc-item>
         <app-credits-and-licence *ngIf="collectionData" [contentData]="collectionData"></app-credits-and-licence>
       </div>
