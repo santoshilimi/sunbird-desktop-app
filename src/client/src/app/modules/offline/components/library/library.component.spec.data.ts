@@ -9390,5 +9390,89 @@ export const response = {
                 }
             ]
         },
-    ]
+    ],
+   systemInfo1: {
+        'id': 'api.desktop.system-info',
+        'ver': '1.0',
+        'ts': '2020-04-08T12:51:24.217Z',
+        'params': {
+            'resmsgid': 'b382e540-28e1-4b7a-9519-715858a4c6d3',
+            'msgid': 'a08fd679-afc5-4071-a796-591e11f57ec9',
+            'status': 'successful',
+            'err': null,
+            'errmsg': null
+        },
+        'responseCode': 'OK',
+        'result': {
+            'id': '439a102168d501bc0babd548bc61299b026edf93c0c585fd8c3037bec7a073f8',
+            'platform': 'darwin',
+            'distro': 'Mac OS X',
+            'osVersion': '10.14.6',
+            'servicePack': '',
+            'arch': 'x64',
+            'cores': 4,
+            'cpuManufacturer': 'Intel®',
+            'cpuBrand': 'Core™ i5-5257U',
+            'cpuSpeed': '2.70',
+            'cpuLoad': 30.913978494623656,
+            'systemTime': 1586350283681,
+            'hasBattery': true,
+            'displayResolution': '2560*1600',
+            'appVersion': '1.3.0',
+            'appId': 'local.sunbird.desktop',
+            'totalMemory': 8589934592,
+            'availableMemory': 58437632,
+            'totalHarddisk': 121123069952,
+            'availableHarddisk': 18934538240
+        }
+    },
+    systemInfo: {
+        'id': 'api.desktop.system-info',
+        'ver': '1.0',
+        'ts': '2020-04-08T12:51:24.217Z',
+        'params': {
+            'resmsgid': 'b382e540-28e1-4b7a-9519-715858a4c6d3',
+            'msgid': 'a08fd679-afc5-4071-a796-591e11f57ec9',
+            'status': 'successful',
+            'err': null,
+            'errmsg': null
+        },
+        'responseCode': 'OK',
+        'result': {
+            'id': '439a102168d501bc0babd548bc61299b026edf93c0c585fd8c3037bec7a073f8',
+            'platform': 'darwin',
+            'distro': 'Mac OS X',
+            'osVersion': '10.14.6',
+            'servicePack': '',
+            'arch': 'x64',
+            'cores': 4,
+            'cpuManufacturer': 'Intel®',
+            'cpuBrand': 'Core™ i5-5257U',
+            'cpuSpeed': '2.70',
+            'cpuLoad': 91.913978494623656,
+            'systemTime': 1586350283681,
+            'hasBattery': true,
+            'displayResolution': '2560*1600',
+            'appVersion': '1.3.0',
+            'appId': 'local.sunbird.desktop',
+            'totalMemory': 8589934592,
+            'availableMemory': 58437632,
+            'totalHarddisk': 121123069952,
+            'availableHarddisk': 18934538240
+        }
+    },
+    systemInfoError: {
+        'id': 'api.desktop.system-info',
+        'ver': '1.0',
+        'ts': '2020-03-15T17:14:10.860Z',
+        'params': {
+            'resmsgid': 'd4bbd3a4-929a-46c7-a898-2b536a0d639f',
+            'msgid': 'f86b2585-e518-49e2-9a64-873e8dcce745',
+            'status': 'failed',
+            'err': 'Forbidden',
+            'errmsg': 'internal server error '
+        },
+        'responseCode': 'INTERNAL_SERVER_ERROR',
+        'result': {}
+    }
 };
