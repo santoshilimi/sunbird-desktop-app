@@ -10,17 +10,17 @@ body {
   background: $body-background-color !important;
   position: relative;
   font-family: $font-stack-en;
-  letter-spacing: 0.2px;
+  letter-spacing: calculateRem(0.2px);
   height: auto;
   color: $default-text-color;
-  padding-bottom: 336px;
+  padding-bottom: calculateRem(336px);
   min-height: 100vh;
   text-rendering: optimizeLegibility;
   &.pushable {
     background: $body-background-color !important;
     & > .pusher {
       background: transparent !important;
-      padding-bottom: 400px !important;
+      padding-bottom: calculateRem(400px) !important;
       &.dimmed {
         height: 100vh;
       }
@@ -31,7 +31,7 @@ body {
 @include respond-above(sm) {
   body {
     .pusher {
-      padding-bottom: 240px !important;
+      padding-bottom: calculateRem(240px) !important;
     
     }
     .sb-mid-container-min-height {
@@ -42,7 +42,7 @@ body {
 }
 @include respond-below(sm) {
  .download-mobile-app .download-mobile-app-logo{
-    min-height: 116px;
+    min-height: calculateRem(116px);
   }
 }
 .sb-offline {
@@ -78,12 +78,12 @@ body {
   .sb-explore-qr-container {
     .dial-section-column {
       border-right: 0px solid rgba(51, 51, 51, 0.1) !important;
-      border-left: 1px solid rgba(51, 51, 51, 0.1);
+      border-left: calculateRem(1px) solid rgba(51, 51, 51, 0.1);
     }
   }
   @include respond-above(sm) {
     .download-mobile-app .download-mobile-app-logo{
-      min-height: 168px;
+      min-height: calculateRem(168px);
       }
     }
 }
@@ -91,18 +91,18 @@ body {
   .sb-explore-qr-container {
     .dial-section-column {
       border-left: 0px solid rgba(51, 51, 51, 0.1);
-      border-right: 1px solid rgba(51, 51, 51, 0.1);
+      border-right: calculateRem(1px) solid rgba(51, 51, 51, 0.1);
     }
   }
 }
 .description.annannouncement-description {
   .sb-label-status-error {
     color: $sb-label-status-error-color;
-    font-size: 11px;
+    font-size: calculateRem(11px);
   }
 
   .sb-label-12size {
-    font-size: 11px;
+    font-size: calculateRem(11px);
   }
 }
 // don't delete this
@@ -143,7 +143,7 @@ ol.ui.list ol {
   margin-left: 2em !important;
 }
 .ui.info.message {
-  color: black !important;
+  color: var(--black) !important;
 }
 .cursor-default {
   cursor: default !important;
@@ -224,9 +224,9 @@ app-workspace {
 }
 .sb-workspace-bg{
   position: relative;
-  bottom: -35px;
+  bottom: calculateRem(-35px);
   height: auto;
-  margin-top: -35px;
+  margin-top: calculateRem(-35px);
 }
 
 /* for sticky header desktop-app */
