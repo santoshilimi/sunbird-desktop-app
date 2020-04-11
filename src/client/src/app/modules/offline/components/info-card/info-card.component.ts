@@ -16,6 +16,7 @@ export class InfoCardComponent implements OnInit, OnDestroy {
 
   @Input() text: any;
   @Input() showMinRamWarning = false;
+  @Input() showCpuLoadWarning = false;
   isConnected;
   @Output() navigate = new EventEmitter();
   public unsubscribe$ = new Subject<void>();
