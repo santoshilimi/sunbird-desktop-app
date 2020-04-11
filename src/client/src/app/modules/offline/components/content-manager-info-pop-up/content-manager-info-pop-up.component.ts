@@ -9,7 +9,6 @@ import { ResourceService } from '@sunbird/shared';
 export class ContentManagerInfoPopUpComponent implements OnInit {
 
   @Input() failedList;
-  @Input() isChangeLocation: boolean;
   @Input() suggestedDrive: string;
   @ViewChild('modal') modal;
   @Output() dismissed = new EventEmitter<any>();

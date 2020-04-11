@@ -93,7 +93,7 @@ export class ContentManagerComponent implements OnInit, OnDestroy {
           this.completedCount = completedCount;
           return _.get(resp, 'result.response.contents');
         })).subscribe((apiResponse: any) => {
-          this.handleInsufficentMemoryError(apiResponse);
+          this.handleInsufficientMemoryError(apiResponse);
           this.contentResponse = _.filter(apiResponse, (o) => {
             if (o.status !== 'canceled' && o.addedUsing === 'download') {
               const statusMsg = this.getContentStatus(o.contentDownloadList);
@@ -116,10 +116,23 @@ export class ContentManagerComponent implements OnInit, OnDestroy {
     }
   }
 
-  handleInsufficentMemoryError(allContentList) {
+  async handleInsufficientMemoryError(allContentList) {
     const noSpaceContentList = _.filter(allContentList, (content) =>
-    content.failedCode === 'LOW_DISK_SPACE' && content.status === 'failed');
-    this.unHandledFailedList =  _.differenceBy(noSpaceContentList , this.handledFailedList, 'id');
+      content.failedCode === 'LOW_DISK_SPACE' && content.status === 'failed');
+
+    const popupInfo = {
+      failedContentName: _.differenceBy(noSpaceContentList, this.handledFailedList, 'id'),
+    };
+
+    try {
+      const response: any = await this.contentManagerService.getSuggestedDrive(popupInfo);
+      this.unHandledFailedList = response.failedContentName;
+      this.isWindows = response.isWindows;
+      this.suggestedDrive = response.suggestedDrive;
+    } catch (error) {
+      this.unHandledFailedList = popupInfo.failedContentName;
+    }
+
   }
   removeFromHandledFailedList(id) {
     this.handledFailedList = _.filter(this.handledFailedList, (content) => content.id !== id);

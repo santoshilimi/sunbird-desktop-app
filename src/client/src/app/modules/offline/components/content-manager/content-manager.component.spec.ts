@@ -266,24 +266,24 @@ describe('ContentManagerComponent', () => {
     expect(component.apiCallSubject.next).toHaveBeenCalled();
     expect(toasterService.error).toHaveBeenCalled();
   });
-  it('should call handleInsufficentMemoryError show failed contents in popup', () => {
+  it('should call handleInsufficientMemoryError show failed contents in popup', () => {
     component.handledFailedList = [];
-    component.handleInsufficentMemoryError(response.allContentList);
+    component.handleInsufficientMemoryError(response.allContentList);
      expect(component.unHandledFailedList).toEqual(response.listToShow);
   });
-  it('should call handleInsufficentMemoryError show failed contents in popup when difference is not empty', () => {
+  it('should call handleInsufficientMemoryError show failed contents in popup when difference is not empty', () => {
     component.handledFailedList = response.previousList;
-    component.handleInsufficentMemoryError(response.allContentList);
+    component.handleInsufficientMemoryError(response.allContentList);
      expect(component.unHandledFailedList).toEqual(response.listToShowWithDifference);
   });
-  it('should call handleInsufficentMemoryError and no contents to show in pop up when difference is empty ', () => {
+  it('should call handleInsufficientMemoryError and no contents to show in pop up when difference is empty ', () => {
     component.handledFailedList = response.failedList;
-    component.handleInsufficentMemoryError(response.allContentList);
+    component.handleInsufficientMemoryError(response.allContentList);
      expect(component.unHandledFailedList).toEqual([]);
   });
-  it('should call handleInsufficentMemoryError and no contents to show in pop up when all contents list is empty', () => {
+  it('should call handleInsufficientMemoryError and no contents to show in pop up when all contents list is empty', () => {
     component.handledFailedList = [];
-    component.handleInsufficentMemoryError([]);
+    component.handleInsufficientMemoryError([]);
      expect(component.unHandledFailedList).toEqual([]);
   });
   it('should call close modal ', () => {

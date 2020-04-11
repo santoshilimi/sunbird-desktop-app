@@ -84,31 +84,18 @@ export class ContentManagerService {
         this.toasterService.info(this.resourceService.messages.smsg.m0053);
         this.downloadEvent.emit('Download started');
       }),
-      catchError((err: any) => {
-        if (err.error.params.err === 'LOW_DISK_SPACE') {
+      catchError(async (err: any) => {
+        if (_.get(err, 'error.params.err') === 'LOW_DISK_SPACE') {
           const popupInfo: any = {
             failedContentName: this.failedContentName,
           };
 
-          this.systemInfoService.getSystemInfo().subscribe((info: any) => {
-
-            // Check if the system is Windows
-            if (info.result.platform === 'win32') {
-              popupInfo.isWindows = true;
-              const getAvailableSpace = (drive: any) => drive.size - drive.used;
-              const suggestedDrive = info.result.drives.reduce((prev, current) => {
-                return (getAvailableSpace(prev) > getAvailableSpace(current)) ? prev : current;
-              });
-
-              if (suggestedDrive) {
-                popupInfo.suggestedDrive = suggestedDrive.fs;
-              }
-            }
+          try {
+            const response = await this.getSuggestedDrive(popupInfo);
+            this.downloadFailEvent.emit(response);
+          } catch (error) {
             this.downloadFailEvent.emit(popupInfo);
-          }, error => {
-            console.error('Error while fetching system Info');
-            this.downloadFailEvent.emit(popupInfo);
-          });
+          }
         }
         return observableThrowError(err);
       }));
@@ -229,6 +216,29 @@ export class ContentManagerService {
     };
 
     return this.publicDataService.post(options);
+  }
+
+  public async getSuggestedDrive(popupInfo: any) {
+    try {
+      const info = await this.systemInfoService.getSystemInfo().toPromise();
+      // Check if the system is Windows and it has multiple drives
+      if (_.get(info, 'result.platform') === 'win32' && _.get(info, 'result.drives.length') !== 1) {
+        popupInfo.isWindows = true;
+        popupInfo.contentBasePath = info.result.contentBasePath;
+        const getAvailableSpace = (drive: any) => drive.size - drive.used;
+        const suggestedDrive = info.result.drives.reduce((prev, current) => {
+          return (getAvailableSpace(prev) > getAvailableSpace(current)) ? prev : current;
+        });
+
+        if (suggestedDrive) {
+          popupInfo.suggestedDrive = suggestedDrive.fs;
+        }
+      }
+      return popupInfo;
+    } catch (error) {
+      console.error('Error while fetching system Info', error);
+      throw new Error(error);
+    }
   }
 
 }

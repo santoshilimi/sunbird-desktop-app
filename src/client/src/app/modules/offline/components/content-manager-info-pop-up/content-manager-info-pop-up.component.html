@@ -5,11 +5,11 @@
   </div>
 
   <div class="sb-modal-content flex-dc">
-    <p class="text-center fmedium import-content" *ngIf="!isChangeLocation">
+    <p class="text-center fmedium import-content" *ngIf="!suggestedDrive">
       {{resourceService?.frmelmnts?.lbl?.desktop?.failedListLabel}}
     </p>
-    <p class="text-center fmedium import-content" *ngIf="isChangeLocation">
-    {{resourceService?.frmelmnts?.messages?.etmsg?.changeContentLocationWarning | interpolate:'{suggestedDrive}': suggestedDrive }}
+    <p class="text-center fmedium import-content" *ngIf="suggestedDrive">
+    {{resourceService?.messages?.stmsg?.changeContentLocationWarning  | interpolate:'{suggestedDrive}': suggestedDrive}}
     </p>
     <div class="custom-height">
     <div class="p-8 warning-ecar-list" *ngFor="let items of failedList">

@@ -148,4 +148,4 @@
   </sui-accordion-panel>
 </sui-accordion>
 
-<app-content-manager-info-pop-up *ngIf="unHandledFailedList.length" [isChangeLocation]="isWindows" [suggestedDrive]="suggestedDrive" [failedList]="unHandledFailedList" (dismissed)="closeModal($event)"> </app-content-manager-info-pop-up>
+<app-content-manager-info-pop-up *ngIf="unHandledFailedList?.length" [suggestedDrive]="suggestedDrive" [failedList]="unHandledFailedList" (dismissed)="closeModal($event)"> </app-content-manager-info-pop-up>
