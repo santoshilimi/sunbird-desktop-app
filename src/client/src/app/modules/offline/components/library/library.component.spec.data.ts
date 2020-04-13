@@ -9390,5 +9390,52 @@ export const response = {
                 }
             ]
         },
-    ]
+    ],
+   systemInfo1: {
+        'id': 'api.desktop.system-info',
+        'ver': '1.0',
+        'ts': '2020-04-08T12:51:24.217Z',
+        'params': {
+            'resmsgid': 'b382e540-28e1-4b7a-9519-715858a4c6d3',
+            'msgid': 'a08fd679-afc5-4071-a796-591e11f57ec9',
+            'status': 'successful',
+            'err': null,
+            'errmsg': null
+        },
+        'responseCode': 'OK',
+        'result': {
+            'cpuLoad': 30.913978494623656,
+        }
+    },
+    systemInfo: {
+
+        'id': 'api.desktop.system-info',
+        'ver': '1.0',
+        'ts': '2020-04-08T12:51:24.217Z',
+        'params': {
+            'resmsgid': 'b382e540-28e1-4b7a-9519-715858a4c6d3',
+            'msgid': 'a08fd679-afc5-4071-a796-591e11f57ec9',
+            'status': 'successful',
+            'err': null,
+            'errmsg': null
+        },
+        'responseCode': 'OK',
+        'result': {
+            'cpuLoad': 91.913978494623656,
+        }
+    },
+    systemInfoError: {
+        'id': 'api.desktop.system-info',
+        'ver': '1.0',
+        'ts': '2020-03-15T17:14:10.860Z',
+        'params': {
+            'resmsgid': 'd4bbd3a4-929a-46c7-a898-2b536a0d639f',
+            'msgid': 'f86b2585-e518-49e2-9a64-873e8dcce745',
+            'status': 'failed',
+            'err': 'Forbidden',
+            'errmsg': 'internal server error '
+        },
+        'responseCode': 'INTERNAL_SERVER_ERROR',
+        'result': {}
+    }
 };

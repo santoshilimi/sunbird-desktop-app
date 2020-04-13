@@ -16,9 +16,9 @@ import { FormsModule } from '@angular/forms';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { response } from './library.component.spec.data';
 import { ActivatedRoute, Router } from '@angular/router';
-import { of as observableOf } from 'rxjs';
+import { of as observableOf, throwError } from 'rxjs';
 import { SharedModule } from '@sunbird/shared';
-import { ConnectionService } from '../../services';
+import { ConnectionService, SystemInfoService} from '../../services';
 
 describe('LibraryComponent', () => {
   let component: LibraryComponent;
@@ -82,6 +82,7 @@ describe('LibraryComponent', () => {
         UtilService,
         ToasterService,
         ConnectionService,
+        SystemInfoService,
         { provide: ResourceService, useValue: resourceBundle },
         OrgDetailsService],
       schemas: [NO_ERRORS_SCHEMA]
@@ -273,5 +274,23 @@ describe('LibraryComponent', () => {
     expect(component.sections[1].contents[0].name).toEqual(response.testSectionName[1].contents[0].name);
     });
     fixture.destroy();
+  });
+  it('should not showCpuLoadWarning when cpuload is less than 90 ', () => {
+    const systemInfoService = TestBed.get(SystemInfoService);
+   spyOn(systemInfoService, 'getSystemInfo').and.returnValue(observableOf(response.systemInfo1));
+   component.ngOnInit();
+    expect(component.showCpuLoadWarning).toBeFalsy();
+  });
+  it('should  showCpuLoadWarning when cpuload is more than 90', () => {
+    const systemInfoService = TestBed.get(SystemInfoService);
+   spyOn(systemInfoService, 'getSystemInfo').and.returnValue(observableOf(response.systemInfo));
+   component.ngOnInit();
+    expect(component.showCpuLoadWarning).toBeTruthy();
+  });
+  it('should handle system info error ', () => {
+    const systemInfoService = TestBed.get(SystemInfoService);
+   spyOn(systemInfoService, 'getSystemInfo').and.returnValue(throwError(response.systemInfoError));
+   component.ngOnInit();
+    expect(component.showCpuLoadWarning).toBeFalsy();
   });
 });
