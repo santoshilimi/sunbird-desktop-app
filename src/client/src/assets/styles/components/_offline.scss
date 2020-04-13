@@ -1,9 +1,9 @@
 .offline-page-content {
   height: 100%;
+
   .desktop-icon{
     width:100%;
     max-width: calculateRem(300px);
-  }
 }
 
 // === offline-application-download scss === //
@@ -28,6 +28,7 @@
   color: $primary-color;
   font-size: calculateRem(12px);
 }
+
 // === offline-application-download end scss === //
 .offline-video {
   height: 100%;
@@ -117,6 +118,7 @@
     line-height: calculateRem(18px);
   }
 }
+
 // == content-import-header end scss == //
 
 // accordion and offline scss//
@@ -124,6 +126,7 @@
 .ui.styled.sb-accordion.accordion .accordion {
   box-shadow: none;
 }
+
 // accordion and offline end scss//
 
 // == content-metadeta == //
@@ -250,8 +253,13 @@
     .sb-bordered-list-item-heading {
       font-size: $sb-bordered-list-item-heading-font-size;
       color: $sb-bordered-list-item-heading-color;
+<<<<<<< HEAD
       width:100%;
       max-width: calculateRem(160px);
+=======
+      width: 100%;
+      max-width: 160px;
+>>>>>>> b848d8a24e7a5570b62c326e0862e5866cb28909
     }
 
     .sb-bordered-list-item-subheading {
@@ -269,6 +277,7 @@
     border-bottom: 0;
   }
 }
+
 // == offline-application-download and _list.scss also same  ==  //
 
 
@@ -280,10 +289,12 @@
   position: relative;
   padding-bottom: calc(56.25% - 180px);
 }
+
 .sb-modal.sb-modal-video-gallery .ui.modal.large .sb-modal-content {
   border-bottom-left-radius: calculateRem(4px);
   border-bottom-right-radius: calculateRem(4px);
 }
+
 .responsive video,
 .responsive object,
 .responsive embed {
@@ -296,7 +307,12 @@
 }
 
 .sb-offline-video-list {
+<<<<<<< HEAD
   margin: calculateRem(8px) auto;
+=======
+  margin: 8px auto;
+
+>>>>>>> b848d8a24e7a5570b62c326e0862e5866cb28909
   i.icon {
     display: none;
   }
@@ -348,26 +364,35 @@
 
 .sb-card.sb-offline-video-list {
   width: 100%;
+<<<<<<< HEAD
   margin: calculateRem(8px) 0px;
+=======
+  margin: 8px 0px;
+
+>>>>>>> b848d8a24e7a5570b62c326e0862e5866cb28909
   .sb-card-body {
     height: auto;
     padding: calculateRem(8px);
     overflow: hidden;
   }
+
   .sb-card-image {
     width: calculateRem(40px);
     height: auto;
     border: 0px solid #ddd;
     background: none;
+
     img {
       width: 100%;
       height: auto;
     }
   }
+
   .sb-card-metas {
     align-items: center;
     min-height: calculateRem(48px);
   }
+
   .sb-card-meta {
     width: 100%;
     height: auto;
@@ -396,12 +421,34 @@
 }
 
 .slick-next:before {
+<<<<<<< HEAD
   padding-left: calculateRem(3px);
   padding-top: calculateRem(1px);
+=======
+  padding-left: 3px;
+  padding-top: 1px;
+
+  html[dir="rtl"] & {
+    padding-right: calculateRem(3px);
+    padding-left: inherit;
+  }
+>>>>>>> b848d8a24e7a5570b62c326e0862e5866cb28909
 }
+
 .slick-prev:before {
+<<<<<<< HEAD
   padding-right: calculateRem(3px);
   padding-top: calculateRem(1px);
+=======
+  padding-right: 3px;
+  padding-top: 1px;
+
+  html[dir="rtl"] & {
+    padding-left: calculateRem(3px);
+    padding-right: inherit;
+  }
+
+>>>>>>> b848d8a24e7a5570b62c326e0862e5866cb28909
 }
 
 .sb-offline-video-player {
@@ -415,6 +462,7 @@
 .sb-pageSection.sb-offline-video-player-container {
   background: $primary-0;
 }
+
 .sb-offline-video-player-container .slick-next {
   right: calculateRem(-4px);
 }
@@ -430,6 +478,7 @@
   }
 
   .slick-slider {
+
     .slick-track,
     .slick-list {
       display: flex;
@@ -439,9 +488,10 @@
 
 .fields-selection {
   .sb-field .ui.selection.active.dropdown {
-      border-color: #96c8da;
+    border-color: #96c8da;
   }
-  .sb-field .ui.selection.active.dropdown .text{
+
+  .sb-field .ui.selection.active.dropdown .text {
     color: #0076FE !important;
   }
 }
@@ -452,21 +502,35 @@
   align-items: flex-start;
 }
 
-.ui.selection.dropdown.fields-dropdown{
+.ui.selection.dropdown.fields-dropdown {
   height: 2rem !important;
+<<<<<<< HEAD
   &:focus{
       border: calculateRem(1px) solid #0076FE;  
       color:#0076FE !important;
+=======
+
+  &:focus {
+    border: 1px solid #0076FE;
+    color: #0076FE !important;
+>>>>>>> b848d8a24e7a5570b62c326e0862e5866cb28909
   }
 }
 
-.ui.selection.dropdown.fields-dropdown:focus ~ label {
-  border:0px;
-  color:#0076FE;
+.ui.selection.dropdown.fields-dropdown:focus~label {
+  border: 0px;
+  color: #0076FE;
   font-weight: normal;
 }
 
+<<<<<<< HEAD
 .ui.selection.dropdown.fields-dropdown option{
 background: var(--white);
 color:var(--black);
 }
+=======
+.ui.selection.dropdown.fields-dropdown option {
+  background: #fff;
+  color: #000;
+}
+>>>>>>> b848d8a24e7a5570b62c326e0862e5866cb28909
