@@ -26,14 +26,14 @@
   margin-left: auto;
   max-width: $base-block-space * 60;
   margin-right: calculateRem(32px);
-  z-index:var(--gray-200);
+  z-index:999;
   position: fixed;
   right: calculateRem(32px);
 }
 // .ui.styled.accordion.sb-single-pannel-accordion.sb-single-pannel-accordion-fixed {
 //   position: fixed;
 //   right: 32px;
-//   z-index: var(--gray-200);
+//   z-index: 999;
 // }
 .ui.styled.accordion.sb-single-pannel-accordion .title,
 .ui.styled.accordion.sb-single-pannel-accordion .accordion .active.title {
@@ -85,7 +85,7 @@
   box-shadow: 0 calculateRem(-4px) calculateRem(5px) 0 rgba(0, 0, 0, 0.25);
 }
 .sb-download-manager-panel {
-  z-index: var(--gray-200);
+  z-index: 999;
 }
 .sb-single-pannel-accordion-heading {
   background: var(--gray-800);

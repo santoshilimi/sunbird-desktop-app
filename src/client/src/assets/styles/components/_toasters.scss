@@ -115,7 +115,7 @@
       margin: 0px;
       width: $base-block-space*3 !important;
       height: $base-block-space*3 !important;
-      background-position: 0px 4px !important;
+      background-position: 0px calculateRem(4px) !important;
       margin-right: $base-block-space;
       font-size: $base-block-space*3;
       line-height: $base-block-space*3;
@@ -374,7 +374,7 @@
       margin: 0px;
       width: $base-block-space*4 !important;
       height: $base-block-space*4 !important;
-      background-position: 0px 4px !important;
+      background-position: 0px calculateRem(4px) !important;
       margin-right: $base-block-space;
     }
     .sb-toast-texts {

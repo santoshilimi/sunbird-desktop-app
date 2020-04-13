@@ -104,7 +104,7 @@ $btns: "gray" var(--gray-200) var(--gray-400) var(--gray-100),
         }
       } @else if $btntype == btn-dashed {
         border-style: dashed;
-        border-width: 1px;
+        border-width: calculateRem(1px);
         background-color: var(--white);
         border-color: #{nth($btn, 2)};
         color: #{nth($btn, 2)};
@@ -381,7 +381,7 @@ $btnSquaresizes: "xs" 1.5rem 1.5rem 1rem null, "normal" 4rem 4rem 0.75rem null,
 .sb-loading-spinner {
   width: 1rem;
   height: 1rem;
-  margin-right: 8px;
+  margin-right: calculateRem(8px);
   border-width: 0.2em;
   display: inline-block;
   vertical-align: text-bottom;

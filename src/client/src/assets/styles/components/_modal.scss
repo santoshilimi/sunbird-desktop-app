@@ -39,7 +39,7 @@ $sb-modal-corner-radius: $base-block-space;
       line-height: $sb-modal-header-line-height;
     }
     .sb-modal-content {
-      min-height: 100px;
+      min-height: calculateRem(100px);
       padding: $sb-modal-content-padding;
       overflow-y: auto;
       background: $white;
