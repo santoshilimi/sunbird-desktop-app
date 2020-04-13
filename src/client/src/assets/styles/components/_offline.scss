@@ -253,13 +253,8 @@
     .sb-bordered-list-item-heading {
       font-size: $sb-bordered-list-item-heading-font-size;
       color: $sb-bordered-list-item-heading-color;
-<<<<<<< HEAD
       width:100%;
       max-width: calculateRem(160px);
-=======
-      width: 100%;
-      max-width: 160px;
->>>>>>> b848d8a24e7a5570b62c326e0862e5866cb28909
     }
 
     .sb-bordered-list-item-subheading {
@@ -307,12 +302,7 @@
 }
 
 .sb-offline-video-list {
-<<<<<<< HEAD
   margin: calculateRem(8px) auto;
-=======
-  margin: 8px auto;
-
->>>>>>> b848d8a24e7a5570b62c326e0862e5866cb28909
   i.icon {
     display: none;
   }
@@ -364,12 +354,8 @@
 
 .sb-card.sb-offline-video-list {
   width: 100%;
-<<<<<<< HEAD
   margin: calculateRem(8px) 0px;
-=======
-  margin: 8px 0px;
 
->>>>>>> b848d8a24e7a5570b62c326e0862e5866cb28909
   .sb-card-body {
     height: auto;
     padding: calculateRem(8px);
@@ -421,34 +407,23 @@
 }
 
 .slick-next:before {
-<<<<<<< HEAD
   padding-left: calculateRem(3px);
   padding-top: calculateRem(1px);
-=======
-  padding-left: 3px;
-  padding-top: 1px;
 
   html[dir="rtl"] & {
     padding-right: calculateRem(3px);
     padding-left: inherit;
   }
->>>>>>> b848d8a24e7a5570b62c326e0862e5866cb28909
 }
 
 .slick-prev:before {
-<<<<<<< HEAD
   padding-right: calculateRem(3px);
   padding-top: calculateRem(1px);
-=======
-  padding-right: 3px;
-  padding-top: 1px;
 
   html[dir="rtl"] & {
     padding-left: calculateRem(3px);
     padding-right: inherit;
   }
-
->>>>>>> b848d8a24e7a5570b62c326e0862e5866cb28909
 }
 
 .sb-offline-video-player {
@@ -504,16 +479,9 @@
 
 .ui.selection.dropdown.fields-dropdown {
   height: 2rem !important;
-<<<<<<< HEAD
   &:focus{
       border: calculateRem(1px) solid #0076FE;  
       color:#0076FE !important;
-=======
-
-  &:focus {
-    border: 1px solid #0076FE;
-    color: #0076FE !important;
->>>>>>> b848d8a24e7a5570b62c326e0862e5866cb28909
   }
 }
 
@@ -523,14 +491,7 @@
   font-weight: normal;
 }
 
-<<<<<<< HEAD
 .ui.selection.dropdown.fields-dropdown option{
 background: var(--white);
 color:var(--black);
 }
-=======
-.ui.selection.dropdown.fields-dropdown option {
-  background: #fff;
-  color: #000;
-}
->>>>>>> b848d8a24e7a5570b62c326e0862e5866cb28909
