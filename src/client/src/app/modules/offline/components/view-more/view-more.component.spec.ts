@@ -168,6 +168,40 @@ describe('ViewMoreComponent', () => {
     expect(component.setNoResultMessage).toHaveBeenCalled();
   });
 
+  it('should return option with user selected filters', () => {
+    component.isFilterChanged = false;
+    component.apiQuery = {params: {}};
+    const option = {filters: {contentType: ['Textbook', 'resource']}, mode: 'soft'};
+    component['userService'].userSelectedFilters = {board: ['TEST_BOARD'], medium: ['English'], gradeLevel: ['Class 8']};
+    component.addMode(option);
+    fixture.detectChanges();
+    expect(option.filters['board']).toEqual(component['userService'].userSelectedFilters.board);
+    expect(option.mode).toEqual('soft');
+    expect(option.filters['board']).toEqual(component['userService'].userSelectedFilters.board);
+  });
+
+  it('should delete mode from option', () => {
+    component.isFilterChanged = true;
+    component.apiQuery = {params: {}};
+    component['userService'].userSelectedFilters = {board: ['TEST_BOARD'], medium: ['English'], gradeLevel: ['Class 8']};
+    const option = {filters: {contentType: ['Textbook', 'resource']}, mode: 'soft'};
+    component.addMode(option);
+    fixture.detectChanges();
+    expect(option).not.toContain('mode');
+  });
+
+  it('should call addMode fetchContents', () => {
+    spyOn(component, 'addMode').and.returnValue({});
+    component.apiQuery = {params: {}};
+    component.dataDrivenFilters = { appliedFilters: true, board: ['TEST_BOARD'], medium: ['English'], gradeLevel: ['Class 8']};
+    component['userService'].userSelectedFilters = {board: ['TEST_BOARD'], medium: ['English'], gradeLevel: ['Class 8']};
+    component.isBrowse = false;
+    component.isFilterChanged = false;
+    fixture.detectChanges();
+    component.fetchContents(false);
+    expect(component.addMode).toHaveBeenCalled();
+  });
+
   it('should call getFilters', () => {
     spyOn(component, 'fetchContentOnParamChange');
 
@@ -239,21 +273,28 @@ describe('ViewMoreComponent', () => {
     spyOn(searchService, 'contentSearch').and.returnValue(of({}));
     spyOn(component, 'formatSearchResults');
     spyOn(utilService, 'addHoverData');
+    spyOn(component, 'addMode');
+    component['userService'].userSelectedFilters = {board: ['TEST_BOARD'], medium: ['English'], gradeLevel: ['Class 8']};
     component.dataDrivenFilters = filters;
     component.fetchRecentlyAddedContent(false);
     expect(searchService.contentSearch).toHaveBeenCalled();
     expect(component.formatSearchResults).toHaveBeenCalled();
     expect(utilService.addHoverData).toHaveBeenCalled();
+    expect(component.addMode).toHaveBeenCalled();
   });
 
   it('should call fetchRecentlyAddedContent on error', () => {
     const searchService = TestBed.get(SearchService);
     spyOn(searchService, 'contentSearch').and.returnValue(throwError({}));
+    spyOn(component, 'addMode');
     component.dataDrivenFilters = filters;
+    component.apiQuery = {params: {}};
+    component['userService'].userSelectedFilters = {board: ['TEST_BOARD'], medium: ['English'], gradeLevel: ['Class 8']};
     component.dataDrivenFilters.appliedFilters = true;
     component.fetchRecentlyAddedContent(true);
     expect(searchService.contentSearch).toHaveBeenCalled();
     expect(component.showLoader).toBe(false);
+    expect(component.addMode).toHaveBeenCalled();
   });
 
   it('should call updateCardData', () => {
@@ -274,4 +315,5 @@ describe('ViewMoreComponent', () => {
     expect(component.paginationDetails.currentPage).toEqual(1);
     expect(component.fetchContents).toHaveBeenCalledWith(false);
   });
+
 });

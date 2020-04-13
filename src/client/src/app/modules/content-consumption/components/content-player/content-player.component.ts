@@ -91,6 +91,7 @@ export class ContentPlayerComponent implements AfterViewInit, OnChanges, OnInit,
     this.connectionService.monitor().pipe(takeUntil(this.unsubscribe$)).subscribe(isConnected => {
       if (!isConnected && this.offlineCardService.isYoutubeContent(data)) {
         this.youTubeContentStatus = true;
+        this.loadPlayer();
       } else {
         this.youTubeContentStatus = false;
         this.loadPlayer();

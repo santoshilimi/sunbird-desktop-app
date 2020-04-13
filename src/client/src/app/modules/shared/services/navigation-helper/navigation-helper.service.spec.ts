@@ -8,11 +8,7 @@ import { CacheService } from 'ng2-cache-service';
 import { UtilService } from '../util/util.service';
 
 class RouterStub {
-  // navigate = jasmine.createSpy('navigate');
-  public navigate() { }
-  // events: Observable<NavigationEnd>  = observableOf([
-  //   {id: 2, url: '/home', urlAfterRedirects: '/home', toString: () =>  'home' }
-  // ]);
+  navigate = jasmine.createSpy('navigate');
 }
 const fakeActivatedRoute = {
   'params': observableOf({ contentId: 'd0_33567325' }),
@@ -52,6 +48,18 @@ describe('NavigationHelperService', () => {
     expect(service['_history']).toEqual([]);
   }));
 
+  it('should call goBack when previous URL is without queryParams',
+  inject([NavigationHelperService, Router, ActivatedRoute, CacheService, UtilService],
+    (service: NavigationHelperService, router, activatedRoute, cacheService, utilService: UtilService) => {
+      const previousUrl = {
+        'url': '/view-all'
+      };
+      spyOn(service, 'getDesktopPreviousUrl').and.returnValue(previousUrl);
+      service.goBack();
+      expect(service.router.navigate).toHaveBeenCalledWith([previousUrl.url]);
+      expect(service.getDesktopPreviousUrl).toHaveBeenCalled();
+  }));
+
   it('should call getDesktopPreviousUrl', inject([NavigationHelperService, Router, ActivatedRoute, CacheService],
     (service: NavigationHelperService, router, activatedRoute, cacheService) => {
 
@@ -85,19 +93,9 @@ describe('NavigationHelperService', () => {
         spyOn(service.utilService, 'updateSearchKeyword');
         service.goBack();
         expect(service.utilService.updateSearchKeyword).toHaveBeenCalledWith('test');
-        expect(service.router.navigate).toHaveBeenCalledWith([previousUrl.url], { queryParams: previousUrl.queryParams });
         expect(service.history.pop).toHaveBeenCalled();
-      }));
-
-  it('should call goBack when previous URL is without queryParams',
-    inject([NavigationHelperService, Router, ActivatedRoute, CacheService, UtilService],
-      (service: NavigationHelperService, router, activatedRoute, cacheService, utilService: UtilService) => {
-        const previousUrl = {
-          'url': '/view-all'
-        };
-        spyOn(service, 'getDesktopPreviousUrl').and.returnValue(previousUrl);
-        service.goBack();
-        expect(service.router.navigate).toHaveBeenCalledWith([previousUrl.url]);
+        expect(service.router.navigate).toHaveBeenCalledWith([previousUrl.url], { queryParams: previousUrl.queryParams });
+        expect(service.getDesktopPreviousUrl).toHaveBeenCalled();
       }));
 
 });

@@ -113,10 +113,12 @@ describe('ContentPlayerComponent', () => {
   it('should handle youtube content when offline and isYoutubeContent is true', () => {
     const connectionService = TestBed.get(ConnectionService);
     const offlineCardService = TestBed.get(OfflineCardService);
+    spyOn(component, 'loadPlayer');
     spyOn(offlineCardService, 'isYoutubeContent').and.returnValue(of(true));
     spyOn(connectionService, 'monitor').and.returnValue(of(false));
     component.handleYoutubeContent(playerData.content.result.content);
     expect(component.youTubeContentStatus).toBeTruthy();
+    expect(component.loadPlayer).toHaveBeenCalled();
   });
   it('should handle youtube content when online and isYoutubeContent is false', () => {
     const connectionService = TestBed.get(ConnectionService);

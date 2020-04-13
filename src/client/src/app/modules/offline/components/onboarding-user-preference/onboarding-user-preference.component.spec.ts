@@ -154,6 +154,7 @@ describe('OnboardingUserPreferenceComponent', () => {
     spyOn(component.userPreferenceSaved, 'emit');
     component.getUserData();
     expect(component.userPreferenceSaved.emit).toHaveBeenCalledWith('SUCCESS');
+    expect(component.onboardingService.getUser).toHaveBeenCalled();
   });
 
   it('should call getUserData, get error and emit event', () => {
