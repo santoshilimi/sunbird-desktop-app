@@ -172,7 +172,13 @@ ol.ui.list ol {
 /* language selector */
 .sb-offline-language-selector {
   .ui.dropdown>.dropdown.icon {
+    font-size: 1.2em;
     margin: 0 0 0 0.5em;
+    &:before {
+      content: "\f0d7";
+      position: relative;
+      bottom: 0px;
+  }
     html[dir="rtl"] & {
         margin: 0 0.5em 0 0;
     }
