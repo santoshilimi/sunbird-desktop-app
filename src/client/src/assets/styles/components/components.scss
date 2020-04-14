@@ -6,7 +6,7 @@
 @import "./certificate";
 @import "./checkbox";
 @import "./collection-tree";
-@import "./cbse";
+// @import "./cbse";
 @import "./dropdowns";
 @import "./filters";
 @import "./form";
@@ -36,4 +36,6 @@
 @import "./toolbar";
 @import "./topic-picker";
 @import "./bulk-upload";
-@import "./certificate-trained";
+// @import "./certificate-trained";
+@import "variables";
+@import "./mixins/mixins";
