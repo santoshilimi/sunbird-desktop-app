@@ -2,31 +2,6 @@
 @import "mixins/mixins";
 @import "components/video";
 
-// .content-video {
-//   &__player {
-//     &__details,
-//     &__tools {
-//       display: flex;
-//     }
-//     &__details {
-//       align-items: center;
-//       height: 64px;
-//       padding: 8px;
-//     }
-//     &__title {
-//       font-weight: bold;
-//       color: var(--primary-400);
-//       font-size: $font-size-md;
-//     }
-//   }
-//   &__content {
-//     padding-right: 8px;
-//     margin-right: -8px;
-//     padding-bottom: 8px;
-//   }
-// }
-
-
 // sb card css
 .sbcard {
   width: 100%;

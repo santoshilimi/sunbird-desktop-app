@@ -109,6 +109,7 @@
       .sb-menubar {
         width: 100%;
         z-index: 3;
+        min-height: calculateRem(48px);
         
         .sb-btn-load{
           span{
