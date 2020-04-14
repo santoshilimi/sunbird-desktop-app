@@ -39,7 +39,21 @@
       border-right-width: 0px;
       padding: calculateRem(4px) calculateRem(32px) calculateRem(4px) calculateRem(8px);
       border-radius: calculateRem(4px) 0px 0px calculateRem(4px);
-
+      
+      &::-webkit-input-placeholder { /* Edge */
+        color: var(--gray-400);
+        font-size: calculateRem(10px);
+      }
+      
+      &:-ms-input-placeholder { /* Internet Explorer */
+        color: var(--gray-400);
+        font-size: calculateRem(10px);
+      }
+      
+      &::placeholder {
+        color: var(--gray-400);
+        font-size: calculateRem(10px);
+      }
       //@debug@include bidi-style(padding-right,32px,padding-left,8px);
       html[dir="rtl"] & {
         padding: calculateRem(4px) calculateRem(8px) calculateRem(4px) calculateRem(32px);
