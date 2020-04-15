@@ -42,7 +42,7 @@ class="sb-modal" appBodyScroll (dismissed)="showModal = !showModal;" #modal>
   {{resourceService.frmelmnts?.btn?.download}}
 </div>
 <div class="sb-modal-content">
-  {{resourceService?.messages?.stmsg?.m0137}}
+  <p>{{resourceService?.messages?.stmsg?.m0137}}</p>
 </div>
 <div class="sb-modal-actions">
   <button  class="sb-btn sb-btn-normal sb-btn-primary"
@@ -62,7 +62,7 @@ class="sb-modal" appBodyScroll (dismissed)="showDeleteModal = !showDeleteModal;"
   {{resourceService?.frmelmnts?.lbl?.delete}}
 </div>
 <div class="sb-modal-content">
-  {{resourceService?.frmelmnts?.lbl?.desktop?.deleteCollection | interpolate:'{name}': collectionData?.name}}
+  <p>{{resourceService?.frmelmnts?.lbl?.desktop?.deleteCollection | interpolate:'{name}': collectionData?.name}}</p>
 </div>
 <div class="sb-modal-actions">
   <button class="sb-btn sb-btn-normal sb-btn-primary"
