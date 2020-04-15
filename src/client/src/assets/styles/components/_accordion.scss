@@ -26,7 +26,7 @@
   margin-left: auto;
   max-width: $base-block-space * 60;
   margin-right: calculateRem(32px);
-  z-index:999;
+  z-index:99999;
   position: fixed;
   right: calculateRem(32px);
 }
