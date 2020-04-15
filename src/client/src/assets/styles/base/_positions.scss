@@ -31,9 +31,8 @@
 }
 
 .sb-sticky-bottom,
-.sb-sticky-top {
+.sb-sticky-top, .sb-sticky-right-panel {
   position: sticky;
-  z-index: 999;
 }
 .sb-sticky-bottom {
   bottom: 0;
@@ -41,9 +40,24 @@
 .sb-sticky-top {
   top: 0;
 }
+.sb-sticky-right-panel {
+  top: calculateRem(113px) !important;
+}
 .zindex-1 {
-  z-index: 1;
+  z-index: 1 !important;
 }
 .zindex-2 {
-  z-index: 2;
+  z-index: 2 !important;
+}
+.zindex-99 {
+  z-index: 99 !important;
+}
+.zindex-999 {
+  z-index: 999 !important;
+}
+.zindex-9999 {
+  z-index: 9999 !important;
+}
+.zindex-99999 {
+  z-index: 99999 !important;
 }
