@@ -75,7 +75,7 @@
         {{resourceService.frmelmnts?.btn?.download}}
       </div>
       <div class="sb-modal-content">
-        {{resourceService?.messages?.stmsg?.m0137 }}
+        <p>{{resourceService?.messages?.stmsg?.m0137 }}</p>
       </div>
       <div class="sb-modal-actions">
         <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="callDownload(); showModal = !showModal; logTelemetry(contentData, 'confirm-download-content');">
