@@ -3,7 +3,7 @@
     <div class="content-video__player__title ellipsis text-left">
       {{contentData?.name}}
     </div>
-    <div class="content-video__player__title__subtitle sb__ellipsis fxsmall mt-4 text-left">
+    <div class="content-video__player__title__subtitle sb__ellipsis fsmall mt-4 text-left">
       <span class="mr-8" *ngIf="contentData?.board">{{resourceService?.frmelmnts?.lbl?.desktop?.board | interpolate:'{board}': contentData?.board}}</span>
       <span class="dot-divider" *ngIf="contentData?.me_averageRating"></span>
       <span class="mr-8" *ngIf="contentData?.me_averageRating">{{contentData?.me_averageRating || '0'}}</span>
@@ -25,7 +25,7 @@ class="sb-modal" appBodyScroll (dismissed)="showModal = !showModal;" #modal>
   {{resourceService.frmelmnts?.btn?.download}}
 </div>
 <div class="sb-modal-content">
-  {{resourceService?.messages?.stmsg?.m0137 }}
+  <p>{{resourceService?.messages?.stmsg?.m0137 }}</p>
 </div>
 <div class="sb-modal-actions">
   <button  class="sb-btn sb-btn-normal sb-btn-primary"
@@ -45,7 +45,7 @@ class="sb-modal" appBodyScroll (dismissed)="showDeleteModal = !showDeleteModal;"
   {{resourceService?.frmelmnts?.lbl?.delete}}
 </div>
   <div class="sb-modal-content">
-    {{resourceService?.frmelmnts?.lbl?.desktop?.deleteContent | interpolate:'{name}': contentData?.name}}
+    <p>{{resourceService?.frmelmnts?.lbl?.desktop?.deleteContent | interpolate:'{name}': contentData?.name}}</p>
   </div>
   <div class="sb-modal-actions">
   <button class="sb-btn sb-btn-normal sb-btn-primary"

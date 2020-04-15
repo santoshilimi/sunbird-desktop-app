@@ -65,7 +65,11 @@ $sb-modal-corner-radius: $base-block-space;
       flex-direction: row-reverse;
       align-items: center;
       .sb-btn + .sb-btn {
-        @include margin(0 $base-block-space 0 0);
+        margin-right:calculateRem(8px);
+        html[dir="rtl"] & {
+          margin-right:inherit;
+          margin-left:calculateRem(8px);
+        }
       }
     }
     .small {
