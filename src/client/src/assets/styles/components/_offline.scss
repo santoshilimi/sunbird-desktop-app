@@ -1,33 +1,33 @@
-.offline-page-content {
-  height: 100%;
+// .offline-page-content {
+//   height: 100%;
 
-  .desktop-icon{
-    width:100%;
-    max-width: calculateRem(300px);
- }
-}
-// === offline-application-download scss === //
-.offline-download-card {
-  background-color: var(--white);
-  box-shadow: 0 calculateRem(10px) calculateRem(10px) 0 rgba(0, 0, 0, 0.1);
-  padding: calculateRem(40px);
-}
+//   .desktop-icon{
+//     width:100%;
+//     max-width: calculateRem(300px);
+//  }
+// }
+// // === offline-application-download scss === //
+// .offline-download-card {
+//   background-color: var(--white);
+//   box-shadow: 0 calculateRem(10px) calculateRem(10px) 0 rgba(0, 0, 0, 0.1);
+//   padding: calculateRem(40px);
+// }
 
-.offline-download-card-heading {
-  color: $primary-color;
-  font-size: calculateRem(18px);
-  font-weight: bold;
-}
+// .offline-download-card-heading {
+//   color: $primary-color;
+//   font-size: calculateRem(18px);
+//   font-weight: bold;
+// }
 
-.offline-download-card-description {
-  font-size: calculateRem(14px);
-  color: var(--gray-800);
-}
+// .offline-download-card-description {
+//   font-size: calculateRem(14px);
+//   color: var(--gray-800);
+// }
 
-.offline-download-card-extra {
-  color: $primary-color;
-  font-size: calculateRem(12px);
-}
+// .offline-download-card-extra {
+//   color: $primary-color;
+//   font-size: calculateRem(12px);
+// }
 
 // === offline-application-download end scss === //
 .offline-video {

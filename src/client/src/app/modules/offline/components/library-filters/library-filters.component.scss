@@ -13,7 +13,7 @@
   &__dropdown {
     padding: ($base-block-space * 2) 0;
     z-index: 1;
-    max-width: calculateRem(210px);
+    min-width: calculateRem(232px);
   }
 
   &__separator {
@@ -63,6 +63,7 @@
   display: flex;
   align-items: center;
   border: calculateRem(1px) solid var(--primary-400);
+  padding-right:calculateRem(32px);
   &.active {
     background: #E5EDF5 !important;
     color: var(--primary-400) !important;
