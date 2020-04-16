@@ -1,6 +1,6 @@
 .ui.grid > .column:not(.row) {
-  padding-top: 16px;
-  padding-bottom: 16px;
+  padding-top: calculateRem(16px);
+  padding-bottom: calculateRem(16px);
 }
 
 button,
@@ -86,8 +86,8 @@ input[type=number]::-webkit-outer-spin-button {
 
 @include respond-below(sm) {
   .ui.container {
-    margin: 0 8px !important;
-    padding-left: 16px !important;
-    padding-right: 16px !important;
+    margin: 0 calculateRem(8px) !important;
+    padding-left: calculateRem(16px) !important;
+    padding-right: calculateRem(16px) !important;
   }
 }

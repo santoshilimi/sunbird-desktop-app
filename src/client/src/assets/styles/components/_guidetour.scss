@@ -1,3 +1,5 @@
+@import '../../../../node_modules/common-consumption-styles/assets/styles';
+
 #shepherdModalOverlayContainer {
     background-color: transparent;
 }
@@ -11,7 +13,7 @@
 
 .shepherd-element .shepherd-content {
     background-color: $gray-800;
-    padding: 16px;
+    padding: calculateRem(16px);
     // max-width:454px;
     //width:454px;
 }
