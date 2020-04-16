@@ -9,7 +9,7 @@ import { SharedModule, ResourceService, UtilService, NavigationHelperService } f
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CoreModule, OrgDetailsService, SearchService } from '@sunbird/core';
 import { of, throwError } from 'rxjs';
-import { filters, searchRequest, visitsEvent, onlineSearchRequest } from './search.component.data.spec';
+import { visitsEvent, dialCodeResponse } from './search.component.data.spec';
 
 describe('SearchComponent', () => {
   let component: SearchComponent;
@@ -157,6 +157,47 @@ describe('SearchComponent', () => {
     medium: ['English'], gradeLevel: ['Class 8']}, mode: 'soft'}, false);
     expect(component.addMode).toHaveBeenCalled();
     expect(component.searchService.contentSearch).toHaveBeenCalled();
+  });
+
+  it('should call searchDialCode', () => {
+    component.params.dialCode = 'x8j8m4';
+    component.isConnected = false;
+    spyOn(component, 'searchDialContents').and.returnValue(of (undefined));
+    const data = component.searchContent({}, true);
+    data.subscribe(contents => {
+      expect(contents).toBeUndefined();
+    });
+    expect(component.searchDialContents).toHaveBeenCalledWith({}, true);
+  });
+
+  it('should call searchDialCode', () => {
+    component.params.dialCode = 'x8j8m4';
+    component.isConnected = false;
+    spyOn(component, 'searchDialContents').and.returnValue(of (dialCodeResponse));
+    const data = component.searchContent({
+      params: {online: true},
+      filters: {
+        dialCodes: 'x8j8m4',
+      }
+    }, true);
+    data.subscribe(contents => {
+      expect(contents).toEqual(dialCodeResponse);
+    });
+    expect(component.searchDialContents).toHaveBeenCalledWith({params: {online: true},
+      filters: {
+        dialCodes: 'x8j8m4',
+      }}, true);
+  });
+
+  it('should not call searchDialCode', () => {
+    component.params.dialCode = undefined;
+    component.isConnected = false;
+    spyOn(component, 'searchDialContents');
+    const data = component.searchContent({}, true);
+    data.subscribe(contents => {
+      expect(contents).toBeUndefined();
+    });
+    expect(component.searchDialContents).not.toHaveBeenCalled();
   });
 
 });
