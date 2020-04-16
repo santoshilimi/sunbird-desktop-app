@@ -268,6 +268,32 @@ export class SearchService {
     }
     return this.publicDataService.post(option);
   }
+
+
+  dialContentSearch(requestParam, userProfile) {
+    const option = {
+      url: this.config.urlConFig.URLS.OFFLINE.DIAL_SEARCH,
+      param: { ...requestParam.params },
+      data: {
+        request: {
+          source: 'app',
+          name: 'DIAL Code Consumption',
+          filters: requestParam.filters,
+          userProfile: userProfile,
+          sort_by: {
+            'createdOn': 'desc'
+          }
+        }
+      }
+    };
+    if (_.get(option, 'data.request.filters')) {
+      option.data.request.filters.contentType = [
+        'TextBook',
+        'TextBookUnit'
+      ];
+    }
+    return this.publicDataService.post(option);
+  }
   /**
   * Batch Search.
   *
