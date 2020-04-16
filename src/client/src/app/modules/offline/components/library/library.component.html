@@ -59,7 +59,7 @@
                     </div>
                 </div>
                 <div class="three wide column p-0 pl-16">
-                    <div class="sb-sticky-top zindex-1">
+                    <div class="sb-sticky-right-panel">
                         <app-connection-status></app-connection-status>
                         <app-info-card [text]="infoData" [showMinRamWarning]="showMinimumRAMWarning" [showCpuLoadWarning]="showCpuLoadWarning"(navigate)="navigateToMyDownloads()"></app-info-card>
                     </div>
@@ -75,7 +75,7 @@
         {{resourceService.frmelmnts?.btn?.download}}
       </div>
       <div class="sb-modal-content">
-        {{resourceService?.messages?.stmsg?.m0137 }}
+        <p>{{resourceService?.messages?.stmsg?.m0137 }}</p>
       </div>
       <div class="sb-modal-actions">
         <button class="sb-btn sb-btn-normal sb-btn-primary" (click)="callDownload(); showModal = !showModal; logTelemetry(contentData, 'confirm-download-content');">

@@ -280,10 +280,10 @@ app-card[lang="ur"] {
 // Batch Card
 
 .ui.card.sb-batch-card {
-  border: 1px solid $primary-200;
+  border: calculateRem(1px) solid $primary-200;
   box-shadow: none;
   .item {
-    padding: 10px 0;
+    padding: calculateRem(10px) 0;
     .content > .header {
       padding-bottom: calculateRem(5px);
     }
@@ -304,7 +304,7 @@ app-card[lang="ur"] {
 }
 .sb-no-batch-found {
   background-color: $tertiary-0;
-  border: 1px solid $tertiary-100;
+  border: calculateRem(1px) solid $tertiary-100;
   padding: ($base-block-space $base-block-space * 2);
   border-radius: calculateRem(4px);
   font-size: calculateRem(12px);
