@@ -223,15 +223,31 @@ export class ContentManagerService {
       const info = await this.systemInfoService.getSystemInfo().toPromise();
       // Check if the system is Windows and it has multiple drives
       if (_.get(info, 'result.platform') === 'win32' && _.get(info, 'result.drives.length') !== 1) {
-        popupInfo.isWindows = true;
-        popupInfo.contentBasePath = info.result.contentBasePath;
         const getAvailableSpace = (drive: any) => drive.size - drive.used;
         const suggestedDrive = info.result.drives.reduce((prev, current) => {
           return (getAvailableSpace(prev) > getAvailableSpace(current)) ? prev : current;
         });
 
         if (suggestedDrive) {
-          popupInfo.suggestedDrive = suggestedDrive.fs;
+          popupInfo.isWindows = true;
+          popupInfo.drives = info.result.drives.map((item) => {
+            return {
+              label: item.fs === suggestedDrive.fs ? `${item.fs} (${this.resourceService.frmelmnts.lbl.currentLocation})` : item.fs ,
+              name: item.fs,
+              isRecommended: item.fs === suggestedDrive.fs,
+              isCurrentContentLocation: info.result.contentBasePath.startsWith(item.fs)
+            };
+          });
+
+          popupInfo.drives.forEach(element => {
+            if (element.isCurrentContentLocation) {
+              element.label = `${element.name}&nbsp;&nbsp;(${this.resourceService.frmelmnts.lbl.currentLocation})`;
+            } else if (element.isRecommended) {
+              element.label = `${element.name}&nbsp;&nbsp;(${this.resourceService.frmelmnts.lbl.recommended})`;
+            } else {
+              element.label = element.name;
+            }
+          });
         }
       }
       return popupInfo;

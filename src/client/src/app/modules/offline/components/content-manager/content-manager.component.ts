@@ -30,6 +30,7 @@ export class ContentManagerComponent implements OnInit, OnDestroy {
   deletedContents: string [] = [];
   isWindows: boolean;
   suggestedDrive: string;
+  drives: [];
 
   constructor(public contentManagerService: ContentManagerService,
     public resourceService: ResourceService, public toasterService: ToasterService,
@@ -66,7 +67,11 @@ export class ContentManagerComponent implements OnInit, OnDestroy {
       .subscribe(popupInfo => {
         this.unHandledFailedList.push({name: popupInfo.failedContentName});
         this.isWindows = popupInfo.isWindows;
-        this.suggestedDrive = popupInfo.suggestedDrive;
+
+        if (popupInfo.isWindows && popupInfo.drives) {
+          this.drives = popupInfo.drives;
+        }
+
       });
   }
 
@@ -120,43 +125,49 @@ export class ContentManagerComponent implements OnInit, OnDestroy {
     const noSpaceContentList = _.filter(allContentList, (content) =>
       content.failedCode === 'LOW_DISK_SPACE' && content.status === 'failed');
 
-    const popupInfo = {
-      failedContentName: _.differenceBy(noSpaceContentList, this.handledFailedList, 'id'),
-    };
+    if (noSpaceContentList.length) {
+      const popupInfo: any = {
+        failedContentName: _.differenceBy(noSpaceContentList, this.handledFailedList, 'id'),
+      };
 
-    try {
-      const response: any = await this.contentManagerService.getSuggestedDrive(popupInfo);
-      this.unHandledFailedList = response.failedContentName;
-      this.isWindows = response.isWindows;
-      this.suggestedDrive = response.suggestedDrive;
-    } catch (error) {
-      this.unHandledFailedList = popupInfo.failedContentName;
+      try {
+        const response: any = await this.contentManagerService.getSuggestedDrive(popupInfo);
+        this.unHandledFailedList = response.failedContentName;
+        this.isWindows = response.isWindows;
+
+        if (response.isWindows && response.drives) {
+          popupInfo.drives = response.drives;
+        }
+      } catch (error) {
+        this.unHandledFailedList = popupInfo.failedContentName;
+      }
     }
-
   }
+
   removeFromHandledFailedList(id) {
     this.handledFailedList = _.filter(this.handledFailedList, (content) => content.id !== id);
   }
-  closeModal() {
+
+  closeModal(event: any) {
     this.handledFailedList.push(...this.unHandledFailedList);
     this.unHandledFailedList = [];
+    this.isWindows = false;
 
-    if (this.isWindows) {
-      this.electronDialogService.showContentLocationChangePopup().subscribe((data: any) => {
-        const req = {
-          request: {
-            path: data.destFolder
-          }
-        };
-        this.contentManagerService.changeContentLocation(req).subscribe(response => { }, error => {
-          this.toasterService.error(this.resourceService.messages.fmsg.m0097);
-        });
-        console.log('New Content Location', data);
+    if (event.selectedDrive) {
+      const req = {
+        request: {
+          path: event.selectedDrive.name
+        }
+      };
+
+      this.contentManagerService.changeContentLocation(req).subscribe(response => {
+        this.toasterService.success(this.resourceService.messages.stmsg.contentLocationChanged);
       }, error => {
-        console.error('Error while getting location');
+        this.toasterService.error(this.resourceService.messages.fmsg.m0097);
       });
     }
   }
+
   contentManagerActions(type: string, action: string, id: string) {
     // Unique download/import Id
     switch (`${action.toUpperCase()}_${type.toUpperCase()}`) {
