@@ -42,7 +42,7 @@
   [isClosable]="true"
   [transitionDuration]="0"
   [size]="'large'"
-  class="sb-modal"
+  class="sb-modal sb-modal-termsuse"
   *ngIf="showModal"
   (dismissed)="showModal = !showModal;"
   #modal 
@@ -61,7 +61,7 @@
       <app-loader  [data]='loaderMessage'></app-loader>
     </div>
     <form class="ui form d-flex flex-jc-center">
-      <iframe id="tocIframe" #termsIframe src="/api/app/v1/terms_of_use"  (load)="isIFrameLoaded()" width="100%" height="600px"  frameborder="0"></iframe>
+      <iframe id="tocIframe" #termsIframe src="/api/app/v1/terms_of_use"  (load)="isIFrameLoaded()" frameborder="0" height="850" width="100%"></iframe>
     </form>
     <div>
     </div>
