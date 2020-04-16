@@ -41,11 +41,7 @@ body {
     }
   }
 }
-@include respond-below(sm) {
- .download-mobile-app .download-mobile-app-logo{
-    min-height: calculateRem(116px);
-  }
-}
+
 .sb-offline {
   padding-bottom: 0px;
 }
@@ -82,11 +78,6 @@ body {
       border-left: calculateRem(1px) solid rgba(51, 51, 51, 0.1);
     }
   }
-  @include respond-above(sm) {
-    .download-mobile-app .download-mobile-app-logo{
-      min-height: calculateRem(168px);
-      }
-    }
 }
 [dir="ltr"] {
   .sb-explore-qr-container {
@@ -101,7 +92,7 @@ body {
     color: $sb-label-status-error-color;
     font-size: calculateRem(11px);
   }
-
+ 
   .sb-label-12size {
     font-size: calculateRem(11px);
   }
