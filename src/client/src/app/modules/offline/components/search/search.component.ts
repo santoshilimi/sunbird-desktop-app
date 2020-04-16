@@ -144,8 +144,6 @@ export class SearchComponent implements OnInit, OnDestroy {
           this.showLoader = false;
 
           if (this.params.dialCode) {
-            const onlineOption = { params: { online: true } };
-            const offlineOption = { params: { online: false } };
             const { constantData, metaData, dynamicFields } = this.configService.appConfig.GetPage;
             const getDataForCard = (contents) => this.utilService.getDataForCard(contents, constantData, dynamicFields, metaData);
 
