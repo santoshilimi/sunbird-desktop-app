@@ -287,10 +287,7 @@ export class SearchService {
       }
     };
     if (_.get(option, 'data.request.filters')) {
-      option.data.request.filters.contentType = [
-        'TextBook',
-        'TextBookUnit'
-      ];
+      option.data.request.filters.contentType = [ 'TextBook', 'TextBookUnit' ];
     }
     return this.publicDataService.post(option);
   }
