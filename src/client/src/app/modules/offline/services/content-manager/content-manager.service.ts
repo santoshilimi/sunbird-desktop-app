@@ -2,7 +2,7 @@ import { ElectronDialogService } from './../electron-dialog/electron-dialog.serv
 import { Injectable, EventEmitter } from '@angular/core';
 import { ConfigService, ToasterService, ResourceService } from '@sunbird/shared';
 import { PublicDataService } from '@sunbird/core';
-import { throwError as observableThrowError, BehaviorSubject, Observable } from 'rxjs';
+import { throwError as observableThrowError, BehaviorSubject } from 'rxjs';
 import { catchError, map, mergeMap, tap } from 'rxjs/operators';
 import * as _ from 'lodash-es';
 import { SystemInfoService } from '../system-info/system-info.service';
@@ -24,8 +24,8 @@ export class ContentManagerService {
   deletedContentIds = [];
   constructor(private configService: ConfigService, private publicDataService: PublicDataService,
     public toasterService: ToasterService, public resourceService: ResourceService,
-    private electronDialogService: ElectronDialogService,
-    private systemInfoService: SystemInfoService
+    public electronDialogService: ElectronDialogService,
+    public systemInfoService: SystemInfoService
   ) { }
 
   updateContentDownloadStatus(contentDownloadList) {

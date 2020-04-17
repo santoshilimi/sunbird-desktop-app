@@ -8,6 +8,7 @@ import { PublicDataService } from '@sunbird/core';
 import { ContentManagerService } from './content-manager.service';
 import { of as observableOf, throwError } from 'rxjs';
 import { SystemInfoService } from '../system-info/system-info.service';
+import { ElectronDialogService } from '../electron-dialog/electron-dialog.service';
 
 
 describe('ContentManagerService', () => {
@@ -26,7 +27,7 @@ describe('ContentManagerService', () => {
   };
   beforeEach(() => TestBed.configureTestingModule({
     imports: [HttpClientTestingModule],
-    providers: [ConfigService, ToasterService, ContentManagerService,
+    providers: [ConfigService, ToasterService, ContentManagerService, ElectronDialogService,
       PublicDataService, CacheService, BrowserCacheTtlService, { provide: ResourceService, useValue: resourceMockData }]
   }));
 
@@ -38,6 +39,7 @@ describe('ContentManagerService', () => {
     spyOn(publicDataService, 'post').and.callFake(() => observableOf(response.downloadListStatus));
     const apiRes = service.getContentList();
     expect(publicDataService.post).toHaveBeenCalled();
+    expect(service.downloadFailEvent).toBeDefined();
   });
 
   it('should make download API call', () => {
