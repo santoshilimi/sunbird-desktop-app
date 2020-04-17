@@ -9,7 +9,8 @@
       }
     }
     .border {
-      border-bottom: calculateRem(1px) solid var(--primary-400);
+      border: 0px;
+    border-bottom: 0.0625rem solid var(--primary-400);
     }
     .no-search-text{
       font-size: 1.125rem;
