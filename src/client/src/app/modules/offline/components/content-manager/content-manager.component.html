@@ -10,7 +10,7 @@
     </div>
 
     <div content *ngIf="contentResponse">
-      <div class="sb-single-pannel-accordion-list-item flex-ai-center"
+      <div class="sb-single-pannel-accordion-list-item flex-ai-center text-left"
         *ngFor="let data of contentResponse | orderBy:'createdOn': true">
         <i class="check circle icon success-icon mr-8 fs-1-429" *ngIf="data.status === 'completed'"></i>
         <div class="download-details-container" [ngClass]="{'cursor-pointer': data.status === 'completed'}"
