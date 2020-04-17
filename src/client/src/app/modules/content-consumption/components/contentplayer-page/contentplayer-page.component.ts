@@ -44,6 +44,8 @@ export class ContentPlayerPageComponent implements OnInit, OnDestroy, OnChanges 
   ) { }
 
   ngOnInit() {
+    const dialUrl = this.navigationHelperService.history[this.navigationHelperService.history.length - 2];
+    this.dialCode = !_.isEmpty(_.get(dialUrl, 'url')) ? _.get(dialUrl, 'url').substr((_.get(dialUrl, 'url').indexOf('dial/') + 5)) : '';
     this.utilService.emitHideHeaderTabsEvent(true);
     this.contentType = this.activatedRoute.snapshot.queryParams.contentType;
     this.getContentIdFromRoute();
