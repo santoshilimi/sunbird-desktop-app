@@ -1,12 +1,12 @@
 import { ConnectionService } from '@sunbird/offline';
 import { Component, OnInit, OnDestroy, OnChanges, Input, EventEmitter, Output } from '@angular/core';
-import { ActivatedRoute, Router, NavigationStart, NavigationEnd } from '@angular/router';
+import { ActivatedRoute, Router, NavigationStart } from '@angular/router';
 import { PublicPlayerService } from '@sunbird/public';
 import {
-  ConfigService, NavigationHelperService, PlayerConfig, ContentData, ToasterService, ResourceService, UtilService
+  ConfigService, NavigationHelperService, ToasterService, ResourceService, UtilService
 } from '@sunbird/shared';
 import { Subject } from 'rxjs';
-import { takeUntil, filter, map } from 'rxjs/operators';
+import { takeUntil, filter } from 'rxjs/operators';
 import * as _ from 'lodash-es';
 import { IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 
@@ -44,6 +44,9 @@ export class ContentPlayerPageComponent implements OnInit, OnDestroy, OnChanges 
   ) { }
 
   ngOnInit() {
+    const dialUrl = this.navigationHelperService.history[this.navigationHelperService.history.length - 2];
+    this.dialCode = !_.isEmpty(_.get(dialUrl, 'url')) &&
+    _.includes(_.get(dialUrl, 'url'), 'dial') ? _.get(dialUrl, 'url').substr((_.get(dialUrl, 'url').indexOf('dial/') + 5)) : '';
     this.utilService.emitHideHeaderTabsEvent(true);
     this.contentType = this.activatedRoute.snapshot.queryParams.contentType;
     this.getContentIdFromRoute();
@@ -100,6 +103,7 @@ export class ContentPlayerPageComponent implements OnInit, OnDestroy, OnChanges 
         this.getContentConfigDetails(this.contentId, options);
         this.setTelemetryData();
       }, error => {
+        this.contentDetails = {};
         this.isContentDeleted.next({value: true});
         this.setTelemetryData();
       });

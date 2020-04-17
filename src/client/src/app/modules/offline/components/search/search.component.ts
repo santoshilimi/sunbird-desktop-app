@@ -144,42 +144,31 @@ export class SearchComponent implements OnInit, OnDestroy {
           this.showLoader = false;
 
           if (this.params.dialCode) {
-            const onlineOption = { params: { online: true } };
-            const offlineOption = { params: { online: false } };
+            const { constantData, metaData, dynamicFields } = this.configService.appConfig.GetPage;
+            const getDataForCard = (contents) => this.utilService.getDataForCard(contents, constantData, dynamicFields, metaData);
 
-            combineLatest(this.dialCodeService.filterDialSearchResults(_.get(onlineRes, 'result'), onlineOption),
-              this.dialCodeService.filterDialSearchResults(_.get(offlineRes, 'result'), offlineOption))
-              .pipe(takeUntil(this.unsubscribe$))
-              .subscribe(([onlineDialCodeRes, offlineDialCodeRes]) => {
-
-                const { constantData, metaData, dynamicFields } = this.configService.appConfig.GetPage;
-                const getDataForCard = (contents) => this.utilService.getDataForCard(contents, constantData, dynamicFields, metaData);
-
-                if (onlineDialCodeRes) {
-                  const linkedContents = _.flatMap(_.values(onlineDialCodeRes));
-                  let contents = getDataForCard(linkedContents);
-                  contents = _.uniqBy(contents, 'identifier');
-                  this.onlineContentsCount = contents.length;
-                  _.forEach(contents, content => {
-                    if (this.contentDownloadStatus[content.identifier]) {
-                        content['downloadStatus'] = this.contentDownloadStatus[content.identifier];
-                    }
-                 });
-                  this.onlineContents = this.utilService.addHoverData(contents, true);
-                }
-                if (offlineDialCodeRes) {
-                  const linkedContents = _.flatMap(_.values(offlineDialCodeRes));
-                  let contents = getDataForCard(linkedContents);
-                  _.forEach(contents, content => {
-                    if (this.contentDownloadStatus[content.identifier]) {
-                        content['downloadStatus'] = this.contentDownloadStatus[content.identifier];
-                    }
-                 });
-                  contents = _.uniqBy(contents, 'identifier');
-                  this.downloadedContentsCount = contents.length;
-                  this.downloadedContents = this.utilService.addHoverData(contents, false);
+            if (onlineRes) {
+              let contents = _.get(onlineRes, 'result.response.sections[0].contents');
+              contents = getDataForCard(contents);
+              _.forEach(contents, content => {
+                if (this.contentDownloadStatus[content.identifier]) {
+                    content['downloadStatus'] = this.contentDownloadStatus[content.identifier];
                 }
               });
+              this.onlineContents = this.utilService.addHoverData(contents, true);
+              this.onlineContentsCount = this.onlineContents.length;
+              }
+            if (offlineRes) {
+              let contents = _.get(offlineRes, 'result.response.sections[0].contents');
+              contents = getDataForCard(contents);
+              _.forEach(contents, content => {
+                if (this.contentDownloadStatus[content.identifier]) {
+                    content['downloadStatus'] = this.contentDownloadStatus[content.identifier];
+                }
+             });
+              this.downloadedContents = this.utilService.addHoverData(contents, false);
+              this.downloadedContentsCount = this.downloadedContents.length;
+            }
           } else {
             const { constantData, metaData, dynamicFields } = this.configService.appConfig.LibrarySearch;
             const getDataForCard = (contents) => this.utilService.getDataForCard(contents, constantData, dynamicFields, metaData);
@@ -281,15 +270,34 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   searchContent(request, isOnlineRequest: boolean) {
-    if (!this.isConnected && isOnlineRequest) {
+
+    if (this.params.dialCode) {
+      return this.searchDialContents(request, isOnlineRequest);
+    } else {
+      if (!this.isConnected && isOnlineRequest) {
+        return of(undefined);
+      }
+      request = !this.params.dialCode ? this.addMode(request) : request;
+      return this.searchService.contentSearch(request, !Boolean(this.params.dialCode)).pipe(
+        tap(data => {
+        }), catchError(error => {
+          return of(undefined);
+        }));
+    }
+
+  }
+
+  searchDialContents(request, online: boolean) {
+    if (!this.isConnected && online) {
       return of(undefined);
     }
-    request = !this.params.dialCode ? this.addMode(request) : request;
-    return this.searchService.contentSearch(request, !Boolean(this.params.dialCode)).pipe(
+    const userData =  _.pick(this.userService.userSelectedFilters, 'board');
+    return this.searchService.dialContentSearch(request, userData).pipe(
       tap(data => {
       }), catchError(error => {
         return of(undefined);
       }));
+
   }
 
   goBack() {

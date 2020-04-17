@@ -2,7 +2,7 @@ import { of } from 'rxjs';
 import { collectionData } from './toc-page.component.spec.data';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { SharedModule } from '@sunbird/shared';
+import { SharedModule, NavigationHelperService } from '@sunbird/shared';
 import { TelemetryModule } from '@sunbird/telemetry';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TocPageComponent } from './toc-page.component';
@@ -91,6 +91,20 @@ describe('TocPageComponent', () => {
   it('should call sortChildrenWithIndex', () => {
     const returnValue = component.sortChildrenWithIndex(collectionData.unOrderedTocData);
     expect(returnValue).toEqual(collectionData.orderedTocData);
+  });
+
+  it('should assign dialcode', () => {
+    const navigationHelperService = TestBed.get(NavigationHelperService);
+    navigationHelperService['_history'] = [ {url: '/browse'}, {url: 'dial/123d4'}, {url: 'play/collection'}];
+    component.ngOnInit();
+    expect(component.dialCode).toEqual('123d4');
+  });
+
+  it('should not assign dialcode', () => {
+    const navigationHelperService = TestBed.get(NavigationHelperService);
+    navigationHelperService['_history'] = [ {url: '/browse'}, {url: 'search/key?con'}, {url: 'play/collection'}];
+    component.ngOnInit();
+    expect(component.dialCode).toEqual('');
   });
 
 });
