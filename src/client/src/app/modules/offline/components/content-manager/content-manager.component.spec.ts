@@ -19,7 +19,6 @@ describe('ContentManagerComponent', () => {
   let fixture: ComponentFixture<ContentManagerComponent>;
   let connectionService: ConnectionService;
   let contentManagerService: ContentManagerService;
-  let electronDialogService: ElectronDialogService;
 
   const resourceMockData = {
     frmelmnts: {
@@ -284,7 +283,7 @@ describe('ContentManagerComponent', () => {
     spyOn(contentManagerService, 'getSuggestedDrive').and.returnValue(response.popupInfo);
     component.handledFailedList = response.previousList;
     component.handleInsufficientMemoryError(response.allContentList);
-    expect(component.unHandledFailedList).toBeTruthy()
+    expect(component.unHandledFailedList).toBeTruthy();
   });
   it('should call handleInsufficientMemoryError and no contents to show in pop up when difference is empty ', () => {
     component.unHandledFailedList = [];
