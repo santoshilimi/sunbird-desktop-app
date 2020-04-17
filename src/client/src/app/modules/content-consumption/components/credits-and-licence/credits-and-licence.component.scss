@@ -4,7 +4,7 @@
 ::ng-deep{
   .sb-toc-credits {
     .sbaccordion__panel {
-      box-shadow: none;
+      box-shadow: none !important;
     }
     .sbaccordion__panel-header {
       background:var(--gray-0) !important;
@@ -22,6 +22,7 @@
 
 .credits-section {
   padding: calculateRem(16px);
+  background: #E5EDF5;
   .title {
     color: var(--gray-400);
     font-size: calculateRem(12px);
