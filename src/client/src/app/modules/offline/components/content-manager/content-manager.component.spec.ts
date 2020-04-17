@@ -26,8 +26,10 @@ describe('ContentManagerComponent', () => {
       lbl: {
         noDownloads: 'No Downloads Available'
       }
-    }, messages: {
-      fmsg: { m0097: 'Something went wrong' }
+    },
+    messages: {
+      fmsg: { m0097: 'Something went wrong' },
+      stmsg: { contentLocationChanged: 'Content location changed successfully, try to download content now.' }
     }
   };
 
@@ -38,7 +40,7 @@ describe('ContentManagerComponent', () => {
       declarations: [ContentManagerComponent],
       providers: [ContentManagerService, ConnectionService, TelemetryService, ToasterService, ElectronDialogService,
         { provide: TELEMETRY_PROVIDER, useValue: EkTelemetry }, { provide: ResourceService, useValue: resourceMockData }],
-        schemas: [NO_ERRORS_SCHEMA]
+      schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents();
   }));
@@ -266,54 +268,108 @@ describe('ContentManagerComponent', () => {
     expect(component.apiCallSubject.next).toHaveBeenCalled();
     expect(toasterService.error).toHaveBeenCalled();
   });
-  it('should call handleInsufficientMemoryError show failed contents in popup', () => {
+  it('should call handleInsufficientMemoryError show failed contents in popup', async(done) => {
+    const popupInfo = {
+      failedContentName: response.listToShow,
+      isWindows: true
+    };
+    contentManagerService = TestBed.get(ContentManagerService);
+    spyOn(contentManagerService, 'getSuggestedDrive').and.returnValue(popupInfo);
     component.handledFailedList = [];
     component.handleInsufficientMemoryError(response.allContentList);
-     expect(component.unHandledFailedList).toEqual(response.listToShow);
+    expect(component.unHandledFailedList).toBeTruthy();
+    done();
   });
   it('should call handleInsufficientMemoryError show failed contents in popup when difference is not empty', () => {
+    spyOn(contentManagerService, 'getSuggestedDrive').and.returnValue(response.popupInfo);
     component.handledFailedList = response.previousList;
     component.handleInsufficientMemoryError(response.allContentList);
-     expect(component.unHandledFailedList).toEqual(response.listToShowWithDifference);
+    expect(component.unHandledFailedList).toBeTruthy()
   });
   it('should call handleInsufficientMemoryError and no contents to show in pop up when difference is empty ', () => {
+    component.unHandledFailedList = [];
     component.handledFailedList = response.failedList;
     component.handleInsufficientMemoryError(response.allContentList);
-     expect(component.unHandledFailedList).toEqual([]);
+    expect(component.unHandledFailedList).toEqual([]);
   });
   it('should call handleInsufficientMemoryError and no contents to show in pop up when all contents list is empty', () => {
     component.handledFailedList = [];
     component.handleInsufficientMemoryError([]);
-     expect(component.unHandledFailedList).toEqual([]);
+    expect(component.unHandledFailedList).toEqual([]);
   });
   it('should call close modal ', () => {
     component.handledFailedList = response.failedList;
-    electronDialogService = TestBed.get(ElectronDialogService);
+    contentManagerService = TestBed.get(ContentManagerService);
+    const toasterService = TestBed.get(ToasterService);
     component.isWindows = true;
-    spyOn(electronDialogService, 'showContentLocationChangePopup');
-    component.closeModal();
+    spyOn(contentManagerService, 'changeContentLocation').and.returnValue(observableOf({}));
+    spyOn(toasterService, 'success').and.returnValue(resourceMockData.messages.stmsg.contentLocationChanged);
+    const event = {
+      selectedDrive: {
+        name: 'D:',
+        label: 'D: (Recommended)',
+        isRecommended: true,
+        isCurrentContentLocation: false
+      }
+    };
+
+    const req = {
+      request: {
+        path: event.selectedDrive.name
+      }
+    };
+    component.closeModal(event);
     expect(component.unHandledFailedList).toEqual([]);
-    expect(electronDialogService.showContentLocationChangePopup).toHaveBeenCalled();
+    expect(component.isWindows).toBe(false);
+    expect(contentManagerService.changeContentLocation).toHaveBeenCalledWith(req);
+    expect(toasterService.success).toHaveBeenCalledWith('Content location changed successfully, try to download content now.');
+  });
+
+  it('should call close modal, should handle error ', () => {
+    component.handledFailedList = response.failedList;
+    contentManagerService = TestBed.get(ContentManagerService);
+    const toasterService = TestBed.get(ToasterService);
+    component.isWindows = true;
+    spyOn(contentManagerService, 'changeContentLocation').and.returnValue(throwError({}));
+    spyOn(toasterService, 'error').and.returnValue(resourceMockData.messages.stmsg.contentLocationChanged);
+    const event = {
+      selectedDrive: {
+        name: 'D:',
+        label: 'D: (Recommended)',
+        isRecommended: true,
+        isCurrentContentLocation: false
+      }
+    };
+
+    const req = {
+      request: {
+        path: event.selectedDrive.name
+      }
+    };
+    component.closeModal(event);
+    expect(component.unHandledFailedList).toEqual([]);
+    expect(component.isWindows).toBe(false);
+    expect(toasterService.error).toHaveBeenCalledWith('Something went wrong');
   });
 
   it('getContentStatus should return extract', () => {
-   const data = component.getContentStatus(response.contentResponse2[3].contentDownloadList);
-   expect(data).toBe('extract');
+    const data = component.getContentStatus(response.contentResponse2[3].contentDownloadList);
+    expect(data).toBe('extract');
   });
 
   it('getContentStatus should return undefined', () => {
     const data = component.getContentStatus(response.contentResponse2[0].contentDownloadList);
     expect(data).toBeUndefined();
-   });
+  });
 
-   it('getContentStatus should return undefined', () => {
+  it('getContentStatus should return undefined', () => {
     const data = component.getContentStatus(response.contentResponse2[1].contentDownloadList);
     expect(data).toBeUndefined();
-   });
+  });
 
-   it('getContentStatus should return undefined', () => {
+  it('getContentStatus should return undefined', () => {
     const data = component.getContentStatus(response.contentResponse2[2].contentDownloadList);
     expect(data).toBeUndefined();
-   });
+  });
 });
 

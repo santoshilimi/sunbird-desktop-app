@@ -16,7 +16,7 @@
       </div>
     </div>
 
-    <div class="min-height-200" *ngIf="showContentChangeWarning">
+    <div *ngIf="showContentChangeWarning">
       <p class="text-center fmedium import-content">
         {{resourceService?.messages?.stmsg?.changeContentLocationWarning }}
       </p>
@@ -35,7 +35,6 @@
       </div>
     </div>
   </div>
-  <div *ngIf="showContentChangeWarning"></div>
 
   <div class="sb-modal-actions">
     <button class="sb-btn sb-btn-normal sb-btn-outline-warning" (click)="closeModal(selectedDrive)">

@@ -6,6 +6,7 @@ import { ResourceService, SharedModule } from '@sunbird/shared';
 import { SuiModalModule } from 'ng2-semantic-ui';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { RouterModule } from '@angular/router';
 describe('ContentManagerInfoPopUpComponent', () => {
   let component: ContentManagerInfoPopUpComponent;
   let fixture: ComponentFixture<ContentManagerInfoPopUpComponent>;
@@ -13,7 +14,7 @@ describe('ContentManagerInfoPopUpComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ ContentManagerInfoPopUpComponent ],
-      imports: [SuiModalModule, HttpClientTestingModule, SharedModule.forRoot()],
+      imports: [SuiModalModule, HttpClientTestingModule, SharedModule.forRoot(), RouterModule.forRoot([])],
       providers: [
         ResourceService
       ],

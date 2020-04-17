@@ -209,7 +209,7 @@ export class ContentManagerService {
       }));
   }
 
-  changeContentLocation(request): Observable<any> {
+  changeContentLocation(request) {
     const options = {
       url: this.configService.urlConFig.URLS.OFFLINE.CHANGE_CONTENT_LOCATION,
       data: request
