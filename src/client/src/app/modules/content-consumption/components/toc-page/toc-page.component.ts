@@ -121,11 +121,19 @@ export class TocPageComponent implements OnInit, OnDestroy {
       });
   }
 
+  sortChildrenWithIndex(tree) {
+    if (!tree.children || !tree.children.length) {
+      return tree;
+    }
+    tree.children = _.sortBy(tree.children.map(childNode => this.sortChildrenWithIndex(childNode)), ['index']);
+    return tree;
+  }
+
   private getCollectionHierarchy(collectionId: string): Observable<{ data: CollectionHierarchyAPI.Content }> {
     const inputParams = {params: this.configService.appConfig.CourseConsumption.contentApiQueryParams};
     return this.playerService.getCollectionHierarchy(collectionId, inputParams).pipe(
       map((response) => {
-        this.collectionData = _.get(response, 'result.content');
+        this.collectionData = this.sortChildrenWithIndex(_.get(response, 'result.content'));
         this.showUpdate = _.get(this.collectionData, 'desktopAppMetadata.updateAvailable');
         return { data: _.get(response, 'result.content') };
       }));
