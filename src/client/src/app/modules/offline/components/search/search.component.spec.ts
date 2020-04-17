@@ -202,7 +202,7 @@ describe('SearchComponent', () => {
     expect(component.searchDialContents).not.toHaveBeenCalled();
   });
 
-  it('should call constructDialCodeSearchRequest', () => {
+  it('should call constructDialCodeSearchRequest with true', () => {
     component.queryParams = {key: 'con'};
     component.params.dialCode = 'x8j8m4';
     component.contentDownloadStatus = {do_2129895224835686401102: 'Downloaded'};
@@ -216,7 +216,7 @@ describe('SearchComponent', () => {
     expect(component.utilService.addHoverData).toHaveBeenCalledWith(utilDataCards, true);
   });
 
-  it('should call constructDialCodeSearchRequest', () => {
+  it('should call constructDialCodeSearchRequest with false', () => {
     component.queryParams = {key: 'con'};
     component.params.dialCode = 'x8j8m4';
     component.contentDownloadStatus = {do_2129895224835686401102: 'Downloaded'};
