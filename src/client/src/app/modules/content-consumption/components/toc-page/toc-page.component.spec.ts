@@ -88,4 +88,9 @@ describe('TocPageComponent', () => {
     expect(component.isFullScreenView).toBeFalsy();
   });
 
+  it('should call sortChildrenWithIndex', () => {
+    const returnValue = component.sortChildrenWithIndex(collectionData.unOrderedTocData);
+    expect(returnValue).toEqual(collectionData.orderedTocData);
+  });
+
 });
