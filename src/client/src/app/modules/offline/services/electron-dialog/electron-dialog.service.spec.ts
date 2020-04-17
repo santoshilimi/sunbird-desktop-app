@@ -5,6 +5,7 @@ import {SharedModule} from '@sunbird/shared';
 import {CoreModule} from '@sunbird/core';
 
 describe('ElectronDialogService', () => {
+  let service;
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule],
@@ -12,7 +13,12 @@ describe('ElectronDialogService', () => {
     });
   });
   it('should be created', () => {
-    const service: ElectronDialogService = TestBed.get(ElectronDialogService);
+    service = TestBed.get(ElectronDialogService);
     expect(service).toBeTruthy();
+  });
+  it('should call showContentLocationChangePopup', () => {
+    spyOn(service, 'post');
+    service.showContentLocationChangePopup();
+    expect(service.post).toHaveBeenCalledWith({url: 'content/suggestLocation'});
   });
 });

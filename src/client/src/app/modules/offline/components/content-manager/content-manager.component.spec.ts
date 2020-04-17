@@ -275,7 +275,7 @@ describe('ContentManagerComponent', () => {
     contentManagerService = TestBed.get(ContentManagerService);
     spyOn(contentManagerService, 'getSuggestedDrive').and.returnValue(popupInfo);
     component.handledFailedList = [];
-    component.handleInsufficientMemoryError(response.allContentList);
+    await component.handleInsufficientMemoryError(response.allContentList);
     expect(component.unHandledFailedList).toBeTruthy();
     done();
   });

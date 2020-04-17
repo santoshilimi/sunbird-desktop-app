@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ContentManagerInfoPopUpComponent } from './content-manager-info-pop-up.component';
-import {contantData} from './content-manager-info-pop-up.component.spec.data';
+import { contantData } from './content-manager-info-pop-up.component.spec.data';
 import { ResourceService, SharedModule } from '@sunbird/shared';
 import { SuiModalModule } from 'ng2-semantic-ui';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -13,14 +13,14 @@ describe('ContentManagerInfoPopUpComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ContentManagerInfoPopUpComponent ],
+      declarations: [ContentManagerInfoPopUpComponent],
       imports: [SuiModalModule, HttpClientTestingModule, SharedModule.forRoot(), RouterModule.forRoot([])],
       providers: [
         ResourceService
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -33,12 +33,28 @@ describe('ContentManagerInfoPopUpComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-  it('contentlistToShow should be truthy ', () => {
+  it('contentListToShow should be truthy ', () => {
     expect(component.failedList).toBeTruthy();
   });
   it('should call close modal', () => {
     spyOn(component.dismissed, 'emit');
-    component.closeModal();
-    expect(component.dismissed.emit).toHaveBeenCalled();
+    component.closeModal('D:');
+    expect(component.dismissed.emit).toHaveBeenCalledWith({ selectedDrive: 'D:' });
+  });
+  it('should call getDriveSelectInteractEdata', () => {
+    const selectedDrive = {
+      label: 'D: (Recommended)',
+      name: 'D:'
+    };
+    const selectDriveInteractEdata = {
+      id: 'content-location-select-button',
+      type: 'click',
+      pageid: 'library',
+      extra: {
+        drive: 'D:'
+      }
+    };
+    const resp = component.getDriveSelectInteractEdata(selectedDrive);
+    expect(resp).toEqual(selectDriveInteractEdata);
   });
 });
