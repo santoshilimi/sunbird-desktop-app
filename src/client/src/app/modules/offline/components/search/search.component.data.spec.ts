@@ -363,5 +363,107 @@ export const searchResponse = {
           ]
 };
 
+export const utilDataCards =
+[
+  {
+    'name': 'Be_vocal',
+    'rating': '0',
+    'orgDetails': {},
+    'gradeLevel': '',
+    'contentType': 'LearningOutcomeDefinition',
+    'topic': '',
+    'subTopic': '',
+    'metaData': {
+      'identifier': 'do_2129654502588989441158',
+      'mimeType': 'application/vnd.ekstep.ecml-archive',
+      'contentType': 'LearningOutcomeDefinition'
+    },
+    'completionPercentage': 0,
+    'mimeTypesCount': 0,
+    'cardImg': 'assets/images/book.png',
+    'resourceType': 'Learn',
+    'board': 'State (Tamil Nadu)',
+    'identifier': 'do_2129654502588989441158',
+    'mimeType': 'application/vnd.ekstep.ecml-archive',
+    'desktopAppMetadata': {
+      'addedUsing': 'import',
+      'createdOn': 1586927789430,
+      'updatedOn': 1586927789430,
+      'isAvailable': true,
+      'lastUpdateCheckedOn': 1586958673299
+    },
+    'action': {
+      'onImage': {
+        'eventName': 'onImage'
+      }
+    },
+    'ribbon': {
+      'left': {
+        'class': 'ui circular label  card-badges-image'
+      },
+      'right': {
+        'name': 'Learn',
+        'class': 'ui black right ribbon label'
+      }
+    },
+    'telemetryInteractEdata': {
+      'id': 'dial-code-view-card',
+      'type': 'click',
+      'pageid': 'get-dial'
+    },
+    'telemetryObjectType': 'public'
+  },
+  {
+    'name': 'Expl MP4',
+    'rating': '0',
+    'orgDetails': {},
+    'gradeLevel': '',
+    'contentType': 'eTextBook',
+    'topic': '',
+    'subTopic': '',
+    'metaData': {
+      'identifier': 'do_2129895224835686401102',
+      'mimeType': 'application/vnd.ekstep.ecml-archive',
+      'framework': 'tn_k-12_custodian',
+      'contentType': 'eTextBook'
+    },
+    'completionPercentage': 0,
+    'mimeTypesCount': 0,
+    'cardImg': 'assets/images/book.png',
+    'resourceType': 'Learn',
+    'board': 'State (Tamil Nadu)',
+    'identifier': 'do_2129895224835686401102',
+    'mimeType': 'application/vnd.ekstep.ecml-archive',
+    'desktopAppMetadata': {
+      'addedUsing': 'import',
+      'createdOn': 1586927789429,
+      'updatedOn': 1586927789429,
+      'isAvailable': true,
+      'lastUpdateCheckedOn': 1586951818375
+    },
+    'action': {
+      'onImage': {
+        'eventName': 'onImage'
+      }
+    },
+    'ribbon': {
+      'left': {
+        'class': 'ui circular label  card-badges-image'
+      },
+      'right': {
+        'name': 'Learn',
+        'class': 'ui black right ribbon label'
+      }
+    },
+    'telemetryInteractEdata': {
+      'id': 'dial-code-view-card',
+      'type': 'click',
+      'pageid': 'get-dial'
+    },
+    'telemetryObjectType': 'public'
+  }
+];
+
+
 
 

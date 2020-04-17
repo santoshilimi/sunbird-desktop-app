@@ -9,7 +9,7 @@ import { SharedModule, ResourceService, UtilService, NavigationHelperService } f
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CoreModule, OrgDetailsService, SearchService } from '@sunbird/core';
 import { of, throwError } from 'rxjs';
-import { visitsEvent, dialCodeResponse } from './search.component.data.spec';
+import { visitsEvent, dialCodeResponse, utilDataCards } from './search.component.data.spec';
 
 describe('SearchComponent', () => {
   let component: SearchComponent;
@@ -36,8 +36,8 @@ describe('SearchComponent', () => {
         softConstraints: { badgeAssertions: 98, board: 99, channel: 100 },
         telemetry: { env: 'search', pageid: 'search', type: 'view', subtype: 'paginate' }
       },
-      params: { slug: 'ntp' },
-      queryParams: { channel: '12345' }
+      params: { slug: 'ntp'},
+      queryParams: { channel: '12345', key: 'con'}
     };
   }
 
@@ -86,6 +86,7 @@ describe('SearchComponent', () => {
     const router = TestBed.get(Router);
     spyOn(orgDetailsService, 'getOrgDetails').and.returnValue(throwError({}));
     spyOn(component, 'setTelemetryData');
+    spyOn(component, 'fetchContentOnParamChange');
     spyOn(router, 'navigate');
     const element = document.createElement('INPUT');
     element.setAttribute('type', 'hidden');
@@ -98,6 +99,7 @@ describe('SearchComponent', () => {
     expect(component.hashTagId).toBe(undefined);
     expect(component.initFilters).toBe(false);
     expect(router.navigate).toHaveBeenCalledWith(['']);
+    expect(component.fetchContentOnParamChange).toHaveBeenCalled();
   });
 
   it('should create visits for search page', () => {
@@ -198,6 +200,18 @@ describe('SearchComponent', () => {
       expect(contents).toBeUndefined();
     });
     expect(component.searchDialContents).not.toHaveBeenCalled();
+  });
+
+  it('should call constructDialCodeSearchRequest', () => {
+    component.queryParams = {key: 'con'};
+    component.params.dialCode = 'x8j8m4';
+    component.contentDownloadStatus = {do_2129895224835686401102: 'Downloaded'};
+    spyOn(component, 'constructDialCodeSearchRequest').and.returnValue({ filters: { dialCodes: 'x8j8m4'}, params: { online: true } });
+    spyOn(component, 'searchContent').and.returnValue(of(dialCodeResponse));
+    spyOn(component.utilService, 'getDataForCard').and.returnValue(utilDataCards);
+    component.fetchContents();
+    expect(component.constructDialCodeSearchRequest).toHaveBeenCalledWith(true);
+    expect(component.utilService.getDataForCard).toHaveBeenCalled();
   });
 
 });
