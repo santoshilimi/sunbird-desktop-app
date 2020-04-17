@@ -102,4 +102,18 @@ describe('ContentPlayerPageComponent', () => {
     component.goBack();
     expect(navigationHelperService.goBack).toHaveBeenCalled();
   });
+
+  it('should assign dialcode', () => {
+    const navigationHelperService = TestBed.get(NavigationHelperService);
+    navigationHelperService['_history'] = [ {url: '/browse'}, {url: 'dial/123d4'}, {url: 'play/collection'}];
+    component.ngOnInit();
+    expect(component.dialCode).toEqual('123d4');
+  });
+
+  it('should not assign dialcode', () => {
+    const navigationHelperService = TestBed.get(NavigationHelperService);
+    navigationHelperService['_history'] = [ {url: '/browse'}, {url: 'search/key?con'}, {url: 'play/collection'}];
+    component.ngOnInit();
+    expect(component.dialCode).toEqual('');
+  });
 });

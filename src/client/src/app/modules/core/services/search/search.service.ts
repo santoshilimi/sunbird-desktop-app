@@ -1,6 +1,6 @@
 
 import { map } from 'rxjs/operators';
-import { Injectable, Input } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { UserService } from './../user/user.service';
 import { ContentService } from './../content/content.service';
 import { ConfigService, ServerResponse } from '@sunbird/shared';
@@ -250,7 +250,7 @@ export class SearchService {
           exists: requestParam.exists,
           softConstraints: requestParam.softConstraints,
           mode: requestParam.mode,
-          facets: requestParam.facets && requestParam.facets
+          facets: requestParam.facets
         }
       }
     };
@@ -265,6 +265,29 @@ export class SearchService {
         'LessonPlan',
         'Resource'
       ];
+    }
+    return this.publicDataService.post(option);
+  }
+
+
+  dialContentSearch(requestParam, userProfile) {
+    const option = {
+      url: this.config.urlConFig.URLS.OFFLINE.DIAL_SEARCH,
+      param: { ...requestParam.params },
+      data: {
+        request: {
+          source: 'app',
+          name: 'DIAL Code Consumption',
+          filters: requestParam.filters,
+          userProfile: userProfile,
+          sort_by: {
+            'createdOn': 'desc'
+          }
+        }
+      }
+    };
+    if (_.get(option, 'data.request.filters')) {
+      option.data.request.filters.contentType = [ 'TextBook', 'TextBookUnit' ];
     }
     return this.publicDataService.post(option);
   }

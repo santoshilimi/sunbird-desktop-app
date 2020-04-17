@@ -218,7 +218,8 @@
       "TELEMTRY_CONFIG": "telemetry/v1/config",
       "TELEMETRY_IMPORT_RETRY": "telemetry/v1/import/retry",
       "TELEMETRY_SYNC": "desktop/v1/sync",
-      "CHANGE_CONTENT_LOCATION": "desktop/v1/change-content-location"
+      "CHANGE_CONTENT_LOCATION": "desktop/v1/change-content-location",
+      "DIAL_SEARCH": "data/v1/dial/assemble"
     },
     "ACCOUNT_RECOVERY": {
       "FUZZY_SEARCH": "user/v1/fuzzy/search",

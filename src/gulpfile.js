@@ -8,7 +8,7 @@ const path = require("path");
 gulp.task('download:content-player', cb => {
   new Promise((resolve, reject) => {
     exec(
-      "npm install @project-sunbird/content-player@2.9.0-alpha-ea50f5d0.0  --prefix ./public/contentPlayer",
+      "npm install @project-sunbird/content-player@2.9.1  --prefix ./public/contentPlayer",
       { maxBuffer: Infinity },
       function(err, stdout, stderr) {
         console.log(stdout);

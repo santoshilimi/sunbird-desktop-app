@@ -220,15 +220,10 @@ $btnSquaresizes: "xs" 1.5rem 1.5rem 1rem null, "normal" 4rem 4rem 0.75rem null,
   padding: $base-block-space $base-block-space $base-block-space
     $base-block-space;
   i.icon {
-    margin-left: $base-block-space;
-    margin-right: 0;
-  }
-  html[dir="rtl"] & {
-    padding: $base-block-space $base-block-space $base-block-space
-      $base-block-space;
-    i.icon {
-      margin-right: ($base-block-space / 2);
-      margin-right: 0;
+    margin-left: ($base-block-space/2);
+    html[dir="rtl"] & {
+      margin-right: ($base-block-space/2);
+      margin-left: 0;
     }
   }
 }
@@ -236,13 +231,10 @@ $btnSquaresizes: "xs" 1.5rem 1.5rem 1rem null, "normal" 4rem 4rem 0.75rem null,
   padding: $base-block-space $base-block-space $base-block-space
     $base-block-space;
   i.icon {
-    margin-right: $base-block-space;
-  }
-  html[dir="rtl"] & {
-    padding: $base-block-space $base-block-space $base-block-space
-      $base-block-space;
-    i.icon {
-      margin-left: $base-block-space;
+    margin-left: ($base-block-space/2);
+    html[dir="rtl"] & {
+      margin-right: ($base-block-space/2);
+      margin-left:0;
     }
   }
 }
@@ -514,9 +506,9 @@ $btnSquaresizes: "xs" 1.5rem 1.5rem 1rem null, "normal" 4rem 4rem 0.75rem null,
 /* do not delete */
 .sb-btn-grow {
   background: none;
-  border:0px solid #fff;
+  border:0px solid var(--white);;
   font-size:12px;
-  color: #fff;
+  color: var(--white);
   cursor: pointer;
   &:disabled {
     opacity: 0.4;
