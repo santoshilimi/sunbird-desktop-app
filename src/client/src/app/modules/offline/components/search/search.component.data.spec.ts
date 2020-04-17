@@ -464,6 +464,230 @@ export const utilDataCards =
   }
 ];
 
+export const onlineHoverData = [
+  {
+    'name': 'Be_vocal',
+    'contentType': 'LearningOutcomeDefinition',
+    'metaData': {
+      'identifier': 'do_2129654502588989441158',
+      'mimeType': 'application/vnd.ekstep.ecml-archive',
+      'framework': 'tn_k-12_custodian',
+      'contentType': 'LearningOutcomeDefinition'
+    },
+    'organisation': [
+      'Tamil Nadu'
+    ],
+    'hoverData': {
+      'note': '',
+      'actions': [
+        {
+          'type': 'download',
+          'label': 'Download',
+          'disabled': false
+        },
+        {
+          'type': 'open',
+          'label': 'Open'
+        }
+      ]
+    },
+    'board': 'State (Tamil Nadu)',
+    'identifier': 'do_2129654502588989441158',
+    'mimeType': 'application/vnd.ekstep.ecml-archive',
+    'desktopAppMetadata': {
+      'addedUsing': 'import',
+      'createdOn': 1587046561015,
+      'updatedOn': 1587101533412,
+      'isAvailable': false,
+      'lastUpdateCheckedOn': 1587103941175
+    },
+    'action': {
+      'onImage': {
+        'eventName': 'onImage'
+      }
+    },
+    'ribbon': {
+      'left': {
+        'class': 'ui circular label  card-badges-image'
+      },
+      'right': {
+        'name': 'Learn',
+        'class': 'ui black right ribbon label'
+      }
+    },
+    'telemetryInteractEdata': {
+      'id': 'dial-code-view-card',
+      'type': 'click',
+      'pageid': 'get-dial'
+    },
+    'telemetryObjectType': 'public'
+  },
+  {
+    'name': 'Expl MP4',
+    'metaData': {
+      'identifier': 'do_2129895224835686401102',
+      'mimeType': 'video/mp4',
+      'framework': 'tn_k-12_custodian',
+      'contentType': 'eTextBook'
+    },
+    'hoverData': {
+      'note': 'Go to \'My Downloads\' to find this content',
+      'actions': [
+        {
+          'type': 'download',
+          'label': 'Downloaded',
+          'disabled': true
+        },
+        {
+          'type': 'open',
+          'label': 'Open'
+        }
+      ]
+    },
+    'board': 'State (Tamil Nadu)',
+    'identifier': 'do_2129895224835686401102',
+    'mimeType': 'video/mp4',
+    'desktopAppMetadata': {
+      'addedUsing': 'import',
+      'createdOn': 1587039656918,
+      'updatedOn': 1587039656918,
+      'isAvailable': true,
+      'lastUpdateCheckedOn': 1587119447324
+    },
+    'action': {
+      'onImage': {
+        'eventName': 'onImage'
+      }
+    },
+    'ribbon': {
+      'left': {
+        'class': 'ui circular label  card-badges-image'
+      },
+      'right': {
+        'name': 'Learn',
+        'class': 'ui black right ribbon label'
+      }
+    },
+    'telemetryInteractEdata': {
+      'id': 'dial-code-view-card',
+      'type': 'click',
+      'pageid': 'get-dial'
+    },
+    'telemetryObjectType': 'public'
+  }
+];
+export const offlineHoverData = [
+  {
+    'name': 'Be_vocal',
+    'contentType': 'LearningOutcomeDefinition',
+    'metaData': {
+      'identifier': 'do_2129654502588989441158',
+      'mimeType': 'application/vnd.ekstep.ecml-archive',
+      'framework': 'tn_k-12_custodian',
+      'contentType': 'LearningOutcomeDefinition'
+    },
+    'organisation': [
+      'Tamil Nadu'
+    ],
+    'hoverData': {
+      'note': '',
+      'actions': [
+        {
+          'type': 'save',
+          'label': 'Save to Pen drive',
+          'disabled': false
+        },
+        {
+          'type': 'open',
+          'label': 'Open'
+        }
+      ]
+    },
+    'board': 'State (Tamil Nadu)',
+    'identifier': 'do_2129654502588989441158',
+    'mimeType': 'application/vnd.ekstep.ecml-archive',
+    'desktopAppMetadata': {
+      'addedUsing': 'import',
+      'createdOn': 1587046561015,
+      'updatedOn': 1587101533412,
+      'isAvailable': false,
+      'lastUpdateCheckedOn': 1587103941175
+    },
+    'action': {
+      'onImage': {
+        'eventName': 'onImage'
+      }
+    },
+    'ribbon': {
+      'left': {
+        'class': 'ui circular label  card-badges-image'
+      },
+      'right': {
+        'name': 'Learn',
+        'class': 'ui black right ribbon label'
+      }
+    },
+    'telemetryInteractEdata': {
+      'id': 'dial-code-view-card',
+      'type': 'click',
+      'pageid': 'get-dial'
+    },
+    'telemetryObjectType': 'public'
+  },
+  {
+    'name': 'Expl MP4',
+    'metaData': {
+      'identifier': 'do_2129895224835686401102',
+      'mimeType': 'video/mp4',
+      'framework': 'tn_k-12_custodian',
+      'contentType': 'eTextBook'
+    },
+    'hoverData': {
+      'note': 'Go to \'My Downloads\' to find this content',
+      'actions': [
+        {
+          'type': 'save',
+          'label': 'Save to Pen drive',
+          'disabled': false
+        },
+        {
+          'type': 'open',
+          'label': 'Open'
+        }
+      ]
+    },
+    'board': 'State (Tamil Nadu)',
+    'identifier': 'do_2129895224835686401102',
+    'mimeType': 'video/mp4',
+    'desktopAppMetadata': {
+      'addedUsing': 'import',
+      'createdOn': 1587039656918,
+      'updatedOn': 1587039656918,
+      'isAvailable': true,
+      'lastUpdateCheckedOn': 1587119447324
+    },
+    'action': {
+      'onImage': {
+        'eventName': 'onImage'
+      }
+    },
+    'ribbon': {
+      'left': {
+        'class': 'ui circular label  card-badges-image'
+      },
+      'right': {
+        'name': 'Learn',
+        'class': 'ui black right ribbon label'
+      }
+    },
+    'telemetryInteractEdata': {
+      'id': 'dial-code-view-card',
+      'type': 'click',
+      'pageid': 'get-dial'
+    },
+    'telemetryObjectType': 'public'
+  }
+]
 
 
 

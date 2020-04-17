@@ -9,7 +9,7 @@ import { SharedModule, ResourceService, UtilService, NavigationHelperService } f
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CoreModule, OrgDetailsService, SearchService } from '@sunbird/core';
 import { of, throwError } from 'rxjs';
-import { visitsEvent, dialCodeResponse, utilDataCards } from './search.component.data.spec';
+import { visitsEvent, dialCodeResponse, utilDataCards, onlineHoverData, offlineHoverData } from './search.component.data.spec';
 
 describe('SearchComponent', () => {
   let component: SearchComponent;
@@ -161,7 +161,7 @@ describe('SearchComponent', () => {
     expect(component.searchService.contentSearch).toHaveBeenCalled();
   });
 
-  it('should call searchDialCode', () => {
+  it('should call searchDialCode and return undefined', () => {
     component.params.dialCode = 'x8j8m4';
     component.isConnected = false;
     spyOn(component, 'searchDialContents').and.returnValue(of (undefined));
@@ -209,9 +209,25 @@ describe('SearchComponent', () => {
     spyOn(component, 'constructDialCodeSearchRequest').and.returnValue({ filters: { dialCodes: 'x8j8m4'}, params: { online: true } });
     spyOn(component, 'searchContent').and.returnValue(of(dialCodeResponse));
     spyOn(component.utilService, 'getDataForCard').and.returnValue(utilDataCards);
+    spyOn(component.utilService, 'addHoverData').and.returnValue(onlineHoverData);
     component.fetchContents();
     expect(component.constructDialCodeSearchRequest).toHaveBeenCalledWith(true);
     expect(component.utilService.getDataForCard).toHaveBeenCalled();
+    expect(component.utilService.addHoverData).toHaveBeenCalledWith(utilDataCards, true);
+  });
+
+  it('should call constructDialCodeSearchRequest', () => {
+    component.queryParams = {key: 'con'};
+    component.params.dialCode = 'x8j8m4';
+    component.contentDownloadStatus = {do_2129895224835686401102: 'Downloaded'};
+    spyOn(component, 'constructDialCodeSearchRequest').and.returnValue({ filters: { dialCodes: 'x8j8m4'}, params: { online: false } });
+    spyOn(component, 'searchContent').and.returnValue(of(dialCodeResponse));
+    spyOn(component.utilService, 'getDataForCard').and.returnValue(utilDataCards);
+    spyOn(component.utilService, 'addHoverData').and.returnValue(offlineHoverData);
+    component.fetchContents();
+    expect(component.constructDialCodeSearchRequest).toHaveBeenCalledWith(false);
+    expect(component.utilService.getDataForCard).toHaveBeenCalled();
+    expect(component.utilService.addHoverData).toHaveBeenCalled();
   });
 
 });
