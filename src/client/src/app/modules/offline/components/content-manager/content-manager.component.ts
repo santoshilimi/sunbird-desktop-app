@@ -28,7 +28,7 @@ export class ContentManagerComponent implements OnInit, OnDestroy {
   handledFailedList = [];
   unHandledFailedList = [];
   deletedContents: string [] = [];
-  isWindows: boolean;
+  isWindows = false;
   suggestedDrive: string;
   drives: [];
 
