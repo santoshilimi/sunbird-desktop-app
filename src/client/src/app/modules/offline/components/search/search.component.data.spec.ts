@@ -687,7 +687,7 @@ export const offlineHoverData = [
     },
     'telemetryObjectType': 'public'
   }
-]
+];
 
 
 
