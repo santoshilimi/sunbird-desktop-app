@@ -7,7 +7,7 @@ import { PublicPlayerService } from '@sunbird/public';
 import { Observable, Subscription, Subject } from 'rxjs';
 import { ActivatedRoute, Router, NavigationExtras, NavigationStart } from '@angular/router';
 import {
-  WindowScrollService, ToasterService, ILoaderMessage, PlayerConfig,
+  WindowScrollService, ToasterService,
   ICollectionTreeOptions, NavigationHelperService, ResourceService,  ExternalUrlPreviewService, ConfigService,
   ContentUtilsServiceService, UtilService, OfflineCardService
 } from '@sunbird/shared';

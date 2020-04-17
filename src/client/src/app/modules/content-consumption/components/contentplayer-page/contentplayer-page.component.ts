@@ -1,12 +1,12 @@
 import { ConnectionService } from '@sunbird/offline';
 import { Component, OnInit, OnDestroy, OnChanges, Input, EventEmitter, Output } from '@angular/core';
-import { ActivatedRoute, Router, NavigationStart, NavigationEnd } from '@angular/router';
+import { ActivatedRoute, Router, NavigationStart } from '@angular/router';
 import { PublicPlayerService } from '@sunbird/public';
 import {
-  ConfigService, NavigationHelperService, PlayerConfig, ContentData, ToasterService, ResourceService, UtilService
+  ConfigService, NavigationHelperService, ToasterService, ResourceService, UtilService
 } from '@sunbird/shared';
 import { Subject } from 'rxjs';
-import { takeUntil, filter, map } from 'rxjs/operators';
+import { takeUntil, filter } from 'rxjs/operators';
 import * as _ from 'lodash-es';
 import { IImpressionEventInput, TelemetryService } from '@sunbird/telemetry';
 

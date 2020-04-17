@@ -227,7 +227,7 @@ describe('SearchComponent', () => {
     component.fetchContents();
     expect(component.constructDialCodeSearchRequest).toHaveBeenCalledWith(false);
     expect(component.utilService.getDataForCard).toHaveBeenCalled();
-    expect(component.utilService.addHoverData).toHaveBeenCalled();
+    expect(component.utilService.addHoverData).toHaveBeenCalledWith(utilDataCards, false);
   });
 
 });
