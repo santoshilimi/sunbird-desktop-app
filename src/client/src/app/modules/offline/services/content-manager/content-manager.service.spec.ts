@@ -7,13 +7,27 @@ import { ConfigService, ToasterService, ResourceService, BrowserCacheTtlService 
 import { PublicDataService } from '@sunbird/core';
 import { ContentManagerService } from './content-manager.service';
 import { of as observableOf, throwError } from 'rxjs';
+import { SystemInfoService } from '../system-info/system-info.service';
 
 
 describe('ContentManagerService', () => {
+
+  const resourceMockData = {
+    frmelmnts: {
+      lbl: {
+        currentLocation: 'Current location',
+        recommended: 'Recommended'
+      }
+    },
+    messages: {
+      fmsg: { m0097: 'Something went wrong' },
+      stmsg: { contentLocationChanged: 'Content location changed successfully, try to download content now.' }
+    }
+  };
   beforeEach(() => TestBed.configureTestingModule({
     imports: [HttpClientTestingModule],
-    providers: [ConfigService, ToasterService, ResourceService, ContentManagerService,
-      PublicDataService, CacheService, BrowserCacheTtlService]
+    providers: [ConfigService, ToasterService, ContentManagerService,
+      PublicDataService, CacheService, BrowserCacheTtlService, { provide: ResourceService, useValue: resourceMockData }]
   }));
 
   it('should make getalldownloads API call', () => {
@@ -156,7 +170,7 @@ describe('ContentManagerService', () => {
       isWindows: true,
     };
     spyOn(publicDataService, 'post').and.callFake(() => observableOf(throwError(error)));
-    service.startDownload({}).subscribe(res => {}, (err: any) => {
+    service.startDownload({}).subscribe(res => { }, (err: any) => {
       const popInfo = {
         failedContentName: 'testContent',
         isWindows: true,
@@ -165,5 +179,28 @@ describe('ContentManagerService', () => {
       expect(err.params.err).toEqual('LOW_DISK_SPACE');
       expect(service.downloadFailEvent.emit).toHaveBeenCalledWith(popInfo);
     });
+  });
+
+  it('should call getSuggestedDrive', async () => {
+    const service: ContentManagerService = TestBed.get(ContentManagerService);
+    const popupInfo = {
+      failedContentName: 'Test1'
+    };
+    const systemInfoService = TestBed.get(SystemInfoService);
+    const systemInfoResponse = {
+      result: {
+        drives: [
+          { fs: 'C:', size: 1212121212121, used: 1212121212120},
+          { fs: 'D:', size: 1212121212121, used: 1212121212120},
+          { fs: 'E:', size: 4592323023202, used: 1212121212120 }],
+        contentBasePath: 'C:\\test\test1',
+        platform: 'win32'
+      }
+
+    };
+    spyOn(systemInfoService, 'getSystemInfo').and.returnValue(observableOf(systemInfoResponse));
+    const resp = await service.getSuggestedDrive(popupInfo);
+    expect(systemInfoService.getSystemInfo).toHaveBeenCalled();
+    expect(resp).toEqual(response.popupInfo);
   });
 });
