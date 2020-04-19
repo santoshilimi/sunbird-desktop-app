@@ -35,6 +35,7 @@ export class ContentManagerInfoPopUpComponent implements OnInit {
       pageid: this.router.url.split('/')[1] || 'library'
     };
 
+    /* istanbul ignore else*/
     if (selectedDrive) {
       selectDriveInteractEdata['extra'] = {
         drive: selectedDrive.name

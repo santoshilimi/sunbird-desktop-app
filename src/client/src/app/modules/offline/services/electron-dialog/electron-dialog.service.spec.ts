@@ -27,17 +27,14 @@ describe('ElectronDialogService', () => {
     expect(service).toBeTruthy();
   });
   it('should call showContentLocationChangePopup', () => {
-    const publicDataService = TestBed.get(PublicDataService);
 
-    spyOn(publicDataService, 'post').and.returnValue(of({ name: 'test' }));
-
-    console.log('service', service.showContentLocationChangePopup());
+    spyOn(service, 'post').and.returnValue(of({ name: 'test' }));
     const resp = service.showContentLocationChangePopup().subscribe((data) => {
       expect(data).toBeDefined();
       expect(data).toBeTruthy();
     });
 
-    expect(publicDataService.post).toHaveBeenCalled();
+    expect(service['post']).toHaveBeenCalled();
     expect(resp).toBeDefined();
   });
 

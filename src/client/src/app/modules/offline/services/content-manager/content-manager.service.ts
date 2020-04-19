@@ -85,6 +85,7 @@ export class ContentManagerService {
         this.downloadEvent.emit('Download started');
       }),
       catchError(async (err: any) => {
+        /* istanbul ignore else */
         if (_.get(err, 'error.params.err') === 'LOW_DISK_SPACE') {
           const popupInfo: any = {
             failedContentName: this.failedContentName,
@@ -222,12 +223,14 @@ export class ContentManagerService {
     try {
       const info = await this.systemInfoService.getSystemInfo().toPromise();
       // Check if the system is Windows and it has multiple drives
+      /* istanbul ignore else */
       if (_.get(info, 'result.platform') === 'win32' && _.get(info, 'result.drives.length') !== 1) {
         const getAvailableSpace = (drive: any) => drive.size - drive.used;
         const suggestedDrive = info.result.drives.reduce((prev, current) => {
           return (getAvailableSpace(prev) > getAvailableSpace(current)) ? prev : current;
         });
 
+        /* istanbul ignore else */
         if (suggestedDrive) {
           popupInfo.isWindows = true;
           popupInfo.drives = info.result.drives.map((item) => {

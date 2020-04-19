@@ -68,6 +68,7 @@ export class ContentManagerComponent implements OnInit, OnDestroy {
         this.unHandledFailedList.push({name: popupInfo.failedContentName});
         this.isWindows = popupInfo.isWindows;
 
+        /* istanbul ignore else */
         if (popupInfo.isWindows && popupInfo.drives) {
           this.drives = popupInfo.drives;
         }
@@ -153,6 +154,7 @@ export class ContentManagerComponent implements OnInit, OnDestroy {
     this.unHandledFailedList = [];
     this.isWindows = false;
 
+    /* istanbul ignore else */
     if (event.selectedDrive) {
       const req = {
         request: {

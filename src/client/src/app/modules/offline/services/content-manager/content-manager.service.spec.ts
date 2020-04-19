@@ -57,11 +57,9 @@ describe('ContentManagerService', () => {
   });
 
   xit('should make export API call', () => {
-
     const service: ContentManagerService = TestBed.get(ContentManagerService);
     const publicDataService = TestBed.get(PublicDataService);
     spyOn(publicDataService, 'get').and.callFake(() => observableOf(response.exportSuccess));
-    const apiRes = service.exportContent('do_312522408518803456214665');
     expect(publicDataService.get).toHaveBeenCalled();
   });
 
@@ -160,7 +158,7 @@ describe('ContentManagerService', () => {
     expect(publicDataService.post).toHaveBeenCalled();
   });
 
-  it('should show popup message on failure of download', () => {
+  it('should show popup message on failure of download', async () => {
     const service: ContentManagerService = TestBed.get(ContentManagerService);
     const publicDataService = TestBed.get(PublicDataService);
     service.failedContentName = 'testContent';
@@ -172,6 +170,8 @@ describe('ContentManagerService', () => {
       isWindows: true,
     };
     spyOn(publicDataService, 'post').and.callFake(() => observableOf(throwError(error)));
+    spyOn(service, 'getSuggestedDrive').and.returnValue({});
+    spyOn(service, 'downloadFailEvent');
     service.startDownload({}).subscribe(res => { }, (err: any) => {
       const popInfo = {
         failedContentName: 'testContent',
@@ -180,6 +180,8 @@ describe('ContentManagerService', () => {
       };
       expect(err.params.err).toEqual('LOW_DISK_SPACE');
       expect(service.downloadFailEvent.emit).toHaveBeenCalledWith(popInfo);
+      expect(service.getSuggestedDrive).toHaveBeenCalled();
+      expect(service.downloadFailEvent).toHaveBeenCalled();
     });
   });
 
@@ -212,5 +214,14 @@ describe('ContentManagerService', () => {
     spyOn(systemInfoService, 'getSystemInfo').and.returnValue(throwError({}));
     const resp = await service.getSuggestedDrive({});
     expect(resp).toBeTruthy();
+  });
+
+  it('should call changeContentLocation', () => {
+    const service: ContentManagerService = TestBed.get(ContentManagerService);
+    const configService = TestBed.get(ConfigService);
+    const publicDataService = TestBed.get(PublicDataService);
+    spyOn(publicDataService, 'post');
+    service.changeContentLocation({});
+    expect(publicDataService.post).toHaveBeenCalled();
   });
 });

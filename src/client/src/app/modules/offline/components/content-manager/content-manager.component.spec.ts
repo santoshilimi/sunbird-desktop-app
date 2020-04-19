@@ -52,14 +52,32 @@ describe('ContentManagerComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should call ngOninit', () => {
-    spyOn(contentManagerService, 'downloadEvent').and.returnValue(observableOf('Download started'));
+  it('should call ngOnInit', () => {
+    const windowsDrives = [
+      { fs: 'C:', size: 1212121212121, used: 1212121212120 },
+      { fs: 'D:', size: 1212121212121, used: 1212121212120 },
+      { fs: 'E:', size: 4592323023202, used: 1212121212120 }];
+
+    // To test event emitter subscribe
+    const contentService = fixture.debugElement.injector.get(ContentManagerService);
+    contentService.downloadFailEvent.emit({
+      failedContentName: 'testContentName',
+      isWindows: true,
+      drives: windowsDrives
+    });
+    spyOn(contentService, 'downloadEvent').and.returnValue(observableOf('Download started'));
     spyOn(component.apiCallSubject, 'next');
+    component.unHandledFailedList = [];
     component.ngOnInit();
     expect(component.apiCallSubject.next).toHaveBeenCalled();
     expect(component.isOpen).toBeTruthy();
     expect(component.isWindows).toBeDefined();
-    expect(component.isWindows).toBe(false);
+
+    fixture.detectChanges();
+    fixture.whenStable().then(() => {
+      expect(component.isWindows).toBe(true);
+      expect(component.unHandledFailedList).toEqual([{ name: 'testContentName' }]);
+    });
   });
 
   it('should call contentManagerActions and call pause import', () => {
@@ -269,7 +287,7 @@ describe('ContentManagerComponent', () => {
     expect(component.apiCallSubject.next).toHaveBeenCalled();
     expect(toasterService.error).toHaveBeenCalled();
   });
-  it('should call handleInsufficientMemoryError show failed contents in popup', async (done) => {
+  it('should call handleInsufficientMemoryError show failed contents in popup', async () => {
     const popupInfo = {
       failedContentName: response.listToShow,
       isWindows: true
@@ -279,7 +297,6 @@ describe('ContentManagerComponent', () => {
     component.handledFailedList = [];
     await component.handleInsufficientMemoryError(response.allContentList);
     expect(component.unHandledFailedList).toBeTruthy();
-    done();
   });
   it('should call handleInsufficientMemoryError show failed contents in popup when difference is not empty', () => {
     spyOn(contentManagerService, 'getSuggestedDrive').and.returnValue(response.popupInfo);
