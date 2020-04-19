@@ -19,7 +19,7 @@ describe('ElectronDialogService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, SharedModule.forRoot(), CoreModule],
-      providers: [ElectronDialogService, DataService, { provide: ConfigService, useValue: mockConfigService }]
+      providers: [ElectronDialogService, DataService, PublicDataService, { provide: ConfigService, useValue: mockConfigService }]
     });
     service = TestBed.get(ElectronDialogService);
   });
@@ -30,12 +30,20 @@ describe('ElectronDialogService', () => {
     const publicDataService = TestBed.get(PublicDataService);
 
     spyOn(publicDataService, 'post').and.returnValue(of({ name: 'test' }));
+
     console.log('service', service.showContentLocationChangePopup());
     const resp = service.showContentLocationChangePopup().subscribe((data) => {
       expect(data).toBeDefined();
       expect(data).toBeTruthy();
     });
 
+    expect(publicDataService.post).toHaveBeenCalled();
     expect(resp).toBeDefined();
+  });
+
+  it('should call showContentExportDialog', () => {
+    spyOn(service, 'get');
+    service.showContentExportDialog();
+    expect(service['get']).toHaveBeenCalled();
   });
 });

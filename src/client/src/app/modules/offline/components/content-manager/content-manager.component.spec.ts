@@ -269,7 +269,7 @@ describe('ContentManagerComponent', () => {
     expect(component.apiCallSubject.next).toHaveBeenCalled();
     expect(toasterService.error).toHaveBeenCalled();
   });
-  it('should call handleInsufficientMemoryError show failed contents in popup', async(done) => {
+  it('should call handleInsufficientMemoryError show failed contents in popup', async (done) => {
     const popupInfo = {
       failedContentName: response.listToShow,
       isWindows: true
@@ -293,7 +293,7 @@ describe('ContentManagerComponent', () => {
     component.handleInsufficientMemoryError(response.allContentList);
     expect(component.unHandledFailedList).toEqual([]);
   });
-  xit('should call handleInsufficientMemoryError and no contents to show in pop up when all contents list is empty', () => {
+  it('should call handleInsufficientMemoryError and no contents to show in pop up when all contents list is empty', () => {
     component.handledFailedList = [];
     component.handleInsufficientMemoryError([]);
     expect(component.unHandledFailedList).toEqual([]);
@@ -302,6 +302,7 @@ describe('ContentManagerComponent', () => {
     component.handledFailedList = response.failedList;
     contentManagerService = TestBed.get(ContentManagerService);
     const toasterService = TestBed.get(ToasterService);
+    const resourceService = TestBed.get(ResourceService);
     component.isWindows = true;
     spyOn(contentManagerService, 'changeContentLocation').and.returnValue(observableOf({}));
     spyOn(toasterService, 'success').and.returnValue(resourceMockData.messages.stmsg.contentLocationChanged);
@@ -323,6 +324,8 @@ describe('ContentManagerComponent', () => {
     expect(component.unHandledFailedList).toEqual([]);
     expect(component.isWindows).toBe(false);
     expect(contentManagerService.changeContentLocation).toHaveBeenCalledWith(req);
+    expect(resourceService.messages.stmsg.contentLocationChanged)
+      .toEqual('Content location changed successfully, try to download content now.');
     expect(toasterService.success).toHaveBeenCalledWith('Content location changed successfully, try to download content now.');
   });
 
