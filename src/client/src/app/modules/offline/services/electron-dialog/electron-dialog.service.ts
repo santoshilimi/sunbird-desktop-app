@@ -2,15 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ConfigService } from '@sunbird/shared';
 import { DataService } from '@sunbird/core';
-import * as _ from 'lodash-es';
-import { Observable } from 'rxjs';
+import { PublicDataService } from '@sunbird/core';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ElectronDialogService extends DataService {
 
-  constructor(public http: HttpClient, public configService: ConfigService) {
+  constructor(public http: HttpClient, public configService: ConfigService, public publicDataService: PublicDataService) {
     super(http);
     this.baseUrl = this.configService.urlConFig.URLS.ELECTRON_DIALOG_PREFIX;
   }
@@ -35,11 +34,7 @@ export class ElectronDialogService extends DataService {
     });
   }
 
-  showContentLocationChangePopup(): Observable<any> {
-    const option = {
-      url: this.configService.urlConFig.URLS.ELECTRON_DIALOG.CONTENT_SUGGEST_LOCATION
-    };
-
-    return this.post(option);
+  showContentLocationChangePopup() {
+    return this.publicDataService.post({ url: this.configService.urlConFig.URLS.ELECTRON_DIALOG.CONTENT_SUGGEST_LOCATION });
   }
 }

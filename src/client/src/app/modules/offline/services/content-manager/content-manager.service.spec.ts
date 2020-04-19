@@ -192,8 +192,8 @@ describe('ContentManagerService', () => {
     const systemInfoResponse = {
       result: {
         drives: [
-          { fs: 'C:', size: 1212121212121, used: 1212121212120},
-          { fs: 'D:', size: 1212121212121, used: 1212121212120},
+          { fs: 'C:', size: 1212121212121, used: 1212121212120 },
+          { fs: 'D:', size: 1212121212121, used: 1212121212120 },
           { fs: 'E:', size: 4592323023202, used: 1212121212120 }],
         contentBasePath: 'C:\\test\test1',
         platform: 'win32'
@@ -204,5 +204,13 @@ describe('ContentManagerService', () => {
     const resp = await service.getSuggestedDrive(popupInfo);
     expect(systemInfoService.getSystemInfo).toHaveBeenCalled();
     expect(resp).toEqual(response.popupInfo);
+  });
+
+  it('should call getSuggestedDrive and handle error', async () => {
+    const service: ContentManagerService = TestBed.get(ContentManagerService);
+    const systemInfoService = TestBed.get(SystemInfoService);
+    spyOn(systemInfoService, 'getSystemInfo').and.returnValue(throwError({}));
+    const resp = await service.getSuggestedDrive({});
+    expect(resp).toBeTruthy();
   });
 });

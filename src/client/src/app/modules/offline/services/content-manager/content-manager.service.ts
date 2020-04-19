@@ -232,7 +232,7 @@ export class ContentManagerService {
           popupInfo.isWindows = true;
           popupInfo.drives = info.result.drives.map((item) => {
             return {
-              label: item.fs === suggestedDrive.fs ? `${item.fs} (${this.resourceService.frmelmnts.lbl.currentLocation})` : item.fs ,
+              label: item.fs,
               name: item.fs,
               isRecommended: item.fs === suggestedDrive.fs,
               isCurrentContentLocation: info.result.contentBasePath.startsWith(item.fs)
@@ -253,7 +253,7 @@ export class ContentManagerService {
       return popupInfo;
     } catch (error) {
       console.error('Error while fetching system Info', error);
-      throw new Error(error);
+      return error;
     }
   }
 

@@ -7,6 +7,8 @@ import { SuiModalModule } from 'ng2-semantic-ui';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { IInteractEventEdata } from '@sunbird/telemetry';
+
 describe('ContentManagerInfoPopUpComponent', () => {
   let component: ContentManagerInfoPopUpComponent;
   let fixture: ComponentFixture<ContentManagerInfoPopUpComponent>;
@@ -54,7 +56,7 @@ describe('ContentManagerInfoPopUpComponent', () => {
         drive: 'D:'
       }
     };
-    const resp = component.getDriveSelectInteractEdata(selectedDrive);
+    const resp: IInteractEventEdata = component.getDriveSelectInteractEdata(selectedDrive);
     expect(resp).toEqual(selectDriveInteractEdata);
   });
 });
