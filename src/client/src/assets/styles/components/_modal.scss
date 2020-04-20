@@ -24,7 +24,7 @@ $sb-modal-corner-radius: $base-block-space;
 /* modal styles */
 .sb-modal {
   .ui.modal {
-    @include margin(3.5rem auto 0 auto);
+    @include margin(3.5rem auto 0 auto !important);
     @include position(null, 0 0 null 0); //bourbon
     @include size(100%, auto); //bourbon
     background: none;
