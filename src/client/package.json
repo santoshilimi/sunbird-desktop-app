@@ -9,7 +9,7 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "test": "ng test --watch=false --sourceMap=false --browsers Chrome",
-    "test-coverage": "ng test src --watch=false  --sourceMap=false --code-coverage=true",
+    "test-coverage": "ng test src --watch=false  --sourceMap=true --code-coverage=true",
     "analyze": "ng build  --stats-json && webpack-bundle-analyzer ../public/portal/stats.json"
   },
   "nodemonConfig": {
@@ -77,10 +77,9 @@
     "karma": "~4.1.0",
     "karma-chrome-launcher": "~2.2.0",
     "karma-coverage": "^1.1.1",
-    "karma-coverage-istanbul-reporter": "~2.0.1",
+    "karma-coverage-istanbul-reporter": "^2.1.1",
     "karma-jasmine": "~2.0.1",
     "karma-jasmine-html-reporter": "^1.4.0",
-
     "karma-mocha-reporter": "^2.2.5",
     "md5": "^2.2.1",
     "minimist": "^1.2.0",

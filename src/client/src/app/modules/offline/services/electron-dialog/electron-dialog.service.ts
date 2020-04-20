@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ConfigService } from '@sunbird/shared';
 import { DataService } from '@sunbird/core';
-import * as _ from 'lodash-es';
 
 @Injectable({
   providedIn: 'root'
@@ -32,5 +31,9 @@ export class ElectronDialogService extends DataService {
     }, error => {
       console.log('error while telemetry import dialog box ', error);
     });
+  }
+
+  showContentLocationChangePopup() {
+    return this.post({ url: this.configService.urlConFig.URLS.ELECTRON_DIALOG.CONTENT_SUGGEST_LOCATION });
   }
 }

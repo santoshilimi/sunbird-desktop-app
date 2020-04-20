@@ -1,5 +1,4 @@
 @import "./buttons";
-
 // modal component
 $sb-modal-header-bg: $primary-400;
 $sb-modal-header-color: $white-color;
@@ -20,11 +19,10 @@ $sb-modal-small-width: calculateRem(480px);
 $sb-modal-normal-width: calculateRem(720px);
 $sb-modal-large-width: calculateRem(900px);
 $sb-modal-corner-radius: $base-block-space;
-
 /* modal styles */
 .sb-modal {
   .ui.modal {
-    @include margin(3.5rem auto 0 auto);
+    @include margin(3.5rem auto 0 auto !important);
     @include position(null, 0 0 null 0); //bourbon
     @include size(100%, auto); //bourbon
     background: none;
@@ -171,14 +169,13 @@ $sb-modal-corner-radius: $base-block-space;
     .sb-modal-actions {
       .sb-btn:nth-child(1) {
         @extend .sb-btn-error;
-      }  
+      }
       .sb-btn {
         @extend .sb-btn-outline-error;
       }
     }
   }
 }
-
 [dir="rtl"] .sb-modal {
   .ui.modal {
     & > .close {
@@ -192,7 +189,6 @@ $sb-modal-corner-radius: $base-block-space;
     }
   }
 }
-
 @include respond-below(sm) {
   .sb-modal {
     .ui.modal {
@@ -221,7 +217,6 @@ $sb-modal-corner-radius: $base-block-space;
     }
   }
 }
-
 // workspace modal spacing issue
 .sb-workspace-modal{
     .twelve.wide.column{
@@ -242,7 +237,6 @@ $sb-modal-corner-radius: $base-block-space;
         list-style-type: disc;
     }
 }
-
 .ui.error.message.bulkupload-error {
     max-height: calculateRem(200px);
     overflow: auto;
@@ -252,9 +246,4 @@ $sb-modal-corner-radius: $base-block-space;
             height: calculateRem(8px);
         }
     }
-}
-
-
-.sb-modal.sb-modal-termsuse .ui.modal.large {
-  margin-top:3.5rem !important;
 }

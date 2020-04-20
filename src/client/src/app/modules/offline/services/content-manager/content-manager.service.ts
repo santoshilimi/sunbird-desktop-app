@@ -5,6 +5,7 @@ import { PublicDataService } from '@sunbird/core';
 import { throwError as observableThrowError, BehaviorSubject } from 'rxjs';
 import { catchError, map, mergeMap, tap } from 'rxjs/operators';
 import * as _ from 'lodash-es';
+import { SystemInfoService } from '../system-info/system-info.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,7 @@ export class ContentManagerService {
   downloadContentId: string;
   failedContentName: string;
   downloadEvent = new EventEmitter();
-  downloadFailEvent = new EventEmitter();
+  downloadFailEvent = new EventEmitter<any>();
   downloadListEvent = new EventEmitter();
   completeEvent = new EventEmitter();
   deletedContent = new EventEmitter();
@@ -23,7 +24,9 @@ export class ContentManagerService {
   deletedContentIds = [];
   constructor(private configService: ConfigService, private publicDataService: PublicDataService,
     public toasterService: ToasterService, public resourceService: ResourceService,
-    private electronDialogService: ElectronDialogService) { }
+    public electronDialogService: ElectronDialogService,
+    public systemInfoService: SystemInfoService
+  ) { }
 
   updateContentDownloadStatus(contentDownloadList) {
     this.contentDownloadStatus = {};
@@ -81,9 +84,19 @@ export class ContentManagerService {
         this.toasterService.info(this.resourceService.messages.smsg.m0053);
         this.downloadEvent.emit('Download started');
       }),
-      catchError((err) => {
-        if (err.error.params.err === 'LOW_DISK_SPACE') {
-          this.downloadFailEvent.emit(this.failedContentName);
+      catchError(async (err: any) => {
+        /* istanbul ignore else */
+        if (_.get(err, 'error.params.err') === 'LOW_DISK_SPACE') {
+          const popupInfo: any = {
+            failedContentName: this.failedContentName,
+          };
+
+          try {
+            const response = await this.getSuggestedDrive(popupInfo);
+            this.downloadFailEvent.emit(response);
+          } catch (error) {
+            this.downloadFailEvent.emit(popupInfo);
+          }
         }
         return observableThrowError(err);
       }));
@@ -195,6 +208,56 @@ export class ContentManagerService {
         this.deletedContentIds = _.uniq(_.concat(this.deletedContentIds, _.get(data, 'result.deleted')));
         this.deletedContent.emit(this.deletedContentIds);
       }));
+  }
+
+  changeContentLocation(request) {
+    const options = {
+      url: this.configService.urlConFig.URLS.OFFLINE.CHANGE_CONTENT_LOCATION,
+      data: request
+    };
+
+    return this.publicDataService.post(options);
+  }
+
+  public async getSuggestedDrive(popupInfo: any) {
+    try {
+      const info = await this.systemInfoService.getSystemInfo().toPromise();
+      // Check if the system is Windows and it has multiple drives
+      /* istanbul ignore else */
+      if (_.get(info, 'result.platform') === 'win32' && _.get(info, 'result.drives.length') !== 1) {
+        const getAvailableSpace = (drive: any) => drive.size - drive.used;
+        const suggestedDrive = info.result.drives.reduce((prev, current) => {
+          return (getAvailableSpace(prev) > getAvailableSpace(current)) ? prev : current;
+        });
+
+        /* istanbul ignore else */
+        if (suggestedDrive) {
+          popupInfo.isWindows = true;
+          popupInfo.drives = info.result.drives.map((item) => {
+            return {
+              label: item.fs,
+              name: item.fs,
+              isRecommended: item.fs === suggestedDrive.fs,
+              isCurrentContentLocation: info.result.contentBasePath.startsWith(item.fs)
+            };
+          });
+
+          popupInfo.drives.forEach(element => {
+            if (element.isCurrentContentLocation) {
+              element.label = `${element.name}&nbsp;&nbsp;(${this.resourceService.frmelmnts.lbl.currentLocation})`;
+            } else if (element.isRecommended) {
+              element.label = `${element.name}&nbsp;&nbsp;(${this.resourceService.frmelmnts.lbl.recommended})`;
+            } else {
+              element.label = element.name;
+            }
+          });
+        }
+      }
+      return popupInfo;
+    } catch (error) {
+      console.error('Error while fetching system Info', error);
+      return error;
+    }
   }
 
 }
