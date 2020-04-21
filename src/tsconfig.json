@@ -9,5 +9,5 @@
     "outDir": "./",
     "target": "es6"
   },
-  "exclude": ["node_modules", "*/**/*.spec.ts", "*.spec.ts", "temp", "client", "resourcebundles"]
+  "exclude": ["node_modules", "*/**/*.spec.ts", "*.spec.ts", "temp", "client", "resourcebundles", "test"]
 }

@@ -17,7 +17,7 @@ org.ekstep.contentrenderer.baseLauncher.extend({
     heartBeatData: {},
     enableHeartBeatEvent: false,
     _constants: {
-        mimeType: ["video/mp4", "video/x-youtube", "video/webm"],
+        mimeType: ["video/mp4", "video/webm"],
         events: {
             launchEvent: "renderer:launch:video"
         }
@@ -132,7 +132,6 @@ org.ekstep.contentrenderer.baseLauncher.extend({
         instance.addVideoListeners(videoPlayer, path, data);
         instance.videoPlayer = videoPlayer;
         instance.applyResolutionSwitcher();
-        $('.vjs-loading-spinner').css({"display": "none"});
     },
     applyResolutionSwitcher: function (){
         var instance = this;

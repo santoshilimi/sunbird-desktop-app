@@ -1,5 +1,5 @@
-
-import {throwError as observableThrowError,  Observable } from 'rxjs';
+import { dialCodeResponse } from './search.service.spec.data';
+import { throwError as observableThrowError, Observable, of } from 'rxjs';
 // Import NG testing module(s)
 import { HttpClientModule } from '@angular/common/http';
 // Import services
@@ -58,4 +58,20 @@ describe('SearchService', () => {
         expect(service).toBeTruthy();
         expect(modifiedFacetData).toEqual(result);
       }));
+
+
+    it('should get dialcode contents', inject([SearchService],
+      (service: SearchService) => {
+      const request = {
+        params: {online: true},
+        filters: {
+          dialCodes: 'x8j8m4',
+        }
+      };
+      spyOn(service.publicDataService, 'post').and.returnValue(of (dialCodeResponse));
+      const data = service.dialContentSearch(request, { board: 'Test 1' });
+      data.subscribe(contents  => {
+        expect(contents).toEqual(dialCodeResponse);
+      });
+    }));
   });

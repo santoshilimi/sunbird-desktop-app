@@ -1,4 +1,5 @@
-import { combineLatest, Subject, of, Observable } from 'rxjs';
+import { OnboardingService } from './../../services';
+import { combineLatest, Subject, of } from 'rxjs';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as _ from 'lodash-es';
@@ -66,7 +67,8 @@ export class SearchComponent implements OnInit, OnDestroy {
     public navigationHelperService: NavigationHelperService,
     public telemetryService: TelemetryService,
     private connectionService: ConnectionService,
-    private dialCodeService: DialCodeService
+    private dialCodeService: DialCodeService,
+    private userService: OnboardingService
   ) {
     this.filterType = this.configService.appConfig.explore.filterType;
 
@@ -142,40 +144,31 @@ export class SearchComponent implements OnInit, OnDestroy {
           this.showLoader = false;
 
           if (this.params.dialCode) {
-            const onlineOption = { params: { online: true } };
-            const offlineOption = { params: { online: false } };
+            const { constantData, metaData, dynamicFields } = this.configService.appConfig.GetPage;
+            const getDataForCard = (contents) => this.utilService.getDataForCard(contents, constantData, dynamicFields, metaData);
 
-            combineLatest(this.dialCodeService.filterDialSearchResults(_.get(onlineRes, 'result'), onlineOption),
-              this.dialCodeService.filterDialSearchResults(_.get(offlineRes, 'result'), offlineOption))
-              .pipe(takeUntil(this.unsubscribe$))
-              .subscribe(([onlineDialCodeRes, offlineDialCodeRes]) => {
-
-                const { constantData, metaData, dynamicFields } = this.configService.appConfig.GetPage;
-                const getDataForCard = (contents) => this.utilService.getDataForCard(contents, constantData, dynamicFields, metaData);
-
-                if (onlineDialCodeRes) {
-                  const linkedContents = _.flatMap(_.values(onlineDialCodeRes));
-                  const contents = getDataForCard(linkedContents);
-                  this.onlineContentsCount = contents.length;
-                  _.forEach(contents, content => {
-                    if (this.contentDownloadStatus[content.identifier]) {
-                        content['downloadStatus'] = this.contentDownloadStatus[content.identifier];
-                    }
-                 });
-                  this.onlineContents = this.utilService.addHoverData(contents, true);
-                }
-                if (offlineDialCodeRes) {
-                  const linkedContents = _.flatMap(_.values(offlineDialCodeRes));
-                  const contents = getDataForCard(linkedContents);
-                  _.forEach(contents, content => {
-                    if (this.contentDownloadStatus[content.identifier]) {
-                        content['downloadStatus'] = this.contentDownloadStatus[content.identifier];
-                    }
-                 });
-                  this.downloadedContentsCount = contents.length;
-                  this.downloadedContents = this.utilService.addHoverData(contents, false);
+            if (onlineRes) {
+              let contents = _.get(onlineRes, 'result.response.sections[0].contents');
+              contents = getDataForCard(contents);
+              _.forEach(contents, content => {
+                if (this.contentDownloadStatus[content.identifier]) {
+                    content['downloadStatus'] = this.contentDownloadStatus[content.identifier];
                 }
               });
+              this.onlineContents = this.utilService.addHoverData(contents, true);
+              this.onlineContentsCount = this.onlineContents.length;
+              }
+            if (offlineRes) {
+              let contents = _.get(offlineRes, 'result.response.sections[0].contents');
+              contents = getDataForCard(contents);
+              _.forEach(contents, content => {
+                if (this.contentDownloadStatus[content.identifier]) {
+                    content['downloadStatus'] = this.contentDownloadStatus[content.identifier];
+                }
+             });
+              this.downloadedContents = this.utilService.addHoverData(contents, false);
+              this.downloadedContentsCount = this.downloadedContents.length;
+            }
           } else {
             const { constantData, metaData, dynamicFields } = this.configService.appConfig.LibrarySearch;
             const getDataForCard = (contents) => this.utilService.getDataForCard(contents, constantData, dynamicFields, metaData);
@@ -189,7 +182,7 @@ export class SearchComponent implements OnInit, OnDestroy {
               }
            });
             this.downloadedContents = this.utilService.addHoverData(this.downloadedContents, false);
-
+            this.downloadedContents = _.uniqBy(this.downloadedContents, 'identifier');
             if (onlineRes) {
               this.onlineContents = onlineRes.result.count ?
                 _.chunk(getDataForCard(onlineRes.result.content), this.MAX_CARDS_TO_SHOW)[0] : [];
@@ -199,6 +192,7 @@ export class SearchComponent implements OnInit, OnDestroy {
                     content['downloadStatus'] = this.contentDownloadStatus[content.identifier];
                 }
              });
+              this.onlineContentsCount = onlineRes.result.count;
               this.onlineContents = this.utilService.addHoverData(this.onlineContents, true);
             }
 
@@ -268,16 +262,42 @@ export class SearchComponent implements OnInit, OnDestroy {
     return option;
   }
 
+  addMode(option) {
+    const contentType = _.get(option, 'filters.contentType');
+    option.filters = _.omit(this.userService.userSelectedFilters, 'gradeLevel');
+    option.filters.contentType = contentType;
+    return option;
+  }
+
   searchContent(request, isOnlineRequest: boolean) {
-    if (!this.isConnected && isOnlineRequest) {
-      return of(undefined);
+
+    if (this.params.dialCode) {
+      return this.searchDialContents(request, isOnlineRequest);
+    } else {
+      if (!this.isConnected && isOnlineRequest) {
+        return of(undefined);
+      }
+      request = !this.params.dialCode ? this.addMode(request) : request;
+      return this.searchService.contentSearch(request, !Boolean(this.params.dialCode)).pipe(
+        tap(data => {
+        }), catchError(error => {
+          return of(undefined);
+        }));
     }
 
-    return this.searchService.contentSearch(request, !Boolean(this.params.dialCode)).pipe(
+  }
+
+  searchDialContents(request, online: boolean) {
+    if (!this.isConnected && online) {
+      return of(undefined);
+    }
+    const userData =  _.pick(this.userService.userSelectedFilters, 'board');
+    return this.searchService.dialContentSearch(request, userData).pipe(
       tap(data => {
       }), catchError(error => {
         return of(undefined);
       }));
+
   }
 
   goBack() {

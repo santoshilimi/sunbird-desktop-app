@@ -7,7 +7,7 @@ import { PublicPlayerService } from '@sunbird/public';
 import { Observable, Subscription, Subject } from 'rxjs';
 import { ActivatedRoute, Router, NavigationExtras, NavigationStart } from '@angular/router';
 import {
-  WindowScrollService, ToasterService, ILoaderMessage, PlayerConfig,
+  WindowScrollService, ToasterService,
   ICollectionTreeOptions, NavigationHelperService, ResourceService,  ExternalUrlPreviewService, ConfigService,
   ContentUtilsServiceService, UtilService, OfflineCardService
 } from '@sunbird/shared';
@@ -89,7 +89,9 @@ export class TocPageComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.utilService.emitHideHeaderTabsEvent(true);
     this.contentType = _.get(this.activatedRoute, 'snapshot.queryParams.contentType');
-    this.dialCode = _.get(this.activatedRoute, 'snapshot.queryParams.dialCode');
+    const dialUrl = this.navigationHelperService.history[this.navigationHelperService.history.length - 2];
+    this.dialCode = !_.isEmpty(_.get(dialUrl, 'url')) &&
+    _.includes(_.get(dialUrl, 'url'), 'dial') ? _.get(dialUrl, 'url').substr((_.get(dialUrl, 'url').indexOf('dial/') + 5)) : '';
     this.getContent();
     this.contentManagerService.downloadListEvent.pipe(takeUntil(this.unsubscribe$)).subscribe((data) => {
       this.checkDownloadStatus(data);
@@ -121,11 +123,19 @@ export class TocPageComponent implements OnInit, OnDestroy {
       });
   }
 
+  sortChildrenWithIndex(tree) {
+    if (!tree.children || !tree.children.length) {
+      return tree;
+    }
+    tree.children = _.sortBy(tree.children.map(childNode => this.sortChildrenWithIndex(childNode)), ['index']);
+    return tree;
+  }
+
   private getCollectionHierarchy(collectionId: string): Observable<{ data: CollectionHierarchyAPI.Content }> {
     const inputParams = {params: this.configService.appConfig.CourseConsumption.contentApiQueryParams};
     return this.playerService.getCollectionHierarchy(collectionId, inputParams).pipe(
       map((response) => {
-        this.collectionData = _.get(response, 'result.content');
+        this.collectionData = this.sortChildrenWithIndex(_.get(response, 'result.content'));
         this.showUpdate = _.get(this.collectionData, 'desktopAppMetadata.updateAvailable');
         return { data: _.get(response, 'result.content') };
       }));

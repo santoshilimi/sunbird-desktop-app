@@ -4,7 +4,7 @@
     <div class="ui container px-0 py-8">
       <div class="d-flex flex-jc-space-between sb-back-btn-bar">
         <button type="button" appTelemetryInteract [telemetryInteractEdata]="backButtonInteractEdata" (click)="goBack()"
-          class="sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn fmedium">
+          class="d-flex sb-btn sb-btn-normal sb-btn-link sb-btn-link-primary sb-left-icon-btn">
           <i class="icon-svg icon-svg--xxs icon-back mr-4">
             <svg class="icon icon-svg--primary">
             <use xlink:href="assets/images/sprite.svg#arrow-long-left"></use></svg></i>
@@ -62,9 +62,9 @@
 
   <div class="ui container" *ngIf="!showLoader && contentList?.length">
     <div class="category-label fs-1">
-      <div *ngIf="isViewAll" class="pt-24 px-0">{{resourceService?.frmelmnts?.btn?.myLibrary}}</div>
+      <div *ngIf="isViewAll" class="d-flex pt-24 px-0">{{resourceService?.frmelmnts?.btn?.myLibrary}}</div>
 
-      <div *ngIf="!isViewAll" class="pt-24 px-0">
+      <div *ngIf="!isViewAll" class="d-flex pt-24 px-0">
         <span [innerHTML]="resourceService?.frmelmnts?.lbl?.showingResultsForwithCount |
       interpolate:'{count}':contentList?.length | interpolate:'{searchString}':queryParams.key"></span>&nbsp;
         <a *ngIf="!isBrowse" [routerLink]="'/'" (click)="clearSearchQuery()" appTelemetryInteract
@@ -82,7 +82,7 @@
 
     <div class=" twelve wide column right aligned py-0"
       *ngIf="paginationDetails?.totalItems > configService.appConfig.SEARCH.PAGE_LIMIT && !showLoader && isBrowse">
-      <div class="sb-pagination-container flex-jc-flex-end" *ngIf="paginationDetails?.pages?.length">
+      <div class="sb-pagination-container flex-jc-flex-end py-16" *ngIf="paginationDetails?.pages?.length">
         <div class="sb-pagination my-0">
           <a [class.disabled]="paginationDetails.currentPage===1" class="sb-item"
             (click)="navigateToPage(1) ">&laquo;</a>

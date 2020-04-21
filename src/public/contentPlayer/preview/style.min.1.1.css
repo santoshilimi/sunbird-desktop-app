@@ -14519,41 +14519,12 @@ visited {
     src: url(fonts/NotoSansTamil-Regular.woff) format('woff')
 }
 
-@font-face {
-    font-family: 'flavours';
-    src: url(fonts/Flavors-Regular.ttf) format('truetype')
-}
 
 @font-face {
     font-family: 'NotoSans';
     src: url(fonts/NotoSans-Regular.woff) format('woff')
 }
 
-@font-face {
-    /* reference: http://www.latofonts.com/lato-free-fonts/ */
-    font-family: 'lato-black';
-    src: url(fonts/Lato-Black.woff) format('woff')
-}
-
-@font-face {
-    font-family: 'lato-bold';
-    src: url(fonts/Lato-Bold.woff) format('woff')
-}
-
-@font-face {
-    font-family: 'lato-light';
-    src: url(fonts/Lato-Light.woff) format('woff')
-}
-
-@font-face {
-    font-family: 'lato-medium';
-    src: url(fonts/Lato-Medium.woff) format('woff')
-}
-
-@font-face {
-    font-family: 'lato-regular';
-    src: url(fonts/Lato-Regular.woff) format('woff')
-}
 
 @font-face {
     font-family: 'NotoSans-SemiBold';
@@ -14925,8 +14896,9 @@ ion-popover-view.fit ion-content {
 }
 
 .gc-menu-btn img.icon.nav-top {
-    /* margin-top: 8%;
-    width: 65%; */
+     margin-top: 0%;
+    width: auto;
+    height: auto;
 }
 
 .nav-icon {
@@ -16648,6 +16620,7 @@ body {
 }
 
 /* new popup style */
+
 .grey-text {
     color: #717274;
 }

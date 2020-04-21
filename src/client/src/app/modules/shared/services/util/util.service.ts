@@ -252,8 +252,9 @@ export class UtilService {
             this.isAvailable(value) ? _.capitalize(status.COMPLETED) : _.capitalize(status.CANCELED)) :
             (contentStatus ? (contentStatus === 'DOWNLOADED' ? status.saveToPenDrive : _.capitalize(contentStatus)) :
             this.isAvailable(value) ? status.saveToPenDrive : _.capitalize(status.CANCELED)),
-            disabled: isOnlineSearch ? contentStatus ? _.includes(['DOWNLOADED', 'DOWNLOADING', 'PAUSED'], contentStatus) :
-            this.isAvailable(value) : contentStatus ? _.includes(['DOWNLOADING', 'PAUSED'], contentStatus) : !this.isAvailable(value)
+            disabled: isOnlineSearch ? (contentStatus ? _.includes(['Downloaded', 'Downloading', 'Paused'], _.capitalize(contentStatus)) :
+            this.isAvailable(value)) : contentStatus ? _.includes(['Downloading', 'Paused'],
+            _.capitalize(contentStatus)) : !this.isAvailable(value)
           },
           {
             type: 'open',
