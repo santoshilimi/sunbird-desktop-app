@@ -140,7 +140,6 @@ export class ContentManagerComponent implements OnInit, OnDestroy {
           this.drives = response.drives;
         }
       } catch (error) {
-        console.log('Error ===>', error);
         this.unHandledFailedList = popupInfo.failedContentName;
       }
     }
