@@ -137,7 +137,7 @@ export class ContentManagerComponent implements OnInit, OnDestroy {
         this.isWindows = response.isWindows;
 
         if (response.isWindows && response.drives) {
-          popupInfo.drives = response.drives;
+          this.drives = response.drives;
         }
       } catch (error) {
         this.unHandledFailedList = popupInfo.failedContentName;
