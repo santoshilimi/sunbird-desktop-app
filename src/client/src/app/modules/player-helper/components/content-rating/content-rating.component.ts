@@ -50,29 +50,29 @@ export class ContentRatingComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.startext = _.get(this.resourceService, 'frmelmnts.lbl.defaultstar');
-    // this.resourceService.languageSelected$.subscribe(item => {
-    //   const formReadInputParams = {
-    //     formType: 'contentfeedback',
-    //     contentType: item.value,
-    //     formAction: 'get'
-    //   };
-    //   this.formService.getFormConfig(formReadInputParams).subscribe(
-    //     (formResponsedata) => {
-    //       this.feedbackObj = formResponsedata[0];
-    //     }, (error) => {
-    //       this.feedbackObj = { };
-    //     });
-    // });
+    this.resourceService.languageSelected$.subscribe(item => {
+      const formReadInputParams = {
+        formType: 'contentfeedback',
+        contentType: item.value,
+        formAction: 'get'
+      };
+     this.formService.getFormConfig(formReadInputParams).subscribe(
+        (formResponsedata) => {
+          this.feedbackObj = formResponsedata[0];
+        }, (error) => {
+          this.feedbackObj = { };
+        });
+    });
   }
 
   ratingChange(event) {
     this.contentRating = event;
-    // this.startext = this.feedbackObj[event]['ratingText'];
+    this.startext = this.feedbackObj[event]['ratingText'];
     this.enableSubmitBtn = true;
     this.showTextarea = false;
-    // _.forEach(this.feedbackObj[this.contentRating]['options'], (feedback) => {
-    //   feedback['checked'] = false;
-    // });
+    _.forEach(this.feedbackObj[this.contentRating]['options'], (feedback) => {
+      feedback['checked'] = false;
+    });
   }
 
   public changeOptions(options) {
@@ -97,22 +97,26 @@ export class ContentRatingComponent implements OnInit, OnDestroy {
         },
         edata: { }
       };
-      // _.forEach(this.feedbackObj[this.contentRating]['options'], (feedback) => {
-      //   if (feedback['checked']) {
-      //     const feedbackTelemetryClone = _.clone(feedbackTelemetry);
-      //     feedbackTelemetryClone['edata'] = { };
-      //     feedbackTelemetryClone['edata']['commentid'] = feedback['key'];
-      //     if (feedback['key'] === 'OTHER') {
-      //       feedbackTelemetryClone['edata']['commenttxt'] = this.feedbackText;
-      //     } else {
-      //       feedbackTelemetryClone['edata']['commenttxt'] = feedback['value'];
-      //     }
-      //     console.log(feedbackTelemetryClone);
-      //     this.telemetryService.feedback(feedbackTelemetryClone);
-      //   }
-      // });
+      _.forEach(this.feedbackObj[this.contentRating]['options'], (feedback) => {
+        if (feedback['checked']) {
+          const feedbackTelemetryClone = _.clone(feedbackTelemetry);
+          feedbackTelemetryClone['edata'] = { };
+          feedbackTelemetryClone['edata']['commentid'] = feedback['key'];
+          if (feedback['key'] === 'OTHER') {
+            feedbackTelemetryClone['edata']['commenttxt'] = this.feedbackText;
+          } else {
+            feedbackTelemetryClone['edata']['commenttxt'] = feedback['value'];
+          }
+          console.log(feedbackTelemetryClone);
+          this.telemetryService.feedback(feedbackTelemetryClone);
+        }
+      });
+      const comments = _.map(this.feedbackObj[this.contentRating]['options'], (feedback) => {
+        return (feedback['checked'] ? feedback['key'] : '');
+      });
       feedbackTelemetry['edata'] = {
-        rating: this.contentRating
+        rating: this.contentRating,
+        comments: `${_.compact(comments)}`
       };
       this.telemetryService.feedback(feedbackTelemetry);
       this.toasterService.success(this.resourceService.messages.smsg.m0050);
