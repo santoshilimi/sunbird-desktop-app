@@ -17,6 +17,7 @@ export class ContentRatingComponent implements OnInit, OnDestroy {
   */
   @ViewChild('modal') modal;
   @Input() contentData?: any;
+  @Input() objectRollUp;
   public startext = '';
   public feedbackText = '';
   public feedbackObj;
@@ -93,7 +94,8 @@ export class ContentRatingComponent implements OnInit, OnDestroy {
           id: _.get(this.activatedRoute.snapshot.params, 'contentId') ||  _.get(this.activatedRoute.snapshot.params, 'collectionId') ||
           _.get(this.activatedRoute.snapshot.params, 'courseId'),
           type: _.get(this.contentData , 'contentType'),
-          ver: this.contentData ? _.get(this.contentData , 'pkgVersion').toString() : '1.0'
+          ver: this.contentData ? _.get(this.contentData , 'pkgVersion').toString() : '1.0',
+          rollup: this.objectRollUp || {}
         },
         edata: { }
       };
