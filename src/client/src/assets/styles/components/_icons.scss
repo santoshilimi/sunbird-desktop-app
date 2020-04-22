@@ -198,3 +198,9 @@
     fill: var(--gray-800);
   }
 }
+
+.icon-back {
+  html[dir="rtl"] & {
+    transform: rotate(-180deg);
+  }
+}

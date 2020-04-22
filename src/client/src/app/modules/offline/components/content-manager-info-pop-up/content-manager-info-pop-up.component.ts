@@ -1,5 +1,7 @@
 import { Component, OnInit, Input, ViewChild, Output, EventEmitter } from '@angular/core';
 import { ResourceService } from '@sunbird/shared';
+import { IInteractEventEdata } from '@sunbird/telemetry';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-content-manager-info-pop-up',
@@ -8,15 +10,38 @@ import { ResourceService } from '@sunbird/shared';
 })
 export class ContentManagerInfoPopUpComponent implements OnInit {
 
-  @Input() failedList;
   @ViewChild('modal') modal;
+  @Input() failedList;
+  @Input() showContentChangeWarning: boolean;
+  @Input() drives: any;
   @Output() dismissed = new EventEmitter<any>();
-  constructor(public resourceService: ResourceService) { }
+  @Output() submit = new EventEmitter<any>();
+
+  selectedDrive: string;
+  constructor(public resourceService: ResourceService, public router: Router) { }
 
   ngOnInit() {
   }
-  closeModal() {
+
+  closeModal(selectedDrive?: string) {
     this.modal.deny();
-    this.dismissed.emit();
+    this.dismissed.emit({ selectedDrive: selectedDrive });
+  }
+
+  getDriveSelectInteractEdata(selectedDrive) {
+    const selectDriveInteractEdata: IInteractEventEdata = {
+      id: 'content-location-select-button',
+      type: 'click',
+      pageid: this.router.url.split('/')[1] || 'library'
+    };
+
+    /* istanbul ignore else*/
+    if (selectedDrive) {
+      selectDriveInteractEdata['extra'] = {
+        drive: selectedDrive.name
+      };
+    }
+
+    return selectDriveInteractEdata;
   }
 }

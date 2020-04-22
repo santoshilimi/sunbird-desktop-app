@@ -218,6 +218,7 @@
       "TELEMTRY_CONFIG": "telemetry/v1/config",
       "TELEMETRY_IMPORT_RETRY": "telemetry/v1/import/retry",
       "TELEMETRY_SYNC": "desktop/v1/sync",
+      "CHANGE_CONTENT_LOCATION": "desktop/v1/change-content-location",
       "DIAL_SEARCH": "data/v1/dial/assemble"
     },
     "ACCOUNT_RECOVERY": {
@@ -228,7 +229,8 @@
       "CONTENT_IMPORT": "content/import",
       "CONTENT_EXPORT": "content/export",
       "TELEMETRY_EXPORT": "telemetry/export",
-      "TELEMETRY_IMPORT": "telemetry/import"
+      "TELEMETRY_IMPORT": "telemetry/import",
+      "CONTENT_SUGGEST_LOCATION":"content/suggestLocation"
     },
     "CONTRIBUTION_PROGRAMS":{
       "SEARCH": "program/v1/search"

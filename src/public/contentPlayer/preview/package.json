@@ -1,28 +1,28 @@
 {
-  "_from": "@project-sunbird/content-player@2.9.0-alpha-ea50f5d0.0",
-  "_id": "@project-sunbird/content-player@2.9.0-alpha-ea50f5d0.0",
+  "_from": "@project-sunbird/content-player@2.9.1",
+  "_id": "@project-sunbird/content-player@2.9.1",
   "_inBundle": false,
-  "_integrity": "sha512-4bdHs+6G2U+q0qT+fux3juWkW2+6FKl8yqB8MX5nM0roBfIKtLYp0q/3ynUvi5idsI6B+ppMcmJppHMP9CHSBg==",
+  "_integrity": "sha512-nXlvobVLjCq/ZN1ERMPgXZ+11n3GQy7x3fB9Xwq0tY5zSv5uqwWmBsHMzs6LrMbkKvgFXGF+95x0AzkDiAqIwA==",
   "_location": "/@project-sunbird/content-player",
   "_phantomChildren": {},
   "_requested": {
     "type": "version",
     "registry": true,
-    "raw": "@project-sunbird/content-player@2.9.0-alpha-ea50f5d0.0",
+    "raw": "@project-sunbird/content-player@2.9.1",
     "name": "@project-sunbird/content-player",
     "escapedName": "@project-sunbird%2fcontent-player",
     "scope": "@project-sunbird",
-    "rawSpec": "2.9.0-alpha-ea50f5d0.0",
+    "rawSpec": "2.9.1",
     "saveSpec": null,
-    "fetchSpec": "2.9.0-alpha-ea50f5d0.0"
+    "fetchSpec": "2.9.1"
   },
   "_requiredBy": [
     "#USER",
     "/"
   ],
-  "_resolved": "https://registry.npmjs.org/@project-sunbird/content-player/-/content-player-2.9.0-alpha-ea50f5d0.0.tgz",
-  "_shasum": "27f9d50da51a646618c06d1a2b907d704633df21",
-  "_spec": "@project-sunbird/content-player@2.9.0-alpha-ea50f5d0.0",
+  "_resolved": "https://registry.npmjs.org/@project-sunbird/content-player/-/content-player-2.9.1.tgz",
+  "_shasum": "41c70ce63aa6680c34163d24b92d8bf77b1daf27",
+  "_spec": "@project-sunbird/content-player@2.9.1",
   "_where": "/Users/harishkumargangula/Documents/Workspace/sunbird-desktop-app/src",
   "author": {
     "name": "Manjunath Davanam",
@@ -164,7 +164,7 @@
     "test-renderer": "npm run build-preview && grunt renderer-test",
     "watch": "npm-watch"
   },
-  "version": "2.9.0-alpha-ea50f5d0.0",
+  "version": "2.9.1",
   "watch": {
     "build-preview-windows": {
       "patterns": [

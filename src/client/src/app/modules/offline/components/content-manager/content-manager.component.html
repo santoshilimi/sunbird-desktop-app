@@ -10,7 +10,7 @@
     </div>
 
     <div content *ngIf="contentResponse">
-      <div class="sb-single-pannel-accordion-list-item flex-ai-center"
+      <div class="sb-single-pannel-accordion-list-item flex-ai-center text-left"
         *ngFor="let data of contentResponse | orderBy:'createdOn': true">
         <i class="check circle icon success-icon mr-8 fs-1-429" *ngIf="data.status === 'completed'"></i>
         <div class="download-details-container" [ngClass]="{'cursor-pointer': data.status === 'completed'}"
@@ -148,4 +148,6 @@
   </sui-accordion-panel>
 </sui-accordion>
 
-<app-content-manager-info-pop-up *ngIf="unHandledFailedList.length" [failedList]="unHandledFailedList" (dismissed)="closeModal($event)"> </app-content-manager-info-pop-up>
+<app-content-manager-info-pop-up *ngIf="unHandledFailedList?.length" [showContentChangeWarning]="isWindows"
+  [failedList]="unHandledFailedList" [drives]="drives" (dismissed)="closeModal($event)">
+</app-content-manager-info-pop-up>
