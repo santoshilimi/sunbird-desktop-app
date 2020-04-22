@@ -24,6 +24,9 @@ describe('ContentRatingComponent', () => {
       frmelmnts: {
         lbl: {
           defaultstar: 'Tap on stars to rate the content'
+        },
+        btn: {
+          submit: 'Submit'
         }
       }
     };
@@ -227,6 +230,16 @@ describe('ContentRatingComponent', () => {
     component.formService.getFormConfig(formReadInputParams).subscribe(data => {}, err => {
       expect(component.feedbackObj).toEqual({});
     });
+  });
+
+  it('should call telemetryService feedback()', () => {
+    fixture.detectChanges();
+    component.contentRating = 2;
+    component.feedbackObj = mockData.feedbackResult;
+    component.feedbackObj[2].options[0].checked = true;
+    spyOn(component['telemetryService'], 'feedback').and.callThrough();
+    component.submit();
+    expect(component['telemetryService'].feedback).toHaveBeenCalled();
   });
 });
 
