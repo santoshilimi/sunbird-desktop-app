@@ -62,7 +62,7 @@ export class ContentRatingComponent implements OnInit, OnDestroy {
           this.feedbackObj = formResponsedata[0];
         }, (error) => {
           this.feedbackObj = { };
-          if (error.error['responseCode'] === 'RESOURCE_NOT_FOUND' && item.value !== 'en') {
+          if (_.get(error, 'error.responseCode') === 'RESOURCE_NOT_FOUND' && item.value !== 'en') {
             this.getDefaultForm();
           }
         });
