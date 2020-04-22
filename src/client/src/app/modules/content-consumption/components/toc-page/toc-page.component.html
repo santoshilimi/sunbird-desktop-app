@@ -5,7 +5,7 @@
       <app-contentplayer-page [tocPage]="true" [contentDetails]="activeContent" [isContentPresent]="isContentPresent"  [objectRollUp]="objectRollUp"></app-contentplayer-page>
     </div>
     <div class="sb-g-col-xs-12 sb-g-col-md-5 sb-g-col-lg-4">
-      <sb-library-filters [list]="mimeTypeFilters" [layout]="'round-with-icon'"
+      <sb-library-filters [tocList]="mimeTypeFilters" [layout]="'round-with-icon'"
         (selectedMimeType)="selectedFilter($event)">
       </sb-library-filters>
       <div class="side-toc-content text-left">
