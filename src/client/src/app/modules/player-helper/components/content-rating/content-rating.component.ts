@@ -62,8 +62,25 @@ export class ContentRatingComponent implements OnInit, OnDestroy {
           this.feedbackObj = formResponsedata[0];
         }, (error) => {
           this.feedbackObj = { };
+          if (error.status === 404 && item.value !== 'en') {
+            this.getDefaultForm();
+          }
         });
     });
+  }
+
+  getDefaultForm() {
+      const formReadInputParams = {
+        formType: 'contentfeedback',
+        contentType: 'en',
+        formAction: 'get'
+      };
+     this.formService.getFormConfig(formReadInputParams).subscribe(
+        (formResponsedata) => {
+          this.feedbackObj = formResponsedata[0];
+        }, (error) => {
+          this.feedbackObj = { };
+        });
   }
 
   ratingChange(event) {
