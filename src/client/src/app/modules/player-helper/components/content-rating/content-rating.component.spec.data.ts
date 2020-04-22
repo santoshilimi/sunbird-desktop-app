@@ -64,5 +64,19 @@ export const mockData = {
             ratingText: 'Excellent',
             question: 'Would you like to tell us more?'
         }
-    ]
+    ],
+    feedbackerror: {
+        'id': 'api.form.read',
+        'ver': '1.0',
+        'ts': '2020-04-22T08:25:45.779Z',
+        'params': {
+          'resmsgid': '1b728238-1fbf-47f2-895c-02b3c1df31d2',
+          'msgid': '6c0f0830-3cf8-45c4-8aaa-86bf8cb85635',
+          'status': 'failed',
+          'err': 'ERR_DATA_NOT_FOUND',
+          'errmsg': 'Data not found'
+        },
+        'responseCode': 'RESOURCE_NOT_FOUND',
+        'result': {}
+      }
 };

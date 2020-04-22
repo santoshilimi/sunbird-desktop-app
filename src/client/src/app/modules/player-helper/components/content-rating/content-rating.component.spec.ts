@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed , async} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ResourceService, ConfigService, BrowserCacheTtlService } from '@sunbird/shared';
 import { ToasterService } from '@sunbird/shared';
@@ -176,5 +176,57 @@ describe('ContentRatingComponent', () => {
     expect(component.closeModal.emit).toHaveBeenCalledWith(true);
   });
 
+  it('should call getformconfig', () => {
+    spyOn(component.formService, 'getFormConfig').and.returnValue(of (mockData.feedbackResult));
+    const formReadInputParams = {
+      formType: 'contentfeedback',
+      contentType: 'hi',
+      formAction: 'get'
+    };
+    component.ngOnInit();
+    component.formService.getFormConfig(formReadInputParams).subscribe(data => {
+      expect(component.feedbackObj).toEqual(data[0]);
+    });
+
+  });
+
+  it('should getformconfig throw error', () => {
+    spyOn(component.formService, 'getFormConfig').and.returnValue( throwError (mockData.feedbackerror));
+    const formReadInputParams = {
+      formType: 'contentfeedback',
+      contentType: 'hi',
+      formAction: 'get'
+    };
+    component.ngOnInit();
+    component.formService.getFormConfig(formReadInputParams).subscribe(data => {}, err => {
+        expect(component.feedbackObj).toEqual({});
+      });
+  });
+
+  it('should call getformconfig from getDefaultForm', () => {
+    spyOn(component.formService, 'getFormConfig').and.returnValue(of (mockData.feedbackResult));
+    const formReadInputParams = {
+      formType: 'contentfeedback',
+      contentType: 'hi',
+      formAction: 'get'
+    };
+    component.getDefaultForm();
+    component.formService.getFormConfig(formReadInputParams).subscribe(data => {
+      expect(component.feedbackObj).toEqual(data[0]);
+    });
+  });
+
+  it('should throw error getformconfig from getDefaultForm', () => {
+    spyOn(component.formService, 'getFormConfig').and.returnValue(throwError (mockData.feedbackerror));
+    const formReadInputParams = {
+      formType: 'contentfeedback',
+      contentType: 'hi',
+      formAction: 'get'
+    };
+    component.getDefaultForm();
+    component.formService.getFormConfig(formReadInputParams).subscribe(data => {}, err => {
+      expect(component.feedbackObj).toEqual({});
+    });
+  });
 });
 
