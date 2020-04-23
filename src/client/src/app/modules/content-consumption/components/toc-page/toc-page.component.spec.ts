@@ -8,7 +8,8 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TocPageComponent } from './toc-page.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ContentService} from '@sunbird/core';
+import { ContentService } from '@sunbird/core';
+import { ResourceService } from '@sunbird/shared';
 
 describe('TocPageComponent', () => {
   let component: TocPageComponent;
@@ -33,14 +34,27 @@ describe('TocPageComponent', () => {
     },
   };
 
+  const resourceMockData = {
+    frmelmnts: {
+      btn: {
+        all: 'All',
+        video: 'Video',
+        interactive: 'Interactive',
+        docs: 'Docs'
+      }
+    }
+  };
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TocPageComponent ],
+      declarations: [TocPageComponent],
       imports: [TelemetryModule.forRoot(), SharedModule.forRoot(), HttpClientTestingModule, RouterTestingModule],
-      providers: [{provide: ActivatedRoute, useValue: ActivatedRouteStub}, ContentService],
+      providers: [
+        { provide: ActivatedRoute, useValue: ActivatedRouteStub }, ContentService,
+        { provide: ResourceService, useValue: resourceMockData }],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
@@ -55,7 +69,7 @@ describe('TocPageComponent', () => {
     spyOn(component, 'logTelemetry');
     const collection = collectionData.collection.result.content;
     component.collectionData = collection;
-    component.tocCardClickHandler({data: collection.children[0], rollup: {}});
+    component.tocCardClickHandler({ data: collection.children[0], rollup: {} });
     expect(component.OnPlayContent).toHaveBeenCalledWith(collection.children[0], true);
     expect(component.logTelemetry).toHaveBeenCalledWith('content-inside-collection', {}, collection.children[0]);
     expect(component.isContentPresent).toBeTruthy();
@@ -64,7 +78,7 @@ describe('TocPageComponent', () => {
   it('should change active mimeType filter', () => {
     spyOn(component, 'logTelemetry');
     expect(component.activeMimeTypeFilter[0]).toEqual('all');
-    component.selectedFilter({data: {text: 'video', value: 'video'}});
+    component.selectedFilter({ data: { text: 'video', value: 'video' } });
     expect(component.activeMimeTypeFilter).toEqual('video');
     expect(component.logTelemetry).toHaveBeenCalledWith('filter-video');
   });
@@ -78,7 +92,7 @@ describe('TocPageComponent', () => {
 
   it('show make isContentpresent false', () => {
     expect(component.isContentPresent).toBeTruthy();
-    component.showNoContent({message: 'No Content Available'});
+    component.showNoContent({ message: 'No Content Available' });
     expect(component.isContentPresent).toBeFalsy();
   });
 
@@ -95,14 +109,14 @@ describe('TocPageComponent', () => {
 
   it('should assign dialcode', () => {
     const navigationHelperService = TestBed.get(NavigationHelperService);
-    navigationHelperService['_history'] = [ {url: '/browse'}, {url: 'dial/123d4'}, {url: 'play/collection'}];
+    navigationHelperService['_history'] = [{ url: '/browse' }, { url: 'dial/123d4' }, { url: 'play/collection' }];
     component.ngOnInit();
     expect(component.dialCode).toEqual('123d4');
   });
 
   it('should not assign dialcode', () => {
     const navigationHelperService = TestBed.get(NavigationHelperService);
-    navigationHelperService['_history'] = [ {url: '/browse'}, {url: 'search/key?con'}, {url: 'play/collection'}];
+    navigationHelperService['_history'] = [{ url: '/browse' }, { url: 'search/key?con' }, { url: 'play/collection' }];
     component.ngOnInit();
     expect(component.dialCode).toEqual('');
   });

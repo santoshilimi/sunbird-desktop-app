@@ -19,7 +19,7 @@ import * as _ from 'lodash-es';
   styleUrls: ['./toc-page.component.scss']
 })
 export class TocPageComponent implements OnInit, OnDestroy {
-  mimeTypeFilters = ['all', 'video', 'interactive', 'docs'];
+  mimeTypeFilters;
   activeMimeTypeFilter = ['all'];
   activeContent;
   /**
@@ -84,7 +84,14 @@ export class TocPageComponent implements OnInit, OnDestroy {
     private connectionService: ConnectionService,
     private offlineCardService: OfflineCardService,
     public contentService: ContentService,
-    private telemetryService: TelemetryService) { }
+    private telemetryService: TelemetryService) {
+      this.mimeTypeFilters = [
+        { text: this.resourceService.frmelmnts.btn.all, value: 'all' },
+        { text: this.resourceService.frmelmnts.btn.video, value: 'video' },
+        { text: this.resourceService.frmelmnts.btn.interactive, value: 'interactive' },
+        { text: this.resourceService.frmelmnts.btn.docs, value: 'docs' },
+      ];
+    }
 
   ngOnInit() {
     this.utilService.emitHideHeaderTabsEvent(true);
