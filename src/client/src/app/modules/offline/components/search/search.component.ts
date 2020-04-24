@@ -264,8 +264,8 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   addMode(option) {
     const contentType = _.get(option, 'filters.contentType');
-    option.filters = _.omit(this.userService.userSelectedFilters, 'gradeLevel');
-    option.filters.contentType = contentType;
+      option.filters = _.omit(this.userService.userSelectedFilters, ['gradeLevel', 'medium']);
+      option.filters.contentType = contentType;
     return option;
   }
 

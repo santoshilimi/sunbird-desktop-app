@@ -146,7 +146,6 @@ describe('SearchComponent', () => {
     const data = component.addMode({filters: {contentType: ['Textbook', 'resource']}});
     expect(data.filters.contentType).toEqual(['Textbook', 'resource']);
     expect(data.filters.board).toEqual(component['userService'].userSelectedFilters.board);
-    expect(data.filters.medium).toEqual(component['userService'].userSelectedFilters.medium);
   });
 
   it('should call addMode ', () => {
